@@ -1,0 +1,7 @@
+pyyaml
+pydantic
+python-dotenv
+edge-tts
+openai-whisper
+fastapi
+uvicorn

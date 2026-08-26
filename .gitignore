@@ -1,4 +1,32 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# Logs / generated output
+logs/
+output/
+
+# Environment secrets
 .env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+
+# Temporary / scratch scripts
+scratch_*.py
+
+# Misc cache
+.pytest_cache/
+.mypy_cache/
+
+# Project-generated media and local data
 *.mp4
 videos/*.mp4
 data/*.db

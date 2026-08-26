@@ -1,0 +1,22 @@
+project:
+  script_path: "money-habits-ALL-v4.md"
+  output_dir: "output/production"
+
+tts:
+  provider: "edge_tts"
+  lang: "en"
+  voice: "en-US-ChristopherNeural"
+  rate: "+0%"
+
+media_gen:
+  provider: "manual_watch"
+  tool: "CapCut Pro / Seedance"
+
+style:
+  style_bible_path: "assets/style_bible.txt"
+  brand_voice_path: "assets/brand_voice.md"
+
+renderer:
+  ffmpeg_path: "ffmpeg"
+  bg_music_volume: 0.15
+  music_path: "assets/music_library/default.mp3"

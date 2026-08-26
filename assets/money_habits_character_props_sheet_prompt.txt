@@ -1,0 +1,19 @@
+Create a polished professional character-and-props reference sheet for a US personal-finance psychology video series called Money Habits. This is a static production design sheet that will be reused as the visual reference for many image-to-video scenes, not a story scene and not a children's cartoon.
+
+MAIN CHARACTER — preserve one identical design in every view:
+One approachable American adult man, age 30 to 35, average build and height, warm medium skin tone, short neat dark hair with a simple side part, clean-shaven, calm intelligent demeanor. Simplified editorial facial features: two small navy eyes, simple brows, a minimal nose and mouth, no detailed realism. He wears the same warm cream long-sleeve crew-neck shirt in every view, tailored navy trousers, simple cream shoes, and one narrow muted-gold cuff accent on his right sleeve. Use consistent head shape, hairstyle, skin tone, body proportions, clothing, outline thickness and colors in every pose.
+
+CHARACTER VIEWS:
+Show the same full-body character exactly four times in a clean top row: front neutral pose, three-quarter view holding a wallet, side view looking at a smartphone, and seated tired pose holding a takeaway coffee cup. Add a small second row of four simple body-language poses using the identical character: concerned shoulders lowered, surprised posture, thoughtful pause, and confident pointing gesture. Every pose must clearly be the same person. Keep adequate separation between poses; no overlap.
+
+CORE PROP LIBRARY — clean isolated objects matching the character style:
+Arrange a tidy lower grid of reusable props, one example of each only: cream wallet with a tiny opening at the bottom, muted-gold coin, blank smartphone, four blank subscription tiles, cream takeout delivery bag, takeaway coffee cup, paycheck card with no writing, apartment building, compact car, restaurant plate, small stack of expense blocks, simple rising bar chart with no numbers, speech bubble with no writing, magnifying glass, brain icon, soft stress cloud, shopping cart, checkout button with no writing, parcel box, bill sheet with no writing, calendar with no dates, bank statement with blank lines, notebook and pen, payment card with no logo, piggy bank, protective shield, and two blank account cards. All props must share the same line weight, geometry, palette and editorial rendering. No duplicate props and no additional decorative objects.
+
+ART DIRECTION:
+Sophisticated minimal 2D editorial illustration for an adult US finance audience. Deep navy presentation-board background. Warm cream character clothing and prop surfaces. Muted gold used only for coins, money movement and key emphasis. Desaturated blue-gray secondary details. Thick clean navy outlines, restrained rounded geometry, very subtle paper grain, soft minimal shadows, crisp readable silhouettes, balanced premium composition. Flat editorial design, not isometric, not 3D, not photorealistic, not anime, not whiteboard doodles, not childish clip art.
+
+LAYOUT AND OUTPUT:
+One high-resolution 16:9 horizontal reference board, orthographic character turnaround and organized prop grid, even margins, generous spacing, all objects fully visible, consistent scale within each row, studio-quality model-sheet presentation. Keep the background uniform so individual character poses and props can be cropped later as references.
+
+STRICT NEGATIVE CONSTRAINTS:
+No title, no captions, no labels, no alphabetic text, no numbers, no prices, no currency symbols, no logos, no brands, no watermark, no UI screenshot, no random icons, no extra people, no alternate outfits, no changes in age or hairstyle, no detailed facial rendering, no gradients that change the palette, no photographic textures, no perspective distortion, no cropped body parts, no overlapping elements.
