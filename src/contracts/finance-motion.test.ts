@@ -1,0 +1,93 @@
+import { readFileSync } from "node:fs";
+import { describe,it,expect } from "vitest";
+import { FinancePlanSchema, DatumSchema, MotionEventSchema, ModelSchema, compileFinancePlan, assessFinanceDataViz, assessMotionSemantics, resolvePhrase, transitionFor, literalNumbers, assertFinanceHighlights, type FinancePlan, type DataApproval } from "./finance-motion.js";
+import { extractApprovedVoiceOver, HISTORICAL_SCRIPT_FILE as APPROVED_SCRIPT_FILE } from "./content-contract.js";
+import { ScriptSchema } from "../render/script-schema.js";
+import { productionDecision, MANDATORY_GATES } from "./production-validation.js";
+import { assertBenchmarkDestination } from "./benchmark-isolation.js";
+const read=(p:string)=>JSON.parse(readFileSync(p,"utf8"));
+const original=read("tests/fixtures/day1-finance-plan.json");
+const script=ScriptSchema.parse(read("output/day-1/script.json"));
+const transcript=read("output/day-1/transcript.json");
+const approved=extractApprovedVoiceOver(readFileSync(APPROVED_SCRIPT_FILE,"utf8"),1);
+const fresh=():FinancePlan=>structuredClone(original);
+const compile=(p:unknown=fresh(), approvals:DataApproval[]=[])=>compileFinancePlan(p,script,transcript,approved,approvals);
+const fail=(mutate:(p:FinancePlan)=>void,pattern:RegExp)=>{const p=fresh();mutate(p);expect(()=>compile(p)).toThrow(pattern);};
+
+describe("v1.2 finance provenance and reference firewall",()=>{
+  it("compiles approved Day 1 and traces every datum",()=>{const p=compile();expect(p.provenance).toHaveLength(11);expect(assessFinanceDataViz(fresh(),script,transcript,approved).status).toBe("PASS");});
+  it.each(["Debug_Your_Money.pdf","How_Background_Habits_Drain_Your_Budget.mp4","money-habits-ALL-v4.md"])("rejects reference/content-source substitution %s",source=>{const p:any=fresh();p.data[0].source=source;expect(()=>compile(p)).toThrow();});
+  it("does not accept reference amounts attributed to an approved span",()=>fail(p=>{p.data[5].value=170;p.data[5].display="$170";},/invented/));
+  it("rejects missing numeric provenance",()=>fail(p=>{p.sequences[1].elements[1].datumId="absent";},/MISSING_PROVENANCE/));
+  it("rejects unapproved labels",()=>fail(p=>{p.sequences[1].elements[0].copy!.text="Convenience tax";},/NO_UNAPPROVED_COPY/));
+  it("rejects labels with a fabricated source span",()=>fail(p=>{p.sequences[1].elements[0].copy!.sourceSpan="Mental discount trap";},/REFERENCE_FIREWALL/));
+  it("rejects altered display value",()=>fail(p=>{p.data[1].display="$15";},/display\/value/));
+  it("rejects losing almost qualifier",()=>fail(p=>{p.data[10].qualifier="exact";p.data[10].display="$300 \/ MONTH";},/qualifier/));
+  it("rejects inferred monthly unit",()=>fail(p=>{p.data[1].unit="USD/month";p.data[1].display="$14 / MONTH";},/unsupported unit/));
+  it("rejects numeric values at initial frame",()=>fail(p=>{p.sequences[1].elements[1].initial=true;},/EARLY_NUMERIC_STATE/));
+  it.each(["fourteen dollars","eighteen-dollar","almost three hundred dollars a month"])("parses one literal, not reference arithmetic: %s",text=>expect(literalNumbers(text)).toHaveLength(1));
+  const derived=()=>({id:"derived",sourceType:"approved-derived",display:"$23",value:23,unit:"USD",qualifier:"exact",inputs:["streaming","fitness"],formula:"sum",sourceSpans:[original.data[1]],approval:{id:"approved-sum",reason:"User explicitly approved this result"}});
+  const derivation=()=>{const p:any=fresh();const d:any=derived();d.sourceSpans=[{source:APPROVED_SCRIPT_FILE,sceneId:"scene-4",sourceSpan:"fourteen dollars"}];p.data.push(d);return p;};
+  it("requires complete approved-derived schema",()=>{const d:any=derived();delete d.inputs;expect(DatumSchema.safeParse(d).success).toBe(false);});
+  it("cannot self-approve a derivation inside planner data",()=>expect(()=>compile(derivation())).toThrow(/DERIVED_DATA_APPROVAL_REQUIRED/));
+  it("accepts only a matching external user approval record",()=>{const p=derivation();const d=p.data.at(-1);expect(compile(p,[{id:d.approval.id,datumId:d.id,inputs:d.inputs,formula:d.formula,output:23,reason:d.approval.reason,approvedBy:"user"}]).data.at(-1)?.value).toBe(23);});
+  it("does not accept an approval for a different result",()=>{const p=derivation(),d=p.data.at(-1);expect(()=>compile(p,[{id:d.approval.id,datumId:d.id,inputs:d.inputs,formula:d.formula,output:28,reason:d.approval.reason,approvedBy:"user"}])).toThrow(/DERIVED_DATA_APPROVAL_REQUIRED/);});
+});
+
+describe("v1.2 model, timing and state contracts",()=>{
+  const balanceFixture=()=>{
+    const p=fresh(),s=p.sequences[1];
+    s.visualModel="balance-drain";
+    s.elements=s.elements.slice(0,2);
+    s.elements[1].kind="bar";s.elements[1].scaleGroup="balance";
+    s.motionEvents=s.motionEvents.slice(0,3);
+    s.motionEvents[0].action="grow";s.motionEvents[0].relation="comparison";s.motionEvents[0].transition="split-expand";
+    s.motionEvents.slice(1).forEach((e,i)=>{e.action="update";e.relation="same-object";e.transition="state-update";e.targets=["streaming"];e.toDatumId=i===0?"fitness":"cloud";});
+    return p;
+  };
+  it("accepts sequential balance decreases using the current state",()=>expect(()=>compile(balanceFixture())).not.toThrow());
+  it("rejects a balance increase still below the original balance",()=>{
+    const p=balanceFixture(),s=p.sequences[1];
+    s.motionEvents[1].toDatumId="cloud";s.motionEvents[1].trigger={source:APPROVED_SCRIPT_FILE,sceneId:"scene-5",sourceSpan:"five for cloud storage"};
+    s.motionEvents[2].toDatumId="fitness";s.motionEvents[2].trigger={source:APPROVED_SCRIPT_FILE,sceneId:"scene-5",sourceSpan:"five apps"};
+    expect(()=>compile(p)).toThrow(/MISLEADING_BALANCE_DRAIN/);
+  });
+  it("validates balance state in transcript order rather than JSON order",()=>{const p=balanceFixture();p.sequences[1].motionEvents.reverse();expect(()=>compile(p)).not.toThrow();});
+  it.each(["data-bar","stacked-cost","balance-drain","accumulation-timeline","comparison-gap","decision-flow","process-loop","metric-reveal","typography"])("supports visual model %s",m=>expect(ModelSchema.safeParse(m).success).toBe(true));
+  it("rejects unknown visual models",()=>expect(ModelSchema.safeParse("random-spin").success).toBe(false));
+  it("rejects a hard-coded event timestamp",()=>{const e:any=fresh().sequences[0].motionEvents[0];e.atSec=2;expect(MotionEventSchema.safeParse(e).success).toBe(false);});
+  it("resolves actual WordBoundary time",()=>{const p=compile();const amount=p.sequences[1].motionEvents[0];expect(amount.atSec).toBe(resolvePhrase(original.data[1],transcript).atSec);expect(amount.timingSource).toBe("transcript.json");});
+  it("requires finance events to match the primary number highlight authority",()=>{const p=compile();expect(()=>assertFinanceHighlights(p,[{id:"stream",displayText:"$14",sceneId:"scene-4",globalStartSec:resolvePhrase(original.data[1],transcript).atSec}])).not.toThrow();});
+  it("rejects a finance reveal delayed from the primary highlight",()=>{const p=compile();expect(()=>assertFinanceHighlights(p,[{id:"stream",displayText:"$14",sceneId:"scene-4",globalStartSec:1}])).toThrow(/missing synchronized event/);});
+  it("rejects primary highlight values absent from the plotted plan",()=>expect(()=>assertFinanceHighlights(compile(),[{id:"reference",displayText:"$170",sceneId:"scene-7",globalStartSec:10}])).toThrow(/no plotted datum/));
+  it("fails when phrase is absent",()=>fail(p=>{p.sequences[0].motionEvents[0].trigger.sourceSpan="nonexistent phrase";},/REFERENCE_FIREWALL|MOTION_TIMING/));
+  it("fails when phrase is ambiguous",()=>fail(p=>{p.sequences[1].motionEvents[2].trigger.sourceSpan="five";},/resolved 2 times/));
+  it("cannot reveal a metric before it is spoken",()=>fail(p=>{p.sequences[1].motionEvents[0].trigger={source:APPROVED_SCRIPT_FILE,sceneId:"scene-3",sourceSpan:"subscription creep"};},/EARLY_NUMERIC_STATE/));
+  it("retains three stack items across three audio slices",()=>{const s=compile().sequences[1];expect(s.sceneIds).toHaveLength(3);expect(s.motionEvents.filter(e=>e.action==="stack")).toHaveLength(3);expect(s.motionEvents.filter(e=>e.action==="hide").flatMap(e=>e.targets)).not.toContain("streaming");});
+  it("rejects state mutation before reveal",()=>fail(p=>{p.sequences[0].motionEvents[0].action="focus";p.sequences[0].motionEvents[0].relation="same-object";p.sequences[0].motionEvents[0].transition="state-update";},/STATE_SEQUENCE/));
+  it("rejects unrendered/unknown targets",()=>fail(p=>{p.sequences[0].motionEvents[0].targets=["missing"];},/MODEL_NOT_COMMUNICATED/));
+  it("rejects non-contiguous narration groups",()=>fail(p=>{p.sequences[1].sceneIds=["scene-3","scene-5"];},/non-contiguous/));
+  it("rejects cross-sequence overlap",()=>fail(p=>{p.sequences[1].sceneIds.unshift("scene-2");},/overlapping/));
+  it("rejects mobile safe-zone collision",()=>fail(p=>{p.sequences[0].elements[0].box.y=1300;},/MOBILE_SAFE_AREA/));
+  it("rejects a blank entry before the first spoken event",()=>fail(p=>{p.sequences[4].elements.forEach(e=>e.initial=false);},/MODEL_ENTRY_EMPTY/));
+  it("rejects inconsistent comparison geometry",()=>fail(p=>{p.sequences[3].elements[2].box.w=700;},/MISLEADING_SCALE/));
+  it("rejects a truncated baseline scale through schema",()=>{const p:any=fresh();p.sequences[3].elements[1].baseline=15;expect(FinancePlanSchema.safeParse(p).success).toBe(false);});
+  it("rejects rewriting transcript words",()=>{const t=structuredClone(transcript);t.scenes[0].words[0].text="We";expect(()=>compileFinancePlan(fresh(),script,t,approved)).toThrow(/TRANSCRIPT_INTEGRITY/);});
+  it("rejects Whisper-derived timestamps",()=>{const t=structuredClone(transcript);t.provider="whisper";expect(()=>compileFinancePlan(fresh(),script,t,approved)).toThrow(/TRANSCRIPT/);});
+  it.each([["new-topic","crossfade"],["same-object","state-update"],["accumulation","push-stack"],["comparison","split-expand"],["major-metric","stat-punch"],["progression","directional-progression"]])("maps %s deterministically to %s",(r,t)=>expect(transitionFor(r)).toBe(t));
+  it("fails random transitions",()=>fail(p=>{p.sequences[0].motionEvents[0].transition="crossfade";},/transition\/relation/));
+});
+
+describe("v1.2 gates, intentional minimalism and baseline protection",()=>{
+  it("J diagnoses real semantic changes",()=>{const j=assessMotionSemantics(compile());expect(j.status).not.toBe("FAIL");});
+  it("J fails a functionally static major multi-beat sequence",()=>{const p=compile();p.sequences[1].motionEvents=p.sequences[1].motionEvents.slice(0,1);expect(assessMotionSemantics(p).status).toBe("FAIL");});
+  it("J does not fail explained intentional minimalism",()=>{const p=compile();p.sequences[1].motionEvents=p.sequences[1].motionEvents.slice(0,1);p.sequences[1].minimalismReason="Intentional hold to read one complex approved claim.";expect(assessMotionSemantics(p).status).not.toBe("FAIL");});
+  it("J fails an uncommunicated model",()=>{const p=compile();p.sequences[1].elements=p.sequences[1].elements.filter(e=>e.kind!=="stack-item");expect(assessMotionSemantics(p).errors.join(" ")).toMatch(/MODEL_NOT_COMMUNICATED/);});
+  const base=()=>({...Object.fromEntries(MANDATORY_GATES.map(k=>[k,{status:"PASS"}])),H_VISUAL_VARIETY:{status:"WARNING"}});
+  it("A–H legacy decisions do not change",()=>expect(productionDecision(base()).allowed).toBe(true));
+  it.each(["I_FINANCE_DATA_VIZ","J_MOTION_SEMANTICS"])("blocks %s FAIL",key=>expect(productionDecision({...base(),I_FINANCE_DATA_VIZ:{status:"PASS"},J_MOTION_SEMANTICS:{status:"PASS"},[key]:{status:"FAIL"}}).allowed).toBe(false));
+  it("requires both new gates together",()=>expect(productionDecision({...base(),I_FINANCE_DATA_VIZ:{status:"PASS"}}).allowed).toBe(false));
+  it.each(["PRODUCTION_DURATION","I_PRODUCTION_DURATION"])("retains duration gate %s",key=>expect(productionDecision({...base(),[key]:{status:"FAIL"}}).allowed).toBe(false));
+  it.each(["output/day-1","output/day-2","output/day-3","output/day-4","output/benchmarks","output/benchmarks/../../assets"])("rejects unsafe benchmark path %s",path=>expect(()=>assertBenchmarkDestination(path)).toThrow(/IMMUTABLE_BASELINE/));
+  it("permits a separate benchmark destination",()=>expect(()=>assertBenchmarkDestination("output/benchmarks/day-1-v12")).not.toThrow());
+});

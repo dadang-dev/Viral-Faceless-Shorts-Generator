@@ -57,6 +57,13 @@ class SceneSplitter:
                 # Try to extract duration from the prompt (e.g. "4 seconds")
                 # Prefer declarations such as "within 6 seconds", "cover 13 seconds"
                 # or "create a fast 14-second..." over internal pacing numbers.
+                # A provider may cap generated clips below the locked voice target.
+                # In that case the uploaded clip is safely retimed by the Fit scene action.
+                voice_target = re.search(
+                    r'\bvoice target(?: after attachment)?:\s*(\d+(?:\.\d+)?)\s+seconds?\b',
+                    video_prompt,
+                    re.IGNORECASE,
+                )
                 declared_duration = re.search(
                     r'\b(?:within|cover|duration:)\s+(\d+(?:\.\d+)?)\s+seconds?\b|'
                     r'\bcreate\s+an?\s+(?:\w+\s+){0,3}?(\d+(?:\.\d+)?)-second\b|'
@@ -64,7 +71,9 @@ class SceneSplitter:
                     video_prompt,
                     re.IGNORECASE,
                 )
-                if declared_duration:
+                if voice_target:
+                    duration = float(voice_target.group(1))
+                elif declared_duration:
                     duration = float(next(value for value in declared_duration.groups() if value))
                 else:
                     duration_matches = re.findall(r'(?<![.\d])(\d+)\s*seconds?\b', video_prompt, re.IGNORECASE)

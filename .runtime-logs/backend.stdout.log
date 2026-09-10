@@ -1,0 +1,104 @@
+INFO:     127.0.0.1:51581 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51581 - "GET /api/project HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51613 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51857 - "GET /api/reference-sheet HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51093 - "GET /api/reference-sheet-prompt HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56214 - "GET /api/image-providers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51093 - "GET /api/image-providers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61941 - "GET /api/reference-sheet HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51857 - "GET /api/reference-sheet-prompt HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59956 - "GET /api/reference-sheet/image?v=1788541989213 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55416 - "GET /api/tts/voices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51857 - "GET /api/tts/voices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56535 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51857 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59956 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:59956 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52690 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:56530 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:55402 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:54465 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50691 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50691 - "GET /api/project HTTP/1.1" 200 OK
+Parsing script for: Day 1 from C:\Users\PC\OneDrive\Desktop\VIBECODE\P1 MoneyHabit\money-habits-ALL-v4.md
+INFO:     127.0.0.1:50691 - "GET /api/day-content/1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50691 - "GET /api/prompts/1?media_type=video HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58292 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58292 - "GET /api/prompts/1?media_type=video HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50684 - "GET /api/videos/1/final?v=1788541989213 HTTP/1.1" 206 Partial Content

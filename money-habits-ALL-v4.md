@@ -314,55 +314,55 @@ texture, no photorealistic faces, no watermark, 9:16 vertical
 
 **Cảnh 1 — Hook: A raise, still broke** [1-step]
 - *Prompt ảnh:* `Two believable unbranded paycheck envelopes sit side by side in the lower half, the newer paycheck visibly larger while the same nearly empty wallet remains beside both; character between them looks confused, clean deep-navy upper headline plate reserved for renderer-added A RAISE, STILL BROKE?, bold immediate contrast.`
-- *Prompt video:* `Older paycheck lands, then a visibly larger current paycheck lands; the wallet beside both remains equally empty and the character looks from one to the other; hold the clean headline plate for the complete hook. Duration: 6.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve both paycheck envelopes, their size difference, the same nearly empty wallet, character identity and blank upper headline plate; do not generate text, add money or props, duplicate objects, change hands or morph. Animate only a soft emphasis glow moving from the older paycheck to the larger current paycheck while the character makes one puzzled eye shift between them; camera uses a restrained 2% push-in. Keep the plate unobstructed and the full composition readable for the entire hook, then hold the final frame still for 0.4 seconds. Duration: 6.4 seconds.`
 
 **Cảnh 2 — Topic: Lifestyle creep** [1-step]
 - *Prompt ảnh:* `A warm off-white lifestyle platform quietly rises under an apartment key, car key and restaurant plate while the character points toward the upward drift; wide uncluttered deep-navy headline zone reserved for renderer-added LIFESTYLE CREEP.`
-- *Prompt video:* `Apartment key, car key and restaurant plate rise together by one subtle step; character notices the platform moving and points toward the headline zone. Duration: 2.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing apartment key, car key, restaurant plate, character and blank headline zone exactly; do not create typography, new props, fingers or morphing. Lift the existing lifestyle platform upward by one small smooth step as the three objects remain anchored to it; the character makes one tiny pointing emphasis. Camera stays locked, the headline zone remains clear throughout, and the last 0.3 seconds are still. Duration: 2.4 seconds.`
 
 **Cảnh 3 — Not one big decision** [1-step]
 - *Prompt ảnh:* `One oversized dramatic purchase button remains untouched while a trail of many tiny ordinary expense tiles slips quietly around it; character watches the small tiles, clear visual contrast between one big decision and gradual change.`
-- *Prompt video:* `Camera rejects one oversized purchase button, then follows several small expense tiles quietly moving past it one at a time. Duration: 2.5 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Lock the oversized untouched purchase button, every existing small expense tile, character and composition; do not add, remove or duplicate tiles, generate text, change hands or morph. Keep the large button completely still while the existing small tiles drift a short distance around it in one quiet staggered flow; use only a subtle focus shift from the button to the trail. Hold the final frame for 0.3 seconds. Duration: 2.5 seconds.`
 
 **Cảnh 4 — Nicer apartment costs more** [1-step]
 - *Prompt ảnh:* `Character stands between a modest apartment doorway and a slightly nicer apartment doorway; one large perfectly legible rent increase tag reads exactly "+$200 / MONTH" beside the nicer key, believable moving box and lease paper, no other readable text.`
-- *Prompt video:* `Modest apartment key slides into a slightly nicer key; a stable exact "+$200 / MONTH" rent badge appears as the character gives a reasonable I-can-afford-it shrug. Duration: 6.1 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve both apartment doorways, both keys, moving box, lease paper, character and the existing exact "+$200 / MONTH" tag; keep every character and digit pixel-stable and do not generate new text, replace objects or morph. Add one restrained highlight sweep from the modest doorway toward the nicer doorway while the character makes a small reasonable shrug and glances at the existing rent tag. Camera uses a slow 2% push toward the tag, which stays visible for the full spoken amount; hold the final frame still for 0.4 seconds. Duration: 6.1 seconds.`
 
 **Cảnh 5 — Used car to new lease** [1-step]
 - *Prompt ảnh:* `A reliable ordinary used car on the left transitions toward a glossy but unbranded leased car on the right; character holds the new key while a longer monthly payment paper unrolls below, no logos or generated text.`
-- *Prompt video:* `Used-car key rotates into a new lease key, the car gains a subtle polished upgrade and the monthly payment paper lengthens beneath it. Duration: 3.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the used car, leased car, existing keys, character and already-unrolled payment paper; do not transform one car into another, add logos or text, alter hands or morph. Move one soft comparison highlight from the used-car side to the leased-car side while the character lifts the existing new key a few pixels; keep both cars simultaneously recognizable. Camera remains locked and the final 0.3 seconds are still. Duration: 3.3 seconds.`
 
 **Cảnh 6 — Appetizer and dessert** [1-step]
 - *Prompt ảnh:* `Believable restaurant table with one main plate already present; an appetizer plate and dessert arrive together as two extra expense tokens leave the wallet, character smiles but notices the accumulating cost, appetizing yet financially clear.`
-- *Prompt video:* `Main plate lands first, then appetizer and dessert pop in on separate beats; two green expense tokens slide away from the wallet. Duration: 5.5 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the main plate, existing appetizer, dessert, exactly two green expense tokens, wallet, character and table arrangement; do not spawn food, tokens, hands, text or morphing. Keep all dishes in place while the two existing expense tokens slide one after the other a short distance away from the wallet; the character's smile settles into one brief noticing glance. Use a subtle 2% pullback to reveal the full table and hold the final frame for 0.35 seconds. Duration: 5.5 seconds.`
 
 **Cảnh 7 — Small and reasonable** [1-step]
 - *Prompt ảnh:* `Three small everyday upgrade tiles—apartment key, car key and dessert plate—rest lightly in the character's open hands, each looking harmless alone; calm empathetic expression, generous spacing, no judgment.`
-- *Prompt video:* `Three small upgrade tiles appear one by one in the character's hands; each receives a reasonable nod before the camera reveals all three together. Duration: 3.5 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve exactly three existing upgrade tiles, both open hands, character identity and generous spacing; do not add or duplicate tiles, create text, change fingers or morph. Give the three tiles one gentle sequential emphasis glow while they remain anchored in the hands; the character makes one small reasonable nod after the sequence. Camera stays nearly locked and the last 0.3 seconds are still. Duration: 3.5 seconds.`
 
 **Cảnh 8 — Spending catches income** [1-step]
 - *Prompt ảnh:* `Two large clean vertical meters race upward side by side; dollar-green income meter and coral spending meter reach the same height while small upgrade objects stack under spending; one perfectly legible equation reads exactly "SPENDING ↑ = INCOME ↑"; no other text.`
-- *Prompt video:* `Income meter rises, then apartment, car and dining tiles push the spending meter up just as fast until both align; hold exact equation "SPENDING ↑ = INCOME ↑". Duration: 6.8 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, one continuous infographic shot. Preserve both existing meters, all upgrade objects and the exact equation "SPENDING ↑ = INCOME ↑"; keep letters and arrow symbols pixel-stable and do not add bars, labels, props or morph. Animate the already-filled green income and coral spending columns with a single upward traveling sheen that reaches the same height on both, then pulse the existing equation once. Camera remains locked, the equation stays readable throughout, and the final 0.4 seconds are still. Duration: 6.8 seconds.`
 
 **Cảnh 9 — Promotion becomes baseline** [1-step]
 - *Prompt ảnh:* `A promotion elevator lifts the character and paycheck upward, but a thick coral floor labeled only "NEW BASELINE" rises underneath at the same speed, leaving the same narrow breathing room above; strong vertical comparison.`
-- *Prompt video:* `Promotion arrow lifts paycheck and character; the expense floor follows upward and compresses the open breathing room back to its original narrow gap. Duration: 9.1 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the promotion elevator, character, paycheck, coral NEW BASELINE floor, label and original narrow gap; do not generate text, change geometry, add objects or morph. Move the existing elevator and floor upward together by the same restrained distance so the gap never increases; the character glances from the raised paycheck to the following baseline. Use a slow 2% vertical camera drift only, keep NEW BASELINE legible, and hold the final frame for 0.4 seconds. Duration: 9.1 seconds.`
 
 **Cảnh 10 — Income up, savings flat** [1-step]
 - *Prompt ảnh:* `Side-by-side financial bars on a clean dashboard: tall dollar-green bar labeled exactly "INCOME +20%" and short flat teal bar labeled exactly "SAVINGS: SAME"; character points at the contradiction, these are the only readable labels.`
-- *Prompt video:* `Income bar climbs to a stable exact "+20%" marker while the savings bar stays perfectly flat; camera punches toward the unchanged savings line. Duration: 4.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, one continuous infographic shot. Preserve both existing bars and the exact labels "INCOME +20%" and "SAVINGS: SAME"; keep every letter, digit and bar height stable, with no new text, ticks, objects or morphing. Run one upward green sheen across the tall income bar while the savings bar remains completely motionless; the character makes one small pointing emphasis toward savings. Use a restrained 2% push-in and hold the labels still and readable for the final 0.4 seconds. Duration: 4.7 seconds.`
 
 **Cảnh 11 — The fix is not deprivation** [1-step]
 - *Prompt ảnh:* `Character calmly sets aside a harsh red restriction sign and keeps one modest restaurant plate and apartment key; open posture communicates awareness rather than punishment, warm reassuring light.`
-- *Prompt video:* `A harsh restriction sign slides out of frame; character keeps ordinary choices visible and turns attention toward a simple question card. Duration: 2.8 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the character, existing restriction sign, restaurant plate and apartment key; do not introduce a question card, text, props, fingers or morphing. Slide only the existing restriction sign slightly backward and dim it while the character opens one hand toward the ordinary choices. Camera stays locked and the last 0.3 seconds are still. Duration: 2.8 seconds.`
 
 **Cảnh 12 — Wanted it or money was there** [1-step]
 - *Prompt ảnh:* `Character pauses between two clean paths: a heart-directed object genuinely chosen on the left and idle cash automatically flowing toward an upgrade on the right; wide deep-navy title plate reserved for renderer-added DID I WANT IT? OR JUST HAVE CASH?, strong single decision point.`
-- *Prompt video:* `Idle cash starts drifting toward an upgrade, then freezes; character redirects attention between a genuine-want path and a money-was-there path while the full question remains prominent. Duration: 7.2 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve both decision paths, heart-directed object, idle cash, upgrade, character and blank renderer title plate; do not create typography, extra money, paths, hands or morphing. Let the existing idle cash drift only a short distance toward the upgrade and freeze, then move one soft focus glow to the genuine-want path as the character pauses between them. Keep the title plate unobstructed for the full spoken question, use no cut, and hold the final frame for 0.4 seconds. Duration: 7.2 seconds.`
 
 **Cảnh 13 — Honest question catches leaks** [1-step]
 - *Prompt ảnh:* `Large magnifying glass scans a simple spending pipe and reveals several tiny coral leaks before they reach a budgeting-app phone in the background; character closes one leak with a small teal question-mark patch, calm satisfying finish.`
-- *Prompt video:* `Magnifying glass finds several small spending leaks; one honest question marker seals them in sequence before the budgeting phone even activates; end on the relieved character. Duration: 5.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the magnifying glass, spending pipe, every existing coral leak, teal question-mark patch, background phone and character; do not add or erase leaks, generate text, change hands or morph. Sweep the magnifying glass slowly across the existing leaks, then let the existing teal patch settle over one leak while the phone remains dim; the character gives one relieved exhale. Use a restrained 2% push-in and hold the final frame for 0.4 seconds. Duration: 5.7 seconds.`
 
 ---
 
@@ -372,55 +372,55 @@ texture, no photorealistic faces, no watermark, 9:16 vertical
 
 **Cảnh 1 — Hook: Girl math** [1-step]
 - *Prompt ảnh:* `Playful cash envelope and one under-twenty purchase tag float beside the character's amused expression while a hidden coral cost counter continues rising below; clean deep-navy headline plate reserved for renderer-added GIRL MATH?, lively but credible.`
-- *Prompt video:* `Cash envelope makes one purchase appear to vanish, then an under-twenty tag slips past while the hidden cost counter keeps rising; character gives a knowing look toward the title. Duration: 6.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the cash envelope, existing under-twenty purchase tag, coral cost counter, character and blank headline plate; do not generate text or digits, add purchases or props, alter hands or morph. Slide the existing tag partway behind the envelope while a restrained coral glow travels upward along the already-visible counter; the character gives one knowing glance toward the plate. Keep the headline area clear throughout and hold the final frame still for 0.4 seconds. Duration: 6.4 seconds.`
 
 **Cảnh 2 — Funny and quietly expensive** [1-step]
 - *Prompt ảnh:* `A playful joke bubble casts a long coral dollar shadow behind the smiling character; clean high-contrast headline plate reserved for renderer-added QUIETLY EXPENSIVE, one clear visual twist.`
-- *Prompt video:* `Playful bubble bounces once, then its dollar-shaped shadow grows much larger and the character's smile shifts to surprised recognition. Duration: 4.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the playful bubble, existing dollar-shaped shadow, character identity and blank headline plate; do not add text, currency symbols, limbs or morphing. Give the existing bubble one tiny bounce while its already-drawn shadow stretches subtly across the background; the character's eyes widen once. Camera remains locked, the headline plate stays clear, and the final 0.35 seconds are still. Duration: 4.3 seconds.`
 
 **Cảnh 3 — True for almost everyone** [1-step]
 - *Prompt ảnh:* `A diverse row of ordinary hands holds small receipts and everyday purchases around one shared illustrated brain, character centered and inclusive, no gender stereotypes, clear universal pattern.`
-- *Prompt video:* `Different everyday purchases enter from several hands and connect to the same central brain outline, showing one shared habit. Duration: 5 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve every existing hand, receipt, purchase and the central brain outline exactly; do not add hands or fingers, duplicate objects, generate text or morph. Keep all objects anchored while one soft connection pulse travels from the surrounding purchases into the shared brain; use a subtle 2% push toward the center. Hold the final frame for 0.35 seconds. Duration: 5 seconds.`
 
 **Cảnh 4 — Brain rounds toward zero** [1-step]
 - *Prompt ảnh:* `Inside a clean illustrated brain outline, several small price tags shrink toward a large zero-shaped hole while the character watches the mental shortcut happen; lavender and coral focus accents.`
-- *Prompt video:* `Small price tags enter the brain outline, visually round downward and shrink toward zero one by one. Duration: 4.5 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the brain outline, every existing price tag, zero-shaped hole and character; do not add, remove or rewrite prices, create text, duplicate objects or morph. Move the existing tags a few pixels toward the zero-shaped hole in one restrained staggered drift while their coral glow dims; the character tracks the movement with one eye shift. Camera stays locked and the last 0.3 seconds are still. Duration: 4.5 seconds.`
 
 **Cảnh 5 — Seven-dollar coffee** [1-step]
 - *Prompt ảnh:* `One believable condensation-covered iced coffee dominates the foreground beside a payment terminal; a single large perfectly legible price badge reads exactly "$7" while the character casually waves it off; "$7" is the only text.`
-- *Prompt video:* `Coffee lands, terminal flashes stable exact "$7", character casually dismisses it and one green bill shadow slips away. Duration: 3.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the foreground coffee, condensation, terminal, character and exact "$7" badge; keep the digit pixel-stable and do not add cups, bills, text, fingers or morphing. The terminal emits one payment pulse, condensation glints once and the existing green dollar shadow slides a short distance away as the character gives one casual dismissive hand settle. Use a restrained 2% push-in and hold the final frame for 0.3 seconds. Duration: 3.7 seconds.`
 
 **Cảnh 6 — Twelve-dollar phone case** [1-step]
 - *Prompt ảnh:* `One unbranded phone case snaps around a believable smartphone beside a single large perfectly legible "$12" receipt; character holds an accidental-purchase shrug, no other readable text.`
-- *Prompt video:* `Phone case clicks into place, exact "$12" receipt slides out and character gives an it-was-an-accident shrug. Duration: 4.9 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the phone, already-fitted case, character and exact "$12" receipt; keep the digits unchanged and do not generate text, add cases, phones, hands or morphing. Give the fitted case one small settling click and slide the existing receipt outward only a few pixels while the character makes one restrained shrug. Camera remains locked and the exact price stays readable through a 0.35-second final hold. Duration: 4.9 seconds.`
 
 **Cảnh 7 — Small amounts get written off** [1-step]
 - *Prompt ảnh:* `Several small receipts are mentally erased by a wide off-white brush while their green dollar shadows remain visible underneath; character looks overwhelmed by the effort of checking them, clean single metaphor.`
-- *Prompt video:* `Small receipts stack, an eraser sweeps their labels away, but their dollar shadows remain and quietly combine. Duration: 5.5 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve all existing receipts, the off-white brush, green dollar shadows and character; do not create or erase actual typography, add receipts, money or hands, and do not morph. Move the existing brush once across the receipt faces while the dollar shadows beneath them drift together slightly; keep receipt count and geometry unchanged. Use a subtle 2% push toward the shadows and hold the final frame for 0.35 seconds. Duration: 5.5 seconds.`
 
 **Cảnh 8 — Invisible swipes become hundreds** [1-step]
 - *Prompt ảnh:* `Repeated payment-card swipes flow into a sharply falling account meter; one large perfectly legible equation reads exactly "$20 SWIPES → $300–$400 / MONTH"; character reacts to the monthly total, no other text.`
-- *Prompt video:* `Several exact "$20" swipe badges pulse rapidly, drain the balance meter and merge into a stable exact "$300–$400 / MONTH" total. Duration: 8 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, one continuous infographic shot. Preserve every existing card-swipe mark, account meter and the exact equation "$20 SWIPES → $300–$400 / MONTH"; keep all digits, dollar signs and dash pixel-stable and do not generate text, add badges, duplicate cards or morph. Send several small payment pulses along the already-drawn swipe path while the existing balance meter glow moves downward; pulse the monthly equation once without changing it. Camera stays locked, the equation remains readable throughout, and the final 0.4 seconds are still. Duration: 8 seconds.`
 
 **Cảnh 9 — The joke is not the problem** [1-step]
 - *Prompt ảnh:* `Character gently holds a harmless playful joke bubble in one hand while keeping it clearly separate from a payment card in the other; relaxed nonjudgmental expression, generous negative space.`
-- *Prompt video:* `Character smiles at the joke bubble, then calmly places it beside—not on top of—the payment card. Duration: 2.2 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the character, joke bubble, payment card, both hands and their clear separation; do not add text, props, fingers or morphing. The character makes one small amused eye shift from the bubble to the card while both objects remain anchored and separate. Camera stays locked and the final 0.3 seconds are still. Duration: 2.2 seconds.`
 
 **Cảnh 10 — Joke becomes a buying system** [1-step]
 - *Prompt ảnh:* `The playful bubble has transformed into a repeating checkout conveyor that automatically sends coffee, phone case and small receipts toward one green payment card; character reaches in to stop the loop.`
-- *Prompt video:* `Joke bubble morphs into a checkout decision loop; three ordinary purchases repeat until the character stops the conveyor with one hand. Duration: 4.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the already-formed checkout conveyor, exactly three existing purchase types, payment card, character and stopping hand; do not transform the bubble, add purchases, fingers or text, duplicate objects or morph. Move the existing conveyor a short distance for one partial cycle, then stop it cleanly against the character's stationary hand; all three purchase objects keep their shape and count. Camera remains locked and the last 0.35 seconds are still. Duration: 4.7 seconds.`
 
 **Cảnh 11 — Track it for seven days** [1-step]
 - *Prompt ảnh:* `Simple notebook open to exactly seven clean day columns with small coffee, case and receipt icons recorded once each; character writes calmly, deep-navy headline plate reserved for renderer-added TRACK IT FOR 7 DAYS.`
-- *Prompt video:* `Seven day columns appear; character records each small purchase as it happens while the complete seven-day instruction remains prominent. Duration: 6.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve exactly seven existing notebook columns, every recorded icon, character, writing hand and blank headline plate; do not add days, entries, text, fingers or morphing. Move the pen through one short natural writing stroke in the current column while a soft left-to-right highlight passes across all seven columns; keep every icon fixed. The headline plate remains unobstructed for the full instruction, camera stays nearly locked, and the final 0.4 seconds are still. Duration: 6.7 seconds.`
 
 **Cảnh 12 — See the real number** [1-step]
 - *Prompt ảnh:* `Notebook total is revealed under a warm spotlight while a red guilt stamp remains crossed out and distant; character studies the number with curiosity rather than shame.`
-- *Prompt video:* `Recorded purchases combine into one total; a guilt symbol fades away and the character simply looks at the real number. Duration: 3.8 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the notebook total, crossed-out guilt stamp, character and all existing entries; do not invent a number, generate text, remove entries, change hands or morph. Brighten one warm spotlight over the existing total while the already-crossed guilt stamp dims slightly; the character makes one calm eye shift toward the number. Camera uses a restrained 2% push-in and holds the final frame for 0.35 seconds. Duration: 3.8 seconds.`
 
 **Cảnh 13 — Sunday total reveal** [1-step]
 - *Prompt ảnh:* `All supposedly free purchase tokens from the week converge into one surprisingly large Sunday pile of receipts and green dollar shadows; character looks shocked by the combined total, warm amber final spotlight, no invented amount.`
-- *Prompt video:* `Small free-purchase tokens from all seven days fly together and settle into one large Sunday total; hold on the character's honest surprised reaction. Duration: 6.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the complete existing Sunday receipt pile, all weekly purchase tokens, green dollar shadows and character; do not add, remove or duplicate tokens, invent an amount, generate text or morph. Let the outer existing tokens drift only a few pixels inward toward the already-formed pile while the character's expression changes once to honest surprise; add a slow 2% pullback revealing the full accumulation. Hold the final frame still for 0.4 seconds. Duration: 6.3 seconds.`
 
 ---
 
@@ -430,55 +430,55 @@ texture, no photorealistic faces, no watermark, 9:16 vertical
 
 **Cảnh 1 — Hook: Wiring, not willpower** [1-step]
 - *Prompt ảnh:* `Character faces camera beside a clear illustrated brain circuit; a stress cloud activates one pathway toward a shopping bag while a broken willpower gauge sits irrelevant in the background; deep-navy plate reserved for renderer-added NOT WILLPOWER — IT’S WIRING.`
-- *Prompt video:* `Willpower gauge drops out of focus; brain circuit lights from stress cloud to shopping bag and character points to the wiring path while the complete hook remains visible. Duration: 5.1 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the character, illustrated brain circuit, stress cloud, shopping bag, broken willpower gauge and blank headline plate; do not generate text, add pathways or props, change fingers or morph. Send one restrained light pulse along the existing circuit from stress cloud to shopping bag while the willpower gauge stays dim; the character makes one tiny pointing emphasis. Keep the headline plate clear for the complete hook, use a slow 2% push-in, and hold the final frame for 0.4 seconds. Duration: 5.1 seconds.`
 
 **Cảnh 2 — Stress creates ten-minute relief** [1-step]
 - *Prompt ảnh:* `Three recognizable trigger icons—stress cloud, boredom clock and exhausted low battery—feed into one online checkout button; a bright relief ring beside it reads exactly "10 MINUTES" while character reaches toward the temporary glow.`
-- *Prompt video:* `Stress, boredom and exhaustion activate in sequence; purchase button produces a relief glow and an exact "10 MINUTES" ring begins draining immediately. Duration: 8.5 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve exactly three trigger icons, the checkout button, relief ring, character and exact "10 MINUTES" label; keep all letters and digits pixel-stable and do not add icons, text, fingers or morphing. Pulse the three existing trigger icons once in sequence, then let the already-visible relief ring glow briefly and begin one smooth partial drain; the reaching hand stops short of the button. Camera remains locked, the time label stays readable throughout, and the final 0.4 seconds are still. Duration: 8.5 seconds.`
 
 **Cảnh 3 — Late order or coffee run** [1-step]
 - *Prompt ảnh:* `Split but cohesive evening scene: late-night phone order and believable post-meeting iced coffee sit on one continuous desk; tired character reaches for both forms of quick comfort, warm empathetic lighting, no text.`
-- *Prompt video:* `Hard meeting ends; character first taps a late-night order, then reaches for a coffee as the same short relief glow connects both choices. Duration: 6.2 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the cohesive evening desk, existing phone order, iced coffee, tired character and both hands; do not add meeting elements, UI text, objects, fingers or morphing. Keep the phone and coffee anchored while one soft comfort glow travels once between them; the character exhales and shifts their gaze from the phone toward the coffee without completing either purchase. Camera uses a restrained 2% push-in and the last 0.35 seconds are still. Duration: 6.2 seconds.`
 
 **Cảnh 4 — Not weakness, biology** [1-step]
 - *Prompt ảnh:* `Character stands calmly beside a glowing brain reward pathway while a harsh weakness stamp is crossed out behind them; clean headline plate reserved for renderer-added NOT WEAKNESS — IT’S BIOLOGY.`
-- *Prompt video:* `Weakness stamp slides away; brain reward pathway pulses once and character relaxes as the complete biology message holds. Duration: 4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the crossed-out weakness stamp, brain reward pathway, character and blank headline plate; do not generate typography, add brain paths or props, alter hands or morph. Dim the existing crossed-out stamp while one gentle pulse travels through the reward pathway; the character's shoulders relax slightly. Keep the headline plate completely unobstructed for the spoken topic, camera locked, and hold the final frame for 0.35 seconds. Duration: 4 seconds.`
 
 **Cảnh 5 — Relief ends, bill remains** [1-step]
 - *Prompt ảnh:* `A bright relief meter has already emptied while one long paper bill remains sharply visible on the table; exact comparison labels read "RELIEF: 10 MIN" and "BILL: STILL HERE"; character notices the mismatch.`
-- *Prompt video:* `Relief meter drains to zero in one quick sweep while the bill stays fixed and fully visible; hold the two exact comparison labels. Duration: 3.9 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing empty relief meter, long bill, character and exact labels "RELIEF: 10 MIN" and "BILL: STILL HERE"; keep every letter and digit pixel-stable and do not generate text, extend the bill, add props or morph. Let the last trace of glow fade from the already-empty meter while the bill remains perfectly fixed and sharp; the character makes one small noticing glance toward it. Camera stays locked and both labels remain readable through the final 0.4-second hold. Duration: 3.9 seconds.`
 
 **Cảnh 6 — Paying a mood premium** [1-step]
 - *Prompt ảnh:* `Green dollar tokens travel from a teal mood gauge directly into a coral checkout terminal while the actual purchased object remains small; character watches the hidden premium grow, clear visual hierarchy.`
-- *Prompt video:* `Mood gauge dips; extra dollar tokens leave it for checkout and form a larger cost shadow than the small item itself. Duration: 4.1 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the teal mood gauge, coral checkout terminal, small purchased object, all existing green dollar tokens, character and cost shadow; do not add money, labels, items, hands or morphing. Move the existing dollar tokens a short distance along their already-drawn path toward checkout while the cost shadow darkens slightly; keep object count and layout unchanged. Use a restrained 2% push toward the shadow and hold the final frame for 0.35 seconds. Duration: 4.1 seconds.`
 
 **Cảnh 7 — Package creates more stress** [1-step]
 - *Prompt ảnh:* `Delivered package sits open in foreground, long bill rises behind it and a larger stress cloud returns over the character; a small faded ten-minute comfort glow is trapped inside the box, strong foreground-to-background story.`
-- *Prompt video:* `Package arrives with a brief glow; bill unfolds, stress cloud grows larger and the comfort glow inside the box fades. Duration: 7.9 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the already-open package, existing long bill, stress cloud, trapped comfort glow and character; do not make the package arrive, add items or text, extend paper, change hands or morph. Fade the existing comfort glow inside the box as the already-drawn stress cloud expands only a few percent; the bill remains fixed and sharply visible while the character exhales. Use a slow 2% pullback to reveal the full consequence and hold the final frame for 0.4 seconds. Duration: 7.9 seconds.`
 
 **Cảnh 8 — Relief and guilt cycle** [1-step]
 - *Prompt ảnh:* `One finite circular path connects stress cloud, checkout button, package, bill and guilt cloud; character steps outside the loop and observes it clearly, no infinite tunnel or clutter.`
-- *Prompt video:* `Stress, checkout, package, bill and guilt activate around one complete loop; character pauses the cycle and steps outside it. Duration: 4.9 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the finite circular path, exactly five existing stages—stress, checkout, package, bill and guilt—and the character already outside the loop; do not add stages, labels, paths, limbs or morphing. Send one light pulse around the existing loop and stop it cleanly at the character's observation point; the character makes one calm backward settling motion without changing position. Camera remains locked and the final 0.4 seconds are still. Duration: 4.9 seconds.`
 
 **Cảnh 9 — Ask before checkout** [1-step]
 - *Prompt ảnh:* `Thumb hovers above a believable blank checkout button while character pauses and turns inward; clean deep-navy headline plate reserved for renderer-added WHAT AM I FEELING?, shopping cart frozen below.`
-- *Prompt video:* `Checkout glow pulses, thumb stops before tapping and the full feeling question takes visual priority while all shopping motion freezes. Duration: 6.1 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the hovering thumb, blank checkout button, character, frozen cart and blank deep-navy headline plate; do not generate the question text, add UI, fingers, products or morphing. Pulse the existing checkout glow once, then let it dim as the thumb makes one tiny stopping motion above the button; all other shopping elements remain still. Keep the headline plate unobstructed for the full spoken question, camera locked, and hold the final frame for 0.45 seconds. Duration: 6.1 seconds.`
 
 **Cảnh 10 — Not “do I need this?”** [1-step]
 - *Prompt ảnh:* `Two question cards sit side by side: a cold gray crossed-out shopping-cart question on the left and a warm brain-and-heart question on the right; character deliberately chooses the feeling card, no generated sentences.`
-- *Prompt video:* `Need-this card appears then dims; character slides the feeling card forward and the shopping cart remains paused. Duration: 2.2 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve both existing question cards, the crossed-out cart symbol, brain-and-heart symbol, character and paused cart; do not generate sentences, add cards, hands or morphing. Dim the cold gray card slightly while the warm feeling card moves forward only a few pixels; the character's hand remains anatomically stable. Camera stays locked and the last 0.3 seconds are still. Duration: 2.2 seconds.`
 
 **Cảnh 11 — Name tired, bored, anxious** [1-step]
 - *Prompt ảnh:* `Exactly three calm emotion labels—"TIRED", "BORED", "ANXIOUS"—appear as separate colored tabs beside the character; one urge meter falls from high to low while checkout stays untouched; no other text.`
-- *Prompt video:* `TIRED, BORED and ANXIOUS tabs appear one at a time; with each named feeling the urge meter falls until the checkout glow turns off. Duration: 9.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, one continuous infographic shot. Preserve exactly three existing tabs labeled "TIRED", "BORED" and "ANXIOUS", the urge meter, untouched checkout and character; keep every letter pixel-stable and do not add labels, tabs, fingers or morph. Pulse the three tabs once in spoken order while one downward glow travels along the existing urge meter; the checkout glow fades without the button being pressed. Camera stays locked, all labels remain visible throughout, and the final 0.45 seconds are still. Duration: 9.3 seconds.`
 
 **Cảnh 12 — You do not need more discipline** [1-step]
 - *Prompt ảnh:* `Character gently puts down a heavy discipline weight and stands naturally, relieved; one small question-mark card remains light in their other hand, reassuring off-white space.`
-- *Prompt video:* `Heavy discipline weight lowers out of frame; character keeps only the small question card and breathes easier. Duration: 2.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the character, heavy discipline weight, small question-mark card, hands and open off-white space; do not add text, props, fingers or morphing. Lower the existing weight only a few pixels as the character's shoulders rise and fall with one relieved breath; keep the question card fixed and visible. Camera remains locked and the final 0.3 seconds are still. Duration: 2.4 seconds.`
 
 **Cảnh 13 — One honest question** [1-step]
 - *Prompt ảnh:* `A single warm amber question mark stands between the character's hand and a dim checkout button; stress cloud recedes and the character walks away calmly, clean closing composition.`
-- *Prompt video:* `Question mark appears before checkout, button stops glowing and stress cloud recedes; finish on the character's calm confident nod. Duration: 3.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing amber question mark, dim checkout button, stress cloud, character and hand; do not generate text, add symbols, fingers or morphing. Pulse the existing question mark once while the already-dim checkout stays untouched and the stress cloud recedes slightly; the character finishes with one calm nod. Use a restrained 2% push-in and hold the final frame for 0.35 seconds. Duration: 3.4 seconds.`
 
 ---
 
@@ -488,55 +488,55 @@ texture, no photorealistic faces, no watermark, 9:16 vertical
 
 **Cảnh 1 — Hook: Guess your subscriptions** [1-step]
 - *Prompt ảnh:* `A grid of many generic glossy app tiles hides behind the character's guessing hand while a closed bank statement waits below; clean deep-navy headline plate reserved for renderer-added HOW MANY SUBSCRIPTIONS?, strong curiosity gap, no logos.`
-- *Prompt video:* `Generic app tiles begin appearing faster than the character can count; hand pauses on a guess while the complete challenge headline stays prominent. Duration: 5.2 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve every existing generic app tile, guessing hand, closed bank statement, character and blank headline plate; do not add or duplicate tiles, generate logos or text, change fingers or morph. Give the existing tile grid one restrained staggered shimmer while the guessing hand makes a tiny counting motion and pauses; all tile positions remain fixed. Keep the headline plate clear for the complete challenge, camera nearly locked, and hold the final frame for 0.4 seconds. Duration: 5.2 seconds.`
 
 **Cảnh 2 — Check the bank statement** [1-step]
 - *Prompt ảnh:* `Character opens a believable bank statement under a magnifying glass; recurring lines glow in alternating teal and coral while app tiles reflect faintly above, no readable account data or brand names.`
-- *Prompt video:* `Closed statement slides open, magnifying glass moves across recurring rows and the character's expression changes from confident to curious. Duration: 2.9 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the already-open bank statement, recurring rows, magnifying glass, reflected app tiles, character and hands; do not generate account text, add rows or apps, change fingers or morph. Sweep the existing magnifying glass a short distance across the recurring rows while their teal-coral glow strengthens once; the character makes one curious eye shift. Camera stays locked and the final 0.3 seconds are still. Duration: 2.9 seconds.`
 
 **Cảnh 3 — Guess three or four** [1-step]
 - *Prompt ảnh:* `Exactly four visible generic subscription tiles sit inside a small guess bubble beside one streaming play symbol; one large perfectly legible label reads exactly "GUESS: 3–4"; no other text.`
-- *Prompt video:* `Three tiles appear, then a fourth; a stable exact "GUESS: 3–4" badge settles beside them. Duration: 4.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, one continuous infographic shot. Preserve exactly four visible subscription tiles, the play symbol, character and exact label "GUESS: 3–4"; keep every character and tile count stable and do not add, hide or duplicate tiles, generate text or morph. Emphasize the four existing tiles one by one with a gentle glow, then pulse the existing GUESS badge once; no objects enter or leave. Camera remains locked and the label stays readable through the final 0.4-second hold. Duration: 4.3 seconds.`
 
 **Cảnh 4 — Actual eight to twelve** [1-step]
 - *Prompt ảnh:* `A much larger stack of exactly ten distinct generic app tiles surrounds cloud storage, expired trial timer and fitness dumbbell symbols; one large perfectly legible comparison reads exactly "ACTUAL: 8–12"; character reacts to the doubled count.`
-- *Prompt video:* `Four guessed tiles pull back to reveal ten total tiles including cloud, trial and fitness symbols; hold stable exact "ACTUAL: 8–12" comparison. Duration: 9.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, one continuous infographic shot. Preserve exactly ten existing generic app tiles, cloud, trial and fitness symbols, character and exact label "ACTUAL: 8–12"; keep the tile count, all digits and dash pixel-stable and do not add, reveal, hide or duplicate tiles, generate logos or morph. Run one ordered emphasis glow across the existing ten-tile stack, then let the character make a single surprised eye shift toward the comparison label. Use a slow 2% pullback without cropping any tile; keep the label visible throughout and hold the final frame for 0.45 seconds. Duration: 9.3 seconds.`
 
 **Cảnh 5 — Forgettable by design** [1-step]
 - *Prompt ảnh:* `Subscription tiles fade into a dark phone background while their bright recurring-charge arrows remain active and pull green dollar tokens away; clean headline plate reserved for renderer-added FORGETTABLE BY DESIGN.`
-- *Prompt video:* `App tiles dim until nearly invisible but recurring-charge arrows keep pulsing; character notices the active money flow while the full topic stays visible. Duration: 5.8 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve all existing faded app tiles, recurring-charge arrows, green dollar tokens, character and blank headline plate; do not add apps, arrows, money, logos, text or morphing. Dim the tiles slightly while one payment pulse travels along the existing arrows; the character notices the moving money with one eye shift. Keep the headline plate unobstructed for the full topic, camera locked, and hold the final frame for 0.4 seconds. Duration: 5.8 seconds.`
 
 **Cảnh 6 — Permanent income for someone else** [1-step]
 - *Prompt ảnh:* `A monthly recurring arrow moves green dollar tokens from the character's account jar into a distant company building every calendar flip; the ignored app tile remains faded between them, no logos.`
-- *Prompt video:* `Calendar flips once; recurring arrow automatically transfers money from account jar to company building while the character looks elsewhere. Duration: 5.6 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the calendar, recurring arrow, account jar, company building, faded app tile, all existing dollar tokens and character; do not generate text, add money or buildings, change counts or morph. Move one existing token a short distance along the recurring arrow toward the company while the calendar page makes a small settling flex; the character remains turned away. Camera stays nearly locked and the final 0.35 seconds are still. Duration: 5.6 seconds.`
 
 **Cảnh 7 — Companies bank on friction** [1-step]
 - *Prompt ảnh:* `One small cancel button sits behind a deliberately awkward maze of menus while coins continue flowing easily in the opposite direction; character sees the imbalance, bold asymmetrical composition.`
-- *Prompt video:* `Cursor enters the cancellation maze and slows; meanwhile coins travel through a direct fast lane toward the company. Duration: 2.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the cancellation maze, existing cursor, cancel button, direct coin lane, all coins and character; do not add menus, money, text, hands or morphing. Move the cursor only one short turn into the maze while one existing coin glides farther along the direct lane, creating a clear speed contrast. Camera remains locked and the final 0.3 seconds are still. Duration: 2.7 seconds.`
 
 **Cảnh 8 — Five-minute cancellation maze** [1-step]
 - *Prompt ảnh:* `Character navigates a short believable menu maze toward one cancel button while a large exact timer reads "5 MINUTES"; busy Tuesday calendar and work bag add pressure, no app brand.`
-- *Prompt video:* `Exact five-minute timer starts, cursor crosses several menu turns, then pauses as work notifications and Tuesday calendar crowd in. Duration: 9 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing short menu maze, cursor, cancel button, work bag, Tuesday calendar, character and exact "5 MINUTES" timer; keep all letters and digits stable and do not generate notifications, menus, text, fingers or morph. Move the cursor slowly through one existing bend and stop while a soft pressure glow rises around the work bag and calendar; the timer face remains unchanged and fully legible. Use a restrained 2% push toward the blocked cursor and hold the final frame for 0.45 seconds. Duration: 9 seconds.`
 
 **Cảnh 9 — Another month gets charged** [1-step]
 - *Prompt ảnh:* `Character postpones the cancel task; calendar flips forward one month and a single bright recurring arrow charges again, one perfectly legible badge reads exactly "+1 MONTH".`
-- *Prompt video:* `Cursor backs away, calendar flips and the recurring charge fires again; stable exact "+1 MONTH" badge appears. Duration: 3.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the postponed cancel task, cursor, calendar, recurring arrow, character and exact "+1 MONTH" badge; keep every symbol and digit pixel-stable and do not add text, charges, money, hands or morph. Move the existing cursor a few pixels away from cancel while the already-drawn recurring arrow pulses once; give the calendar page one slight flex without changing the month label. Camera stays locked and the badge remains readable through the final 0.35-second hold. Duration: 3.7 seconds.`
 
 **Cảnh 10 — Monthly ten-second review** [1-step]
 - *Prompt ảnh:* `One calendar day is circled beside an open statement; magnifying glass rests over recurring rows and a simple timer shows exactly "10 SEC EACH"; deep-navy headline plate reserved for renderer-added ONCE A MONTH — JUST LOOK.`
-- *Prompt video:* `Monthly calendar marker appears, statement opens and magnifier pauses ten seconds over each recurring row while the complete habit remains prominent. Duration: 7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the circled calendar day, already-open statement, recurring rows, magnifying glass, character, exact "10 SEC EACH" timer and blank headline plate; do not generate text, add rows, change digits, hands or morph. Sweep the magnifying glass slowly over two existing recurring rows and stop while the circled day pulses once; keep the timer unchanged rather than counting down. The headline plate remains unobstructed for the full habit, camera locked, and the final 0.4 seconds are still. Duration: 7 seconds.`
 
 **Cảnh 11 — See it, do not cancel everything** [1-step]
 - *Prompt ảnh:* `Statement remains fully visible under a magnifying glass while a dramatic delete-all button is crossed out and pushed far into the background; character simply observes, calm teal light.`
-- *Prompt video:* `Delete-all symbol fades away; character scans the statement without tapping anything and marks only awareness. Duration: 3.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the statement, magnifying glass, crossed-out delete-all button, character and hands; do not generate account text, add marks or rows, tap controls or morph. Dim the already-crossed delete-all symbol slightly while the magnifying glass moves a short distance across the existing statement; the character simply follows it with one calm eye shift. Camera remains locked and the last 0.3 seconds are still. Duration: 3.3 seconds.`
 
 **Cảnh 12 — No need to be extreme** [1-step]
 - *Prompt ảnh:* `Character sets aside an oversized panic alarm and holds an ordinary monthly reminder card instead; balanced reassuring posture, subscriptions visible but organized.`
-- *Prompt video:* `Panic alarm shrinks and exits; simple monthly reminder remains in the character's hand. Duration: 2.8 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the oversized panic alarm, monthly reminder card, subscriptions, character and both hands; do not remove objects, generate text, add fingers or morph. Push the existing panic alarm slightly backward and dim it while the reminder card receives one warm emphasis glow; the character's posture relaxes. Camera stays locked and the final 0.3 seconds are still. Duration: 2.8 seconds.`
 
 **Cảnh 13 — Actually look** [1-step]
 - *Prompt ảnh:* `Character looks directly through a large magnifying glass at one clear recurring statement row; faded app tiles become visible again under a warm spotlight, decisive calm close.`
-- *Prompt video:* `Magnifying glass brings the recurring charge into sharp focus; hidden tile becomes visible and character finishes with a confident nod. Duration: 2.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the magnifying glass, recurring statement row, all existing faded app tiles, character and hands; do not reveal new tiles, generate text or logos, add fingers or morph. Use one gentle rack-focus from the faded tiles to the existing recurring row as the character gives a small confident nod; all objects remain fixed. Camera stays locked and the final 0.3 seconds are still. Duration: 2.4 seconds.`
 
 ---
 
@@ -546,51 +546,51 @@ texture, no photorealistic faces, no watermark, 9:16 vertical
 
 **Cảnh 1 — Hook: Scarcity mindset** [1-step]
 - *Prompt ảnh:* `A small savings coin approaches a piggy bank but a protective illustrated brain shield blocks it; calculator and math symbols sit dim and irrelevant behind the character; clean headline plate reserved for renderer-added SCARCITY MINDSET.`
-- *Prompt video:* `Calculator fades, savings coin approaches piggy bank and brain shield blocks it; character recognizes the protective reaction while the complete scarcity topic holds. Duration: 7.2 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the savings coin, piggy bank, protective brain shield, dim calculator, character and blank headline plate; do not generate text, add coins or props, change hands or morph. Move the existing coin a few pixels toward the piggy bank until the shield gives one gentle warning pulse; the character makes one recognizing eye shift while the calculator stays dim. Keep the headline plate unobstructed for the complete scarcity topic, camera nearly locked, and hold the final frame for 0.4 seconds. Duration: 7.2 seconds.`
 
 **Cảnh 2 — Past money stress stays active** [1-step]
 - *Prompt ảnh:* `A continuous timeline connects an earlier stressful college desk with overdue-looking generic bills to the present character guarding each dollar; one amber thread carries the old alert into the current brain, empathetic composition.`
-- *Prompt video:* `Camera travels from past money-stress desk along one amber memory thread into the present brain; each current dollar triggers the old alert. Duration: 10.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the past college desk, generic bills, present character, current dollars, brain and single amber memory thread; do not generate bill text, add money, duplicate people, change hands or morph. Send one slow amber light pulse from the past desk along the existing thread into the present brain, then let the existing alert glow once as the character holds the current dollars closer. Use a restrained 3% camera drift following the thread without changing composition and hold the final frame for 0.45 seconds. Generation duration: 10 seconds maximum. Voice target after attachment: 10.3 seconds; use the tool's Fit scene action for the safe 3% retime.`
 
 **Cảnh 3 — Saving feels unsafe** [1-step]
 - *Prompt ảnh:* `Character reaches toward a savings jar while the brain shield flashes a warning even though the jar is secure; clean deep-navy headline plate reserved for renderer-added SAVING FEELS UNSAFE, warm nonjudgmental expression.`
-- *Prompt video:* `Savings jar glows safely, but brain shield still raises an alert; character pauses and names the feeling while the full title remains visible. Duration: 3.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the secure savings jar, warning brain shield, character, reaching hand and blank headline plate; do not generate typography, add money, fingers or props, and do not morph. Let the jar emit one calm teal glow while the existing shield answers with one restrained amber pulse; the character's hand pauses in place. Keep the title plate clear for the full spoken topic, camera locked, and hold the final frame for 0.35 seconds. Duration: 3.7 seconds.`
 
 **Cảnh 4 — “Just spend less” misses the problem** [1-step]
 - *Prompt ảnh:* `A simplistic advice card with exact text "JUST SPEND LESS" slides over the character without reaching a deeper visible fear layer beneath the floor; crossed connection line shows why the advice misses.`
-- *Prompt video:* `JUST SPEND LESS card sweeps across the surface and exits; camera tilts down to reveal the untouched fear layer below. Duration: 4.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing advice card with exact text "JUST SPEND LESS", character, crossed connection line and already-visible fear layer below; keep every letter pixel-stable and do not add text, remove the card, create objects or morph. Slide the existing advice card only a few pixels across the surface while a soft focus shift moves down to the fear layer; keep both visible in the same composition. Camera uses only a restrained 2% downward drift and holds the final frame for 0.35 seconds. Duration: 4.4 seconds.`
 
 **Cảnh 5 — Fear underneath spending** [1-step]
 - *Prompt ảnh:* `Character clearly knows a savings jar is good, but a protective fear hand keeps cash close to the body; brain and heart indicators disagree beside the jar, no shame symbols.`
-- *Prompt video:* `Savings jar receives a logical green check, then the emotional safety gauge turns amber and pulls the cash back; character observes both signals. Duration: 8.1 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the savings jar, protective fear hand, existing cash, brain and heart indicators, character and all limbs; do not add check marks, gauges, money, fingers, text or morphing. Pulse the existing logical indicator green once, then pulse the emotional indicator amber while the protective hand tightens only slightly around the same cash; no money changes location. Use a slow 2% push toward the conflicting signals and hold the final frame still for 0.4 seconds. Duration: 8.1 seconds.`
 
 **Cảnh 6 — Checking account feels like survival** [1-step]
 - *Prompt ảnh:* `Two believable account jars sit side by side: checking cash held close inside a protective shelter and savings jar only one short transfer arrow away; character mistakenly sees the arrow as money disappearing, balanced clear comparison.`
-- *Prompt video:* `Cash rests safely in checking shelter; transfer begins toward savings but the destination briefly falls out of view, triggering the character's alarm. Duration: 8.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve both account jars, checking shelter, savings jar, short transfer arrow, existing cash and character; do not hide the destination, generate labels, add money, change counts, hands or morph. Move one existing dollar only partway along the visible transfer arrow while the checking shelter gives one fading safety glow and the character reacts with a small anxious eye shift; both jars remain on screen throughout. Camera stays locked and the final 0.4 seconds are still. Duration: 8.4 seconds.`
 
 **Cảnh 7 — Loss, not gain** [1-step]
 - *Prompt ảnh:* `The same green dollar appears on both sides of a transfer window, yet the character's brain casts a large loss-shaped shadow over the savings side; no money actually missing, strong explanatory metaphor.`
-- *Prompt video:* `Dollar moves from checking to savings without changing; a false loss shadow grows, then camera reveals both balances together. Duration: 3.2 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the same green dollar shown across the transfer window, both account sides, character and existing false loss shadow; do not duplicate or remove money, generate text, change balances or morph. Send one soft traveling highlight across the transparent transfer path while the dollar itself stays visually identical; let the existing loss shadow swell only a few percent and fade back. Camera remains locked with both sides visible and the last 0.3 seconds still. Duration: 3.2 seconds.`
 
 **Cảnh 8 — Start with five dollars a week** [1-step]
 - *Prompt ảnh:* `One small recognizable green five-dollar token drops gently into a secure piggy bank beside exactly one weekly calendar check; deep-navy title plate reserved for renderer-added $5 A WEEK, warm successful glow.`
-- *Prompt video:* `Small exact "$5" token moves from checking into savings, weekly calendar receives one check and the shield remains calm; hold the complete small-start habit. Duration: 7.5 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the single existing five-dollar token, secure piggy bank, exactly one weekly calendar check, calm shield, character and blank title plate; keep "$5" and all counts stable and do not add money, checks, text, fingers or morph. Move the existing $5 token a short smooth distance toward the piggy bank while the shield maintains one calm teal glow; the calendar check remains unchanged. Keep the title plate unobstructed for the complete habit, use a restrained 2% push-in, and hold the final frame for 0.45 seconds. Duration: 7.5 seconds.`
 
 **Cảnh 9 — The goal is not the amount** [1-step]
 - *Prompt ảnh:* `Tiny five-dollar token sits beside a much larger calm safety signal; character points to the safety signal rather than a tall money pile, simple reassuring hierarchy.`
-- *Prompt video:* `Camera starts on the small amount, then shifts focus to the calm brain safety indicator growing brighter. Duration: 2.1 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the tiny five-dollar token, larger calm safety signal, character and pointing hand; do not generate text, add money, change fingers or morph. Use one gentle rack-focus from the small token to the existing safety signal as its teal glow brightens slightly; all geometry remains fixed. Camera stays locked and the final 0.3 seconds are still. Duration: 2.1 seconds.`
 
 **Cảnh 10 — Teach the brain money is not lost** [1-step]
 - *Prompt ảnh:* `Transparent path visibly connects checking and savings while the same dollar remains inside the character's protected total-money circle; brain shield changes from blocking to surrounding both accounts.`
-- *Prompt video:* `Transfer path becomes transparent, same dollar stays visible and shield expands to protect checking plus savings together. Duration: 4.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the already-transparent path, checking and savings, same visible dollar, total-money circle, brain shield and character; do not add or duplicate money, generate labels, redraw paths or morph. Send one calm light pulse along the existing path while the shield expands only slightly within its drawn boundary around both accounts; the dollar remains continuously visible and unchanged. Use a restrained 2% pullback and hold the final frame for 0.35 seconds. Duration: 4.7 seconds.`
 
 **Cảnh 11 — Grow after safety** [1-step]
 - *Prompt ảnh:* `Savings jar grows gradually from one small weekly deposit to several modest deposits while the brain safety light stays green; gentle upward progress, no interest-rate claims.`
-- *Prompt video:* `Once safety light turns green, weekly deposits grow gradually and the savings level rises in measured steps. Duration: 3.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the savings jar, all existing modest weekly deposits, green brain safety light, character and exact object count; do not add deposits, money, labels, hands or morphing. Pulse the existing safety light green once, then raise the visible liquid-like savings glow inside the jar by one very small measured step without spawning new coins. Camera remains locked and the final 0.35 seconds are still. Duration: 3.3 seconds.`
 
 **Cảnh 12 — Safety comes first** [1-step]
 - *Prompt ảnh:* `Character rests one hand on a calm glowing brain shield and the other on a modest savings jar; safety foundation visibly supports future growth above, confident compassionate close.`
-- *Prompt video:* `Safety foundation locks into place under the savings jar; growth arrow appears only afterward and character finishes with a calm nod. Duration: 2.6 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing safety foundation, savings jar, future-growth element, brain shield, character and both hands; do not create an arrow, add money or text, change fingers or morph. Give the already-placed foundation one subtle settling motion and warm glow while the future-growth element remains secondary; the character finishes with one calm nod. Camera stays locked and the final 0.35 seconds are still. Duration: 2.6 seconds.`
 
 ---
 
@@ -600,63 +600,63 @@ texture, no photorealistic faces, no watermark, 9:16 vertical
 
 **Cảnh 1 — Recap five habits** [1-step]
 - *Prompt ảnh:* `Exactly five large recognizable habit symbols form a clean arc around the character: subscription tiles, rising lifestyle platform, small purchase bubble, stress-to-shopping brain path and shielded piggy bank; deep-navy headline plate reserved for renderer-added 5 MONEY HABITS.`
-- *Prompt video:* `Five habit symbols hit one at a time on quick tactile beats, then hold together around the character beneath the recap headline. Duration: 8 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve exactly five existing habit symbols, character identity, hands, their clean arc and blank recap headline plate; do not add, remove, duplicate or transform symbols, generate text, fingers or morphing. Emphasize the five anchored symbols one at a time with quick restrained glow beats, then keep all five still together around the character. Camera uses a slow 2% push-in, the headline plate remains unobstructed throughout, and the final 0.45 seconds are still. Duration: 8 seconds.`
 
 **Cảnh 2 — Common thread: not noticing** [1-step]
 - *Prompt ảnh:* `Exactly five habit symbols drift through a dim background until one attention spotlight reveals all of them at once; character stands calmly in the light, headline plate reserved for renderer-added NOT NOTICING.`
-- *Prompt video:* `Five habits run quietly in shadow; one attention spotlight switches on and makes them visible together while the common-thread title holds. Duration: 8.9 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve exactly five existing habit symbols, attention spotlight, character and blank headline plate; do not add or duplicate habits, generate text, change hands or morph. Begin with the symbols slightly dim, then brighten the single existing spotlight smoothly so all five become clear at the same time; the character remains calm and centered. Keep the headline plate unobstructed for the full common-thread statement, camera locked, and hold the final frame for 0.45 seconds. Duration: 8.9 seconds.`
 
 **Cảnh 3 — No spreadsheet required** [1-step]
 - *Prompt ảnh:* `Complex spreadsheet tower slides backward and shrinks while the character holds one small clear question card in the foreground; approachable, uncluttered financial scene.`
-- *Prompt video:* `Spreadsheet expands intimidatingly, then recedes as one simple question card moves forward into focus. Duration: 3.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing spreadsheet tower, single question card, character and hands; do not generate spreadsheet text, add cards, fingers or morphing. Push the tower slightly backward while the existing question card moves forward only a few pixels into focus; keep both shapes unchanged. Camera stays nearly locked and the last 0.3 seconds are still. Duration: 3.4 seconds.`
 
 **Cảnh 4 — One question at the right moment** [1-step]
 - *Prompt ảnh:* `A single warm question card appears precisely between the character's reaching hand and a checkout action; clock hand stops at that decision point, strong visual timing metaphor.`
-- *Prompt video:* `Hand moves toward a purchase, clock pauses and one question card intercepts the action at exactly the right moment. Duration: 3.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the reaching hand, purchase, clock and single existing question card exactly; do not add text, cards, fingers, objects or morphing. Move the hand only a few pixels toward the purchase and stop it cleanly at the question card while the existing clock hand gives one tiny settling tick; no contact or checkout occurs. Camera remains locked and the final 0.35 seconds are still. Duration: 3.7 seconds.`
 
 **Cảnh 5 — We overcomplicate money** [1-step]
 - *Prompt ảnh:* `Character faces a tangled maze of budgets, receipts and calculators that looks as painful as a large problem shadow; one simple open path is visible at the edge, empathetic expression.`
-- *Prompt video:* `Problem shadow triggers an equally complex finance maze; character steps back and notices a simpler path. Duration: 6.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing problem shadow, tangled finance maze, simple open path, character and all objects; do not add maze branches, receipts, calculators, text, limbs or morph. Let one anxious light pulse travel briefly through the existing maze, then move a calm warm highlight to the already-visible simple path as the character makes one small noticing glance. Use a restrained 2% pullback and hold the final frame for 0.4 seconds. Duration: 6.3 seconds.`
 
 **Cảnh 6 — Master your attention first** [1-step]
 - *Prompt ảnh:* `Character redirects one bright attention beam away from scattered spending objects toward a single intentional choice; money tools remain secondary, clean controlled composition.`
-- *Prompt video:* `Scattered objects compete for attention; character narrows the beam onto one intentional choice and the visual noise dims. Duration: 5.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve every existing scattered spending object, single intentional choice, attention beam, character and hands; do not add or remove objects, generate text, fingers or morphing. Narrow the existing light beam smoothly onto the chosen object while the surrounding objects dim in place; the character's gaze follows the beam once. Camera remains locked and the last 0.35 seconds are still. Duration: 5.3 seconds.`
 
 **Cảnh 7 — Awareness is the budget** [1-step]
 - *Prompt ảnh:* `A warm awareness spotlight forms a protective open circle around the character and five habit objects without bars or restriction imagery; deep-navy plate reserved for renderer-added AWARENESS.`
-- *Prompt video:* `Open awareness circle expands around the choices, revealing their costs without locking anything away; title remains central. Duration: 2.6 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing open awareness circle, exactly five habit objects, character and blank central headline plate; do not add bars, labels, objects, text, limbs or morphing. Expand the existing open circle only a few percent with one warm light pulse while all five objects remain available and fixed; the character gives a small calm breath. Keep the title plate clear, camera locked, and hold the final frame for 0.3 seconds. Duration: 2.6 seconds.`
 
 **Cảnh 8 — Intentional energy** [1-step]
 - *Prompt ảnh:* `Energy tokens flow along two open paths; character consciously directs them toward one meaningful choice while impulse objects remain available but dim, freedom rather than restriction.`
-- *Prompt video:* `Nothing is blocked; character redirects attention and energy tokens from automatic paths into one chosen path. Duration: 5.6 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve both open paths, all existing energy tokens, meaningful choice, dim impulse objects, character and hands; do not add barriers, tokens, labels, fingers or morph. Move the existing tokens a short distance along the chosen path while those on the automatic path slow in place; the character makes one small directing gesture without blocking either path. Use a restrained 2% push toward the chosen path and hold the final frame for 0.35 seconds. Duration: 5.6 seconds.`
 
 **Cảnh 9 — Recap challenge** [1-step]
 - *Prompt ảnh:* `Five habit symbols line up clearly below a single challenge marker while character steps forward ready to choose; upbeat amber transition, no duplicate objects.`
-- *Prompt video:* `Five symbols line up on one crisp beat and a challenge marker appears above them; character scans the row. Duration: 2.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve exactly five already-lined-up habit symbols, the existing challenge marker, character and object spacing; do not make symbols appear, add or duplicate objects, generate text, change hands or morph. Give the five symbols one synchronized restrained settling beat while the existing marker pulses once; the character scans the row with a single eye movement. Camera stays locked and the final 0.3 seconds are still. Duration: 2.4 seconds.`
 
 **Cảnh 10 — Pick just one of five** [1-step]
 - *Prompt ảnh:* `Exactly five large numbered choice tokens read "1", "2", "3", "4", "5" in one row; character circles only number 3 while the other four remain calm and available; headline plate reserved for renderer-added PICK JUST ONE.`
-- *Prompt video:* `Numbers 1 through 5 appear, character selects and circles exactly one, then asks its matching question while the one-choice instruction stays visible. Duration: 5.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, one continuous infographic shot. Preserve exactly five numbered tokens labeled "1", "2", "3", "4", "5", the existing circle around only number 3, character and blank headline plate; keep every digit and count pixel-stable and do not add circles, numbers, text, fingers or morph. Pulse tokens 1 through 5 once in order, then brighten only the already-circled number 3 as the character makes one small selecting gesture. Keep the headline plate unobstructed for the complete instruction, camera locked, and hold the final frame for 0.4 seconds. Duration: 5.7 seconds.`
 
 **Cảnh 11 — Not all five, just one** [1-step]
 - *Prompt ảnh:* `Four habit tokens gently slide back while one selected token remains under a warm spotlight in the character's open hand; relaxed manageable feeling, no pressure.`
-- *Prompt video:* `All five start forward, four softly recede and only one remains highlighted; character's shoulders relax. Duration: 3.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve exactly five existing habit tokens, the one selected token, character, open hand and spotlight; do not add, remove or duplicate tokens, generate text, change fingers or morph. Move the four unselected tokens only a few pixels backward while the selected token remains anchored and its warm spotlight brightens; the character's shoulders relax slightly. Camera stays locked and the final 0.35 seconds are still. Duration: 3.4 seconds.`
 
 **Cảnh 12 — No full budget overhaul** [1-step]
 - *Prompt ảnh:* `Large renovation-style budget blueprint rolls itself closed while one small habit card remains open on the desk; character chooses the small card, simple achievable close-up.`
-- *Prompt video:* `Huge overhaul blueprint unfurls, then rolls away; one small habit card stays and moves to center. Duration: 2.7 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the already-open budget blueprint, single small habit card, desk, character and hands; do not generate blueprint text, add cards, fingers or morph. Roll the existing blueprint inward only slightly while the habit card slides a few pixels toward center and remains fully visible; the character makes one calm choosing glance. Camera remains locked and the final 0.3 seconds are still. Duration: 2.7 seconds.`
 
 **Cảnh 13 — See one habit clearly** [1-step]
 - *Prompt ảnh:* `One chosen habit object becomes sharply illuminated through a clear lens while the other four blur softly behind; character finally sees the pattern with a calm confident expression.`
-- *Prompt video:* `Lens focuses on one habit, its repeating loop becomes visible and character gently breaks the loop. Duration: 3.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the clear lens, one chosen habit object, four softly blurred background objects, existing loop and character; do not add habits, redraw the loop, generate text, change hands or morph. Use one gentle rack-focus through the lens onto the chosen habit while the existing loop gives a single faint pulse; the character makes one small recognizing nod without breaking or moving objects. Camera stays locked and the last 0.35 seconds are still. Duration: 3.3 seconds.`
 
 **Cảnh 14 — Which one are you starting with** [1-step]
 - *Prompt ảnh:* `Character points invitingly toward five small numbered tokens along the lower safe area, one empty selection ring waits for the viewer's choice, generous space and direct eye contact.`
-- *Prompt video:* `Character gestures across the five tokens, then points toward viewer as the empty selection ring pulses once. Duration: 2.4 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve exactly five numbered tokens, the empty selection ring, character identity, direct eye contact and hand anatomy; do not add a selection, text, tokens, fingers or morphing. Pulse the existing empty ring once while the character makes one restrained inviting hand emphasis toward the viewer; all five tokens stay fixed and equally available. Camera uses a subtle 2% push-in and the final 0.3 seconds are still. Duration: 2.4 seconds.`
 
 **Cảnh 15 — Comment and next-week follow-up** [1-step]
 - *Prompt ảnh:* `One generic comment bubble containing a single number connects by an arrow to a next-week calendar marker; character smiles and gives a small follow-up check gesture, clean CTA composition, no platform logo.`
-- *Prompt video:* `Numbered reply bubble pops in, arrow connects it to next week's calendar and character finishes with an encouraging nod. Duration: 4.3 seconds.`
+- *Prompt video:* `Image-to-video from the approved scene image, single continuous shot. Preserve the existing generic reply bubble with its single number, connecting arrow, next-week calendar marker, character and hand; do not generate new text, numbers, logos, bubbles, fingers or morph. Give the existing reply bubble one small settling bounce, then send one light pulse along the already-drawn arrow toward the calendar as the character gives an encouraging nod. Camera remains locked and the final 0.4 seconds are still. Duration: 4.3 seconds.`
 
 ---
 

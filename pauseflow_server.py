@@ -3,11 +3,13 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import base64
 import csv
 import io
 import json
 import mimetypes
+import tempfile
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -17,6 +19,7 @@ from urllib.request import Request as URLRequest, urlopen
 
 import uvicorn
 import yaml
+import edge_tts
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,12 +29,25 @@ from pydantic import BaseModel, field_validator
 from pauseflow.pipeline import DAY_SLUGS, PauseFlowPipeline
 from pauseflow.production_rules import DAY_TITLE_CARDS, WORKFLOW_RULES
 from pauseflow.quality_control import probe_duration
+from pauseflow.tts.edge_tts_backend import EdgeTTSBackend
+from pauseflow.production_review import production_catalog, production_review, artifact_path
 
 
 ROOT = Path(__file__).resolve().parent
 load_dotenv(ROOT / ".env")
 REFERENCE_DIR = ROOT / "assets" / "reference_sheets"
 REFERENCE_TYPES = {"image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp"}
+EDGE_VOICE_CACHE: list[dict] = []
+EDGE_VOICE_FALLBACK = [
+    {"ShortName": "en-US-ChristopherNeural", "Locale": "en-US", "Gender": "Male", "FriendlyName": "Christopher (US)"},
+    {"ShortName": "en-US-GuyNeural", "Locale": "en-US", "Gender": "Male", "FriendlyName": "Guy (US)"},
+    {"ShortName": "en-US-AndrewMultilingualNeural", "Locale": "en-US", "Gender": "Male", "FriendlyName": "Andrew Multilingual (US)"},
+    {"ShortName": "en-US-BrianMultilingualNeural", "Locale": "en-US", "Gender": "Male", "FriendlyName": "Brian Multilingual (US)"},
+    {"ShortName": "en-US-JennyNeural", "Locale": "en-US", "Gender": "Female", "FriendlyName": "Jenny (US)"},
+    {"ShortName": "en-US-AriaNeural", "Locale": "en-US", "Gender": "Female", "FriendlyName": "Aria (US)"},
+    {"ShortName": "en-US-AvaMultilingualNeural", "Locale": "en-US", "Gender": "Female", "FriendlyName": "Ava Multilingual (US)"},
+    {"ShortName": "en-US-EmmaMultilingualNeural", "Locale": "en-US", "Gender": "Female", "FriendlyName": "Emma Multilingual (US)"},
+]
 
 
 def load_pipeline() -> PauseFlowPipeline:
@@ -50,10 +66,58 @@ app.add_middleware(
 )
 
 
+class EdgeTTSSettings(BaseModel):
+    voice: str = "en-US-ChristopherNeural"
+    rate: int = 0
+    pitch: int = 0
+    volume: int = 0
+    punctuation_mode: Literal["natural", "enhanced", "minimal"] = "natural"
+
+    @field_validator("voice")
+    @classmethod
+    def validate_voice(cls, value):
+        value = value.strip()
+        if not re.fullmatch(r"[A-Za-z0-9-]{5,100}", value):
+            raise ValueError("Edge TTS voice không hợp lệ")
+        return value
+
+    @field_validator("rate", "pitch", "volume")
+    @classmethod
+    def validate_adjustment(cls, value, info):
+        limits = {"rate": (-50, 100), "pitch": (-50, 50), "volume": (-50, 100)}
+        lower, upper = limits[info.field_name]
+        if not lower <= value <= upper:
+            raise ValueError(f"{info.field_name} must be between {lower} and {upper}")
+        return value
+
+
+class EdgeTTSPreviewRequest(EdgeTTSSettings):
+    text: str = "You're not bad with money. Pause, notice the pattern... then choose one habit."
+
+    @field_validator("text")
+    @classmethod
+    def validate_text(cls, value):
+        value = value.strip()
+        if not value or len(value) > 600:
+            raise ValueError("Preview text phải có từ 1 đến 600 ký tự")
+        return value
+
+
+def edge_tts_options(settings: EdgeTTSSettings) -> dict:
+    return {
+        "voice": settings.voice,
+        "rate": f"{settings.rate:+d}%",
+        "pitch": f"{settings.pitch:+d}Hz",
+        "volume": f"{settings.volume:+d}%",
+        "punctuation_mode": settings.punctuation_mode,
+    }
+
+
 class DaysRequest(BaseModel):
     days: List[int]
     regenerate_audio: bool = False
     media_type: Literal["image", "video"] = "video"
+    tts_settings: Optional[EdgeTTSSettings] = None
 
     @field_validator("days")
     @classmethod
@@ -138,6 +202,75 @@ def health():
     return {"status": "ok", "pipeline": "money-habits-v4"}
 
 
+def _config_adjustment(value: object) -> int:
+    match = re.search(r"[-+]?\d+", str(value or "0"))
+    return int(match.group()) if match else 0
+
+
+@app.get("/api/tts/voices")
+async def edge_tts_voices():
+    global EDGE_VOICE_CACHE
+    source = "live"
+    if not EDGE_VOICE_CACHE:
+        try:
+            EDGE_VOICE_CACHE = await edge_tts.list_voices()
+        except Exception:
+            EDGE_VOICE_CACHE = EDGE_VOICE_FALLBACK
+            source = "fallback"
+    voices = []
+    for voice in EDGE_VOICE_CACHE:
+        tag = voice.get("VoiceTag") or {}
+        voices.append({
+            "short_name": voice.get("ShortName", ""),
+            "locale": voice.get("Locale", ""),
+            "gender": voice.get("Gender", ""),
+            "friendly_name": voice.get("FriendlyName") or voice.get("ShortName", ""),
+            "categories": tag.get("ContentCategories", []),
+            "personalities": tag.get("VoicePersonalities", []),
+        })
+    voices.sort(key=lambda item: (item["locale"], item["gender"], item["short_name"]))
+    config = load_pipeline().config.get("tts", {})
+    return {
+        "source": source,
+        "voices": voices,
+        "settings": {
+            "voice": config.get("voice", "en-US-ChristopherNeural"),
+            "rate": _config_adjustment(config.get("rate", 0)),
+            "pitch": _config_adjustment(config.get("pitch", 0)),
+            "volume": _config_adjustment(config.get("volume", 0)),
+            "punctuation_mode": config.get("punctuation_mode", "natural"),
+        },
+        "punctuation_modes": {
+            "natural": "Giữ nguyên dấu câu; Edge TTS tự ngắt và lên xuống giọng theo ngữ cảnh.",
+            "enhanced": "Nhấn rõ hơn ở dấu ba chấm, gạch ngang và chấm phẩy.",
+            "minimal": "Bỏ qua dấu phẩy, chấm phẩy, hai chấm, gạch ngang và dấu ba chấm; vẫn giữ .?!",
+        },
+    }
+
+
+@app.post("/api/tts/preview")
+async def edge_tts_preview(req: EdgeTTSPreviewRequest):
+    descriptor, temporary_name = tempfile.mkstemp(prefix="moneyhabit_tts_", suffix=".mp3")
+    os.close(descriptor)
+    temporary = Path(temporary_name)
+    try:
+        await EdgeTTSBackend(**edge_tts_options(req)).generate_audio_async(req.text, str(temporary))
+        payload = temporary.read_bytes()
+        if len(payload) < 1000:
+            raise RuntimeError("Edge TTS không trả về audio hợp lệ")
+        return StreamingResponse(
+            io.BytesIO(payload),
+            media_type="audio/mpeg",
+            headers={"Cache-Control": "no-store", "Content-Length": str(len(payload))},
+        )
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Không thể tạo bản nghe thử Edge TTS: {exc}") from exc
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 @app.get("/api/project")
 def project():
     pipeline = load_pipeline()
@@ -168,7 +301,7 @@ def day_content(day: int):
 
 @app.get("/api/reference-sheet-prompt")
 def reference_sheet_prompt():
-    path = ROOT / "assets" / "money_habits_character_props_sheet_prompt.txt"
+    path = ROOT / "assets" / "money_habits_character_props_sheet_prompt_v2.txt"
     if not path.is_file():
         raise HTTPException(status_code=404, detail="Reference sheet prompt not found")
     return {"prompt": path.read_text(encoding="utf-8").strip()}
@@ -451,8 +584,12 @@ def preview_scene(day: int, scene: int, request: Request):
 def preview_final(day: int, request: Request):
     if day not in DAY_SLUGS:
         raise HTTPException(status_code=404, detail="Day must be from 1 to 7")
+    mg_path = ROOT / "output" / f"day-{day}" / "video.mp4"
+    if mg_path.is_file():
+        return stream_mp4(request, mg_path)
     pipeline = load_pipeline()
-    return stream_mp4(request, pipeline.day_dir(day) / "final.mp4")
+    final_path = pipeline.day_dir(day) / "final.mp4"
+    return stream_mp4(request, final_path)
 
 
 def parse_srt_timestamp(value: str) -> float:
@@ -586,6 +723,30 @@ def status():
     return {"days": load_pipeline().status(range(1, 8))}
 
 
+@app.get("/api/production")
+def get_production_catalog():
+    return production_catalog(ROOT)
+
+
+@app.get("/api/production/{day}")
+def get_production_review(day: int):
+    try:
+        return production_review(ROOT, day)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.get("/api/production/{day}/artifacts/{key}")
+def get_production_artifact(day: int, key: str):
+    try:
+        path = artifact_path(ROOT, day, key)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="Artifact not available")
+    return FileResponse(path, headers={"Cache-Control": "no-cache"})
+
+
 @app.get("/api/production-rules")
 def production_rules():
     return {"workflow": WORKFLOW_RULES, "title_cards": DAY_TITLE_CARDS}
@@ -595,6 +756,46 @@ def production_rules():
 def prompts(day: int, media_type: Literal["image", "video"] = "video"):
     if day not in DAY_SLUGS:
         raise HTTPException(status_code=404, detail="Day must be from 1 to 7")
+
+    mg_script = ROOT / "output" / f"day-{day}" / "script.json"
+    if mg_script.is_file():
+        import json
+        script_data = json.loads(mg_script.read_text(encoding="utf-8"))
+        items = []
+        for idx, s in enumerate(script_data.get("scenes", []), 1):
+            t_data = s.get("templateData", {})
+            template_name = t_data.get("template", "card")
+            if template_name == "hook":
+                prompt_desc = f"[Hook] {t_data.get('headline', '')} — {t_data.get('subhead', '')}"
+            elif template_name == "stat-hero":
+                prompt_desc = f"[Stat Card] {t_data.get('value', '')} | {t_data.get('label', '')} ({t_data.get('context', '')})"
+            elif template_name == "comparison":
+                left = t_data.get("left", {})
+                right = t_data.get("right", {})
+                prompt_desc = f"[Comparison] {left.get('label', '')}: {left.get('value', '')} vs {right.get('label', '')}: {right.get('value', '')}"
+            elif template_name == "feature-list":
+                bullets = ", ".join(t_data.get("bullets", []))
+                prompt_desc = f"[Feature List] {t_data.get('title', '')}: {bullets}"
+            elif template_name == "callout":
+                prompt_desc = f"[Callout] {t_data.get('tag', '')}: \"{t_data.get('statement', '')}\""
+            else:
+                prompt_desc = f"[{template_name.title()}] {t_data.get('ctaTop', '')} — {t_data.get('channelName', '')}"
+
+            voice_file = ROOT / "output" / f"day-{day}" / "voice" / f"{s.get('id')}.mp3"
+            items.append({
+                "scene": idx,
+                "prompt": prompt_desc,
+                "voice_text": s.get("voiceText", ""),
+                "start_seconds": (idx - 1) * 3.5,
+                "end_seconds": idx * 3.5,
+                "title_card": t_data.get("headline") or t_data.get("statement") or t_data.get("title"),
+                "attached": voice_file.is_file(),
+                "size_bytes": voice_file.stat().st_size if voice_file.is_file() else 0,
+                "target_seconds": 3.5,
+                "actual_seconds": 3.5 if voice_file.is_file() else 0,
+            })
+        return {"day": day, "media_type": media_type, "prompts": items}
+
     pipeline = load_pipeline()
     prompt_dir = pipeline.day_dir(day) / "pending_prompts"
     if not prompt_dir.is_dir():
@@ -604,6 +805,11 @@ def prompts(day: int, media_type: Literal["image", "video"] = "video"):
         raise HTTPException(status_code=409, detail=f"Day {day} chưa được Prepare")
     import json
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("media_type", "video") != media_type:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Day {day} đang được Prepare ở chế độ {manifest.get('media_type')}; hãy Prepare lại ở chế độ {media_type}.",
+        )
     manual_dir = pipeline.day_dir(day) / "manual_clips"
     ffmpeg = pipeline.config["renderer"]["ffmpeg_path"]
     ffmpeg_path = str(ROOT / ffmpeg) if ffmpeg != "ffmpeg" else ffmpeg
@@ -644,6 +850,11 @@ def export_prompts_csv(day: int, media_type: Literal["image", "video"] = "video"
     if not manifest_path.is_file() or not prompt_dir.is_dir():
         raise HTTPException(status_code=409, detail=f"Day {day} chưa được Prepare")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("media_type", "video") != media_type:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Day {day} đang được Prepare ở chế độ {manifest.get('media_type')}; hãy Prepare lại ở chế độ {media_type}.",
+        )
     buffer = io.StringIO(newline="")
     writer = csv.writer(buffer)
     writer.writerow(["scene", "target_seconds", "media_type", "title_card", "prompt"])
@@ -865,7 +1076,10 @@ def fit_scene_duration(day: int, scene: int):
 def prepare(req: DaysRequest):
     try:
         paths = load_pipeline().prepare(
-            req.days, regenerate_audio=req.regenerate_audio, media_type=req.media_type
+            req.days,
+            regenerate_audio=req.regenerate_audio,
+            media_type=req.media_type,
+            tts_settings=edge_tts_options(req.tts_settings) if req.tts_settings else None,
         )
         return {"status": "success", "output_dirs": [str(path) for path in paths]}
     except Exception as exc:
@@ -887,7 +1101,9 @@ def render(req: RenderRequest):
 def show_output_folder(day: int):
     if day not in DAY_SLUGS:
         raise HTTPException(status_code=404, detail="Day must be from 1 to 7")
-    output_dir = load_pipeline().day_dir(day)
+    output_dir = ROOT / "output" / f"day-{day}"
+    if not output_dir.is_dir():
+        output_dir = load_pipeline().day_dir(day)
     if not output_dir.is_dir():
         raise HTTPException(status_code=404, detail=f"Day {day} output folder not found")
     target = output_dir.resolve()
@@ -906,6 +1122,133 @@ def show_output_folder(day: int):
     if result.returncode != 0:
         raise HTTPException(status_code=500, detail="Could not open file manager")
     return {"status": "success", "path": target_str}
+
+
+MOTION_RENDER_STATE: dict[int, dict] = {}
+
+
+def _run_motion_graphic_worker(day: int):
+    script_path = ROOT / "output" / f"day-{day}" / "script.json"
+    cmd = ["npm", "run", "pipeline", "--", f"output/day-{day}/script.json"]
+    MOTION_RENDER_STATE[day] = {
+        "status": "running",
+        "percent": 5,
+        "stage": "Khởi tạo pipeline...",
+        "detail": "",
+    }
+    
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            cwd=str(ROOT),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            shell=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+        
+        for line in proc.stdout:
+            clean_line = line.strip()
+            if not clean_line:
+                continue
+            
+            # Match HyperFrames percentage, e.g. "  54%  Capturing frame 1110/1749"
+            pct_match = re.search(r'(\d{1,3})%\s+(.+)', clean_line)
+            if pct_match:
+                pct = int(pct_match.group(1))
+                action = pct_match.group(2).strip()
+                # Scale HyperFrames 0-100% to 35-85% of overall process
+                scaled_pct = 35 + int(pct * 0.50)
+                MOTION_RENDER_STATE[day]["percent"] = min(88, max(MOTION_RENDER_STATE[day]["percent"], scaled_pct))
+                MOTION_RENDER_STATE[day]["stage"] = f"{action} ({MOTION_RENDER_STATE[day]['percent']}%)"
+                MOTION_RENDER_STATE[day]["detail"] = clean_line
+            elif "[1/8]" in clean_line or "Load env" in clean_line:
+                MOTION_RENDER_STATE[day]["percent"] = max(MOTION_RENDER_STATE[day]["percent"], 10)
+                MOTION_RENDER_STATE[day]["stage"] = "Kiểm tra kịch bản..."
+            elif "[4/8]" in clean_line or "TTS scene" in clean_line:
+                MOTION_RENDER_STATE[day]["percent"] = max(MOTION_RENDER_STATE[day]["percent"], 20)
+                MOTION_RENDER_STATE[day]["stage"] = "Đang sinh giọng đọc AI (Edge TTS)..."
+            elif "[5/8]" in clean_line or "Concat voice" in clean_line:
+                MOTION_RENDER_STATE[day]["percent"] = max(MOTION_RENDER_STATE[day]["percent"], 28)
+                MOTION_RENDER_STATE[day]["stage"] = "Đang ghép audio & SFX..."
+            elif "[6/8]" in clean_line or "Compose HTML" in clean_line:
+                MOTION_RENDER_STATE[day]["percent"] = max(MOTION_RENDER_STATE[day]["percent"], 33)
+                MOTION_RENDER_STATE[day]["stage"] = "Đang dựng bố cục Motion Graphics..."
+            elif "Merging scene subtitles" in clean_line:
+                MOTION_RENDER_STATE[day]["percent"] = max(MOTION_RENDER_STATE[day]["percent"], 89)
+                MOTION_RENDER_STATE[day]["stage"] = "Đang ghép phụ đề SRT..."
+            elif "Burning subtitles" in clean_line:
+                MOTION_RENDER_STATE[day]["percent"] = max(MOTION_RENDER_STATE[day]["percent"], 93)
+                MOTION_RENDER_STATE[day]["stage"] = "Đang burn subtitle & lồng nhạc nền (93%)..."
+            elif "Burned subtitles complete" in clean_line:
+                MOTION_RENDER_STATE[day]["percent"] = max(MOTION_RENDER_STATE[day]["percent"], 98)
+                MOTION_RENDER_STATE[day]["stage"] = "Đang lưu video hoàn thiện..."
+                
+        proc.wait()
+        if proc.returncode == 0:
+            video_path = ROOT / "output" / f"day-{day}" / "video.mp4"
+            if video_path.is_file():
+                MOTION_RENDER_STATE[day] = {
+                    "status": "completed",
+                    "percent": 100,
+                    "stage": "Render hoàn tất 100%!",
+                    "detail": str(video_path),
+                }
+            else:
+                MOTION_RENDER_STATE[day] = {
+                    "status": "error",
+                    "percent": 0,
+                    "stage": "Lỗi: Không tìm thấy video sau khi render",
+                    "detail": "",
+                }
+        else:
+            MOTION_RENDER_STATE[day] = {
+                "status": "error",
+                "percent": 0,
+                "stage": f"Render thất bại (mã lỗi {proc.returncode})",
+                "detail": "",
+            }
+    except Exception as exc:
+        MOTION_RENDER_STATE[day] = {
+            "status": "error",
+            "percent": 0,
+            "stage": f"Lỗi ngoại lệ: {str(exc)}",
+            "detail": str(exc),
+        }
+
+
+@app.post("/api/render-motion-graphic/{day}")
+def render_motion_graphic(day: int):
+    if day not in DAY_SLUGS:
+        raise HTTPException(status_code=404, detail="Day must be from 1 to 7")
+    script_path = ROOT / "output" / f"day-{day}" / "script.json"
+    if not script_path.is_file():
+        raise HTTPException(status_code=404, detail=f"Kịch bản Day {day} chưa tồn tại ({script_path})")
+    
+    current = MOTION_RENDER_STATE.get(day)
+    if current and current.get("status") == "running":
+        return {"status": "already_running", "day": day}
+        
+    thread = threading.Thread(target=_run_motion_graphic_worker, args=(day,), daemon=True)
+    thread.start()
+    return {"status": "started", "day": day}
+
+
+@app.get("/api/render-motion-graphic-progress/{day}")
+def get_motion_graphic_progress(day: int):
+    if day not in DAY_SLUGS:
+        raise HTTPException(status_code=404, detail="Day must be from 1 to 7")
+    return MOTION_RENDER_STATE.get(day, {"status": "idle", "percent": 0, "stage": "", "detail": ""})
+
+
+@app.get("/api/motion-graphic-video/{day}")
+def get_motion_graphic_video(day: int):
+    video_path = ROOT / "output" / f"day-{day}" / "video.mp4"
+    if not video_path.is_file():
+        raise HTTPException(status_code=404, detail=f"Chưa có video Motion Graphic cho Day {day}")
+    return FileResponse(str(video_path), media_type="video/mp4")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,1150 @@
+{
+  "version": "1.2",
+  "day": 1,
+  "source": "money-habits-script-v2-optimized.md",
+  "referencePolicy": "VISUAL_REFERENCE_ONLY",
+  "data": [
+    {
+      "sceneId": "scene-2",
+      "sourceSpan": "three habits",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "three-habits",
+      "display": "3",
+      "value": 3,
+      "unit": "count",
+      "qualifier": "exact",
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-4",
+      "sourceSpan": "fourteen dollars",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "streaming",
+      "display": "$14",
+      "value": 14,
+      "unit": "USD",
+      "qualifier": "exact",
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-4",
+      "sourceSpan": "nine",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "fitness",
+      "display": "$9",
+      "value": 9,
+      "unit": "USD",
+      "qualifier": "exact",
+      "unitSource": {
+        "sceneId": "scene-4",
+        "sourceSpan": "fourteen dollars",
+        "source": "money-habits-script-v2-optimized.md"
+      },
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-5",
+      "sourceSpan": "five for cloud storage",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "cloud",
+      "display": "$5",
+      "value": 5,
+      "unit": "USD",
+      "qualifier": "exact",
+      "unitSource": {
+        "sceneId": "scene-4",
+        "sourceSpan": "fourteen dollars",
+        "source": "money-habits-script-v2-optimized.md"
+      },
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-5",
+      "sourceSpan": "five apps",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "apps",
+      "display": "5 APPS",
+      "value": 5,
+      "unit": "apps",
+      "qualifier": "exact",
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-7",
+      "sourceSpan": "ten dollars",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "order",
+      "display": "$10",
+      "value": 10,
+      "unit": "USD",
+      "qualifier": "exact",
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-8",
+      "sourceSpan": "four nights a week",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "nights",
+      "display": "4 NIGHTS A WEEK",
+      "value": 4,
+      "unit": "nights/week",
+      "qualifier": "exact",
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-10",
+      "sourceSpan": "eighteen-dollar",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "coffee",
+      "display": "$18",
+      "value": 18,
+      "unit": "USD",
+      "qualifier": "exact",
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-10",
+      "sourceSpan": "twenty bucks",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "perceived",
+      "display": "$20",
+      "value": 20,
+      "unit": "USD",
+      "qualifier": "exact",
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-11",
+      "sourceSpan": "three times a week",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "frequency",
+      "display": "3 TIMES A WEEK",
+      "value": 3,
+      "unit": "times/week",
+      "qualifier": "exact",
+      "sourceType": "script-literal"
+    },
+    {
+      "sceneId": "scene-11",
+      "sourceSpan": "almost three hundred dollars a month",
+      "source": "money-habits-script-v2-optimized.md",
+      "id": "month",
+      "display": "ALMOST $300 / MONTH",
+      "value": 300,
+      "unit": "USD/month",
+      "qualifier": "almost",
+      "sourceType": "script-literal"
+    }
+  ],
+  "sequences": [
+    {
+      "id": "habits",
+      "sceneIds": [
+        "scene-2"
+      ],
+      "visualModel": "accumulation-timeline",
+      "semanticRationale": "Three anonymous habit symbols represent the explicitly spoken count without pre-revealing the names of later habits.",
+      "entryRelation": "new-topic",
+      "entryTransition": "crossfade",
+      "elements": [
+        {
+          "id": "heading",
+          "kind": "text",
+          "box": {
+            "x": 110,
+            "y": 380,
+            "w": 860,
+            "h": 110
+          },
+          "copy": {
+            "sceneId": "scene-2",
+            "sourceSpan": "You just have",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "YOU JUST HAVE"
+          },
+          "size": "heading",
+          "initial": true,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "habits",
+          "kind": "markers",
+          "box": {
+            "x": 180,
+            "y": 610,
+            "w": 720,
+            "h": 290
+          },
+          "copy": {
+            "sceneId": "scene-2",
+            "sourceSpan": "habits",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "HABITS"
+          },
+          "datumId": "three-habits",
+          "icon": "habit",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "against",
+          "kind": "text",
+          "box": {
+            "x": 130,
+            "y": 1000,
+            "w": 820,
+            "h": 130
+          },
+          "copy": {
+            "sceneId": "scene-2",
+            "sourceSpan": "working against you",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "WORKING AGAINST YOU"
+          },
+          "size": "heading",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "noticing",
+          "kind": "text",
+          "box": {
+            "x": 140,
+            "y": 1210,
+            "w": 800,
+            "h": 80
+          },
+          "copy": {
+            "sceneId": "scene-2",
+            "sourceSpan": "without you noticing",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "WITHOUT YOU NOTICING"
+          },
+          "size": "small",
+          "initial": false,
+          "orientation": "horizontal"
+        }
+      ],
+      "motionEvents": [
+        {
+          "id": "count",
+          "trigger": {
+            "sceneId": "scene-2",
+            "sourceSpan": "three habits",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "habits"
+          ],
+          "relation": "accumulation",
+          "transition": "push-stack",
+          "rationale": "Introduce exactly the three spoken habits, no invented categories."
+        },
+        {
+          "id": "against",
+          "trigger": {
+            "sceneId": "scene-2",
+            "sourceSpan": "working against you",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "against"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "The relationship follows the count rather than showing all copy at once."
+        },
+        {
+          "id": "unnoticed",
+          "trigger": {
+            "sceneId": "scene-2",
+            "sourceSpan": "without you noticing",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "noticing"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "Reveal the qualifier on its actual narration."
+        }
+      ]
+    },
+    {
+      "id": "subscriptions",
+      "sceneIds": [
+        "scene-3",
+        "scene-4",
+        "scene-5"
+      ],
+      "visualModel": "stacked-cost",
+      "semanticRationale": "Separate subscription prices enter one retained ledger; the app count is a distinct count, not an invented sum of the three named prices.",
+      "entryRelation": "new-topic",
+      "entryTransition": "crossfade",
+      "elements": [
+        {
+          "id": "heading",
+          "kind": "text",
+          "box": {
+            "x": 110,
+            "y": 330,
+            "w": 860,
+            "h": 120
+          },
+          "copy": {
+            "sceneId": "scene-3",
+            "sourceSpan": "subscription creep",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "SUBSCRIPTION CREEP"
+          },
+          "size": "heading",
+          "initial": true,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "streaming",
+          "kind": "stack-item",
+          "box": {
+            "x": 110,
+            "y": 500,
+            "w": 860,
+            "h": 140
+          },
+          "copy": {
+            "sceneId": "scene-4",
+            "sourceSpan": "streaming app",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "STREAMING APP"
+          },
+          "datumId": "streaming",
+          "icon": "stream",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "fitness",
+          "kind": "stack-item",
+          "box": {
+            "x": 110,
+            "y": 675,
+            "w": 860,
+            "h": 140
+          },
+          "copy": {
+            "sceneId": "scene-4",
+            "sourceSpan": "fitness app",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "FITNESS APP"
+          },
+          "datumId": "fitness",
+          "icon": "fitness",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "cloud",
+          "kind": "stack-item",
+          "box": {
+            "x": 110,
+            "y": 850,
+            "w": 860,
+            "h": 140
+          },
+          "copy": {
+            "sceneId": "scene-5",
+            "sourceSpan": "cloud storage",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "CLOUD STORAGE"
+          },
+          "datumId": "cloud",
+          "icon": "cloud",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "forgot",
+          "kind": "text",
+          "box": {
+            "x": 130,
+            "y": 1100,
+            "w": 820,
+            "h": 160
+          },
+          "copy": {
+            "sceneId": "scene-5",
+            "sourceSpan": "you forgot you even signed up for",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "YOU FORGOT YOU EVEN SIGNED UP FOR"
+          },
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "apps",
+          "kind": "markers",
+          "box": {
+            "x": 180,
+            "y": 1050,
+            "w": 720,
+            "h": 280
+          },
+          "datumId": "apps",
+          "icon": "app",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        }
+      ],
+      "motionEvents": [
+        {
+          "id": "streaming",
+          "trigger": {
+            "sceneId": "scene-4",
+            "sourceSpan": "fourteen dollars",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "stack",
+          "targets": [
+            "streaming"
+          ],
+          "relation": "accumulation",
+          "transition": "push-stack",
+          "rationale": "First approved cost enters a persistent ledger."
+        },
+        {
+          "id": "fitness",
+          "trigger": {
+            "sceneId": "scene-4",
+            "sourceSpan": "nine",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "stack",
+          "targets": [
+            "fitness"
+          ],
+          "relation": "accumulation",
+          "transition": "push-stack",
+          "rationale": "Second independent cost joins; first cost stays visible."
+        },
+        {
+          "id": "cloud",
+          "trigger": {
+            "sceneId": "scene-5",
+            "sourceSpan": "five for cloud storage",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "stack",
+          "targets": [
+            "cloud"
+          ],
+          "relation": "accumulation",
+          "transition": "push-stack",
+          "rationale": "Third cost joins without destroying the ledger at the audio boundary."
+        },
+        {
+          "id": "forgot",
+          "trigger": {
+            "sceneId": "scene-5",
+            "sourceSpan": "you forgot you even signed up for",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "forgot"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "Surface why these charges go unnoticed at the spoken clause."
+        },
+        {
+          "id": "clear-note",
+          "trigger": {
+            "sceneId": "scene-5",
+            "sourceSpan": "five apps",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "hide",
+          "targets": [
+            "forgot"
+          ],
+          "relation": "same-object",
+          "transition": "state-update",
+          "rationale": "Clear the qualifier area before introducing the actual app count."
+        },
+        {
+          "id": "five-apps",
+          "trigger": {
+            "sceneId": "scene-5",
+            "sourceSpan": "five apps",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "apps"
+          ],
+          "relation": "accumulation",
+          "transition": "push-stack",
+          "rationale": "Exactly five app icons appear; no assumption about prices of the other apps."
+        }
+      ]
+    },
+    {
+      "id": "convenience",
+      "sceneIds": [
+        "scene-6",
+        "scene-7",
+        "scene-8"
+      ],
+      "visualModel": "decision-flow",
+      "semanticRationale": "The approved ordering thought leads to a momentary price and then a counted frequency. Unknown grocery-budget magnitude is expressed as source copy, never a fabricated comparison bar.",
+      "entryRelation": "new-topic",
+      "entryTransition": "crossfade",
+      "elements": [
+        {
+          "id": "heading",
+          "kind": "text",
+          "box": {
+            "x": 110,
+            "y": 320,
+            "w": 860,
+            "h": 200
+          },
+          "copy": {
+            "sceneId": "scene-6",
+            "sourceSpan": "convenience spending",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "CONVENIENCE SPENDING"
+          },
+          "size": "heading",
+          "initial": true,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "thought",
+          "kind": "node",
+          "box": {
+            "x": 130,
+            "y": 640,
+            "w": 820,
+            "h": 190
+          },
+          "copy": {
+            "sceneId": "scene-7",
+            "sourceSpan": "I'll just order it, I'm tired",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "I'LL JUST ORDER IT, I'M TIRED"
+          },
+          "icon": "order",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "price",
+          "kind": "metric",
+          "box": {
+            "x": 200,
+            "y": 560,
+            "w": 680,
+            "h": 250
+          },
+          "copy": {
+            "sceneId": "scene-7",
+            "sourceSpan": "in the moment",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "IN THE MOMENT"
+          },
+          "datumId": "order",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "frequency",
+          "kind": "markers",
+          "box": {
+            "x": 180,
+            "y": 860,
+            "w": 720,
+            "h": 250
+          },
+          "datumId": "nights",
+          "icon": "order",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "budget",
+          "kind": "text",
+          "box": {
+            "x": 130,
+            "y": 1150,
+            "w": 820,
+            "h": 170
+          },
+          "copy": {
+            "sceneId": "scene-8",
+            "sourceSpan": "more than most people's entire grocery budget",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "MORE THAN MOST PEOPLE'S ENTIRE GROCERY BUDGET"
+          },
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        }
+      ],
+      "motionEvents": [
+        {
+          "id": "thought",
+          "trigger": {
+            "sceneId": "scene-7",
+            "sourceSpan": "I'll just order it",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "draw",
+          "targets": [
+            "thought"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "The approved inner thought becomes a decision node."
+        },
+        {
+          "id": "tired",
+          "trigger": {
+            "sceneId": "scene-7",
+            "sourceSpan": "I'm tired",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "focus",
+          "targets": [
+            "thought"
+          ],
+          "relation": "same-object",
+          "transition": "state-update",
+          "rationale": "Focus the same thought at the fatigue phrase."
+        },
+        {
+          "id": "thought-price",
+          "trigger": {
+            "sceneId": "scene-7",
+            "sourceSpan": "ten dollars",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "hide",
+          "targets": [
+            "thought"
+          ],
+          "relation": "same-object",
+          "transition": "state-update",
+          "rationale": "The thought yields to its spoken price without an invented alternative branch."
+        },
+        {
+          "id": "price",
+          "trigger": {
+            "sceneId": "scene-7",
+            "sourceSpan": "ten dollars",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "price"
+          ],
+          "relation": "major-metric",
+          "transition": "stat-punch",
+          "rationale": "Exact price appears, no intermediate count-up values."
+        },
+        {
+          "id": "repeat-price",
+          "trigger": {
+            "sceneId": "scene-8",
+            "sourceSpan": "ten dollars",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "punch",
+          "targets": [
+            "price"
+          ],
+          "relation": "major-metric",
+          "transition": "stat-punch",
+          "rationale": "The same price persists into the repeated-spending clause."
+        },
+        {
+          "id": "frequency",
+          "trigger": {
+            "sceneId": "scene-8",
+            "sourceSpan": "four nights a week",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "frequency"
+          ],
+          "relation": "accumulation",
+          "transition": "push-stack",
+          "rationale": "Four markers represent the exact frequency, without calendar dates or a calculated total."
+        },
+        {
+          "id": "consequence",
+          "trigger": {
+            "sceneId": "scene-8",
+            "sourceSpan": "more than most people's",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "budget"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "Quote the approved qualitative consequence; do not encode an unknown grocery budget as a scale."
+        }
+      ]
+    },
+    {
+      "id": "comparison",
+      "sceneIds": [
+        "scene-9",
+        "scene-10"
+      ],
+      "visualModel": "comparison-gap",
+      "semanticRationale": "The approved narration actually compares an eighteen-dollar purchase to 'like twenty bucks'. Show 18 and 20 on one zero-based scale, not the different numbers in the references.",
+      "minimalismReason": "The short named-habit introduction is intentionally typographic until the numerical example is spoken.",
+      "entryRelation": "new-topic",
+      "entryTransition": "crossfade",
+      "elements": [
+        {
+          "id": "heading",
+          "kind": "text",
+          "box": {
+            "x": 110,
+            "y": 320,
+            "w": 860,
+            "h": 250
+          },
+          "copy": {
+            "sceneId": "scene-9",
+            "sourceSpan": "rounding down in your head",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "ROUNDING DOWN IN YOUR HEAD"
+          },
+          "size": "heading",
+          "initial": true,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "actual",
+          "kind": "bar",
+          "box": {
+            "x": 150,
+            "y": 700,
+            "w": 780,
+            "h": 190
+          },
+          "copy": {
+            "sceneId": "scene-10",
+            "sourceSpan": "coffee run",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "COFFEE RUN"
+          },
+          "datumId": "coffee",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal",
+          "scaleGroup": "coffee"
+        },
+        {
+          "id": "perceived",
+          "kind": "bar",
+          "box": {
+            "x": 150,
+            "y": 1030,
+            "w": 780,
+            "h": 190
+          },
+          "copy": {
+            "sceneId": "scene-10",
+            "sourceSpan": "like twenty bucks",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "LIKE TWENTY BUCKS"
+          },
+          "datumId": "perceived",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal",
+          "scaleGroup": "coffee"
+        }
+      ],
+      "motionEvents": [
+        {
+          "id": "actual",
+          "trigger": {
+            "sceneId": "scene-10",
+            "sourceSpan": "eighteen-dollar",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "grow",
+          "targets": [
+            "actual"
+          ],
+          "relation": "comparison",
+          "transition": "split-expand",
+          "rationale": "Grow the exact actual value from the common baseline."
+        },
+        {
+          "id": "perceived",
+          "trigger": {
+            "sceneId": "scene-10",
+            "sourceSpan": "twenty bucks",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "grow",
+          "targets": [
+            "perceived"
+          ],
+          "relation": "comparison",
+          "transition": "split-expand",
+          "rationale": "Expand the second field to 20/20 alongside the retained 18/20 field. No invented delta label."
+        }
+      ]
+    },
+    {
+      "id": "monthly",
+      "sceneIds": [
+        "scene-11"
+      ],
+      "visualModel": "accumulation-timeline",
+      "semanticRationale": "Keep the frequency visible while revealing the script's qualified monthly claim. This is not a computed extrapolation from the coffee price.",
+      "entryRelation": "new-topic",
+      "entryTransition": "crossfade",
+      "elements": [
+        {
+          "id": "bridge",
+          "kind": "text",
+          "box": {
+            "x": 150,
+            "y": 280,
+            "w": 780,
+            "h": 90
+          },
+          "copy": {
+            "sceneId": "scene-11",
+            "sourceSpan": "Do that",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "DO THAT"
+          },
+          "size": "heading",
+          "initial": true,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "frequency",
+          "kind": "markers",
+          "box": {
+            "x": 180,
+            "y": 400,
+            "w": 720,
+            "h": 280
+          },
+          "datumId": "frequency",
+          "icon": "coffee",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "spent",
+          "kind": "text",
+          "box": {
+            "x": 150,
+            "y": 750,
+            "w": 780,
+            "h": 90
+          },
+          "copy": {
+            "sceneId": "scene-11",
+            "sourceSpan": "you've quietly spent",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "YOU'VE QUIETLY SPENT"
+          },
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "monthly",
+          "kind": "metric",
+          "box": {
+            "x": 130,
+            "y": 870,
+            "w": 820,
+            "h": 310
+          },
+          "datumId": "month",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "nothing",
+          "kind": "text",
+          "box": {
+            "x": 150,
+            "y": 1230,
+            "w": 780,
+            "h": 80
+          },
+          "copy": {
+            "sceneId": "scene-11",
+            "sourceSpan": "basically nothing",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "BASICALLY NOTHING"
+          },
+          "size": "small",
+          "initial": false,
+          "orientation": "horizontal"
+        }
+      ],
+      "motionEvents": [
+        {
+          "id": "frequency",
+          "trigger": {
+            "sceneId": "scene-11",
+            "sourceSpan": "three times a week",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "frequency"
+          ],
+          "relation": "accumulation",
+          "transition": "push-stack",
+          "rationale": "Exactly three purchase markers; no weekday labels or multiplication result."
+        },
+        {
+          "id": "spent",
+          "trigger": {
+            "sceneId": "scene-11",
+            "sourceSpan": "you've quietly spent",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "spent"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "Shift from frequency to the literal consequence as narration develops."
+        },
+        {
+          "id": "monthly",
+          "trigger": {
+            "sceneId": "scene-11",
+            "sourceSpan": "almost three hundred dollars a month",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "monthly"
+          ],
+          "relation": "major-metric",
+          "transition": "stat-punch",
+          "rationale": "Reveal the approved almost qualifier together with the amount; no computed total or intermediate figures."
+        },
+        {
+          "id": "nothing",
+          "trigger": {
+            "sceneId": "scene-11",
+            "sourceSpan": "basically nothing",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "reveal",
+          "targets": [
+            "nothing"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "The narrator's description appears only on its spoken phrase."
+        }
+      ]
+    },
+    {
+      "id": "awareness",
+      "sceneIds": [
+        "scene-13",
+        "scene-14"
+      ],
+      "visualModel": "process-loop",
+      "semanticRationale": "A quiet background path remains present, then naming it changes the active state and interrupts the path. No invented psychology labels or restored balance.",
+      "entryRelation": "new-topic",
+      "entryTransition": "crossfade",
+      "elements": [
+        {
+          "id": "quiet",
+          "kind": "node",
+          "box": {
+            "x": 180,
+            "y": 390,
+            "w": 720,
+            "h": 150
+          },
+          "copy": {
+            "sceneId": "scene-13",
+            "sourceSpan": "They just run quietly",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "THEY JUST RUN QUIETLY"
+          },
+          "icon": "habit",
+          "size": "body",
+          "initial": true,
+          "orientation": "horizontal",
+          "connectsTo": "background"
+        },
+        {
+          "id": "background",
+          "kind": "node",
+          "box": {
+            "x": 180,
+            "y": 700,
+            "w": 720,
+            "h": 150
+          },
+          "copy": {
+            "sceneId": "scene-13",
+            "sourceSpan": "in the background",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "IN THE BACKGROUND"
+          },
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal",
+          "connectsTo": "naming",
+          "loop": true
+        },
+        {
+          "id": "naming",
+          "kind": "node",
+          "box": {
+            "x": 180,
+            "y": 1020,
+            "w": 720,
+            "h": 250
+          },
+          "copy": {
+            "sceneId": "scene-14",
+            "sourceSpan": "try naming just one of them out loud",
+            "source": "money-habits-script-v2-optimized.md",
+            "text": "TRY NAMING JUST ONE OF THEM OUT LOUD"
+          },
+          "icon": "voice",
+          "size": "body",
+          "initial": false,
+          "orientation": "horizontal"
+        }
+      ],
+      "motionEvents": [
+        {
+          "id": "quiet",
+          "trigger": {
+            "sceneId": "scene-13",
+            "sourceSpan": "They just run quietly",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "focus",
+          "targets": [
+            "quiet"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "Focus the initially readable background node at its spoken phrase, without a blank boundary."
+        },
+        {
+          "id": "background",
+          "trigger": {
+            "sceneId": "scene-13",
+            "sourceSpan": "in the background",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "draw",
+          "targets": [
+            "background"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "Connect the same process to its background state."
+        },
+        {
+          "id": "week",
+          "trigger": {
+            "sceneId": "scene-14",
+            "sourceSpan": "This week",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "focus",
+          "targets": [
+            "background"
+          ],
+          "relation": "same-object",
+          "transition": "state-update",
+          "rationale": "Move attention to the existing background state, without rebuilding it."
+        },
+        {
+          "id": "naming",
+          "trigger": {
+            "sceneId": "scene-14",
+            "sourceSpan": "try naming just one",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "draw",
+          "targets": [
+            "naming"
+          ],
+          "relation": "progression",
+          "transition": "directional-progression",
+          "rationale": "Introduce the approved action as a connected state."
+        },
+        {
+          "id": "interrupt",
+          "trigger": {
+            "sceneId": "scene-14",
+            "sourceSpan": "out loud",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "interrupt",
+          "targets": [
+            "naming"
+          ],
+          "relation": "same-object",
+          "transition": "state-update",
+          "rationale": "Naming brings the action into focus and interrupts the previous path."
+        },
+        {
+          "id": "clean-outro-handoff",
+          "trigger": {
+            "sceneId": "scene-14",
+            "sourceSpan": "That's it",
+            "source": "money-habits-script-v2-optimized.md"
+          },
+          "action": "hide",
+          "targets": [
+            "quiet",
+            "background",
+            "naming"
+          ],
+          "relation": "same-object",
+          "transition": "state-update",
+          "rationale": "Fade the completed action with the process foreground before the outgoing sequence overlaps the incoming COMMENT CTA; persistent background and brand remain."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "metadata": { "title": "iPhone 17", "source": { "url": "https://example.com", "domain": "example.com", "image": "https://example.com/image.jpg" }, "channel": "Công nghệ 24h" },
+  "voice": { "provider": "edge-tts", "voiceId": "test", "speed": 1 },
+  "scenes": [
+    { "id": "hook", "type": "hook", "voiceText": "Hook.", "templateData": { "template": "hook", "headline": "iPhone 17", "subhead": "Camera 200MP!", "bgSrc": "$source.image", "kenBurns": "zoom-in" } },
+    { "id": "body-1", "type": "body", "voiceText": "Stat.", "templateData": { "template": "stat-hero", "value": "200MP", "label": "Camera" } },
+    { "id": "body-2", "type": "body", "voiceText": "Features.", "templateData": { "template": "feature-list", "title": "Nâng cấp lớn", "bullets": ["Camera", "Pin"] } },
+    { "id": "body-3", "type": "body", "voiceText": "Callout.", "templateData": { "template": "callout", "statement": "Thông tin mới" } },
+    { "id": "outro", "type": "outro", "voiceText": "Outro.", "templateData": { "template": "outro", "ctaTop": "Theo dõi ngay", "channelName": "Công nghệ 24h", "source": "example.com" } }
+  ]
+}

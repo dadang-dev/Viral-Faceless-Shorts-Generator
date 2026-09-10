@@ -1,0 +1,14 @@
+
+  VITE v8.2.1  ready in 305 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+  ➜  press h + enter to show help
+1:56:42 AM [vite] (client) hmr update /src/ProductionReview.tsx
+1:56:58 AM [vite] (client) hmr update /src/ProductionReview.css
+1:56:58 AM [vite] (client) hmr update /src/ProductionReview.tsx
+1:56:58 AM [vite] (client) hmr update /src/App.tsx
+1:57:13 AM [vite] (client) hmr update /src/ProductionReview.tsx
+2:01:34 AM [vite] (client) page reload index.html
+2:17:13 AM [vite] (client) hmr update /src/ProductionReview.tsx
+2:42:30 AM [vite] (client) page reload index.html
+2:42:47 AM [vite] (client) hmr update /src/ProductionReview.tsx

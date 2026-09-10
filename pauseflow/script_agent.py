@@ -15,13 +15,19 @@ class SceneOutput(BaseModel):
     audio: str
 
 class ScriptAgent:
-    def __init__(self, script_path: str):
+    def __init__(self, script_path: str, metadata_path: str | None = None):
         self.script_path = script_path
         if not os.path.exists(script_path):
             raise FileNotFoundError(f"Script file not found: {script_path}")
             
         with open(script_path, 'r', encoding='utf-8') as f:
             self.content = f.read()
+        self.metadata_content = ""
+        if metadata_path:
+            if not os.path.exists(metadata_path):
+                raise FileNotFoundError(f"Metadata file not found: {metadata_path}")
+            with open(metadata_path, 'r', encoding='utf-8') as f:
+                self.metadata_content = f.read()
 
     def generate_script(self, day_identifier: str) -> ScriptOutput:
         """
@@ -40,7 +46,7 @@ class ScriptAgent:
         
         # Extract Voice-over
         # Format: **Voice-over:**\n> "line1"\n> "line2"
-        vo_match = re.search(r'\*\*Voice-over:\*\*(.*?)(?=\n\*\*Caption:\*\*)', day_content, re.DOTALL)
+        vo_match = re.search(r'\*\*Voice-over:\*\*\s*\n(.*?)(?=\n\*\*Caption:\*\*|\Z)', day_content, re.DOTALL)
         if not vo_match:
             raise ValueError(f"Could not extract Voice-over for {day_identifier}")
             
@@ -58,11 +64,9 @@ class ScriptAgent:
         script_text = " ".join(vo_lines)
         
         # Extract Caption
-        caption_match = re.search(r'\*\*Caption:\*\*(.*?)(?=\n\*\*Engagement prompt:\*\*)', day_content, re.DOTALL)
-        if not caption_match:
-            raise ValueError(f"Could not extract Caption for {day_identifier}")
-            
-        caption_text = caption_match.group(1).strip()
+        metadata_scope = self.metadata_content or day_content
+        caption_match = re.search(r'\*\*Caption:\*\*(.*?)(?=\n\*\*Engagement prompt:\*\*)', metadata_scope, re.DOTALL)
+        caption_text = caption_match.group(1).strip() if caption_match else ""
         if caption_text.startswith('"') and caption_text.endswith('"'):
             caption_text = caption_text[1:-1].strip()
             
@@ -70,7 +74,7 @@ class ScriptAgent:
         hashtags = re.findall(r'#\w+', caption_text)
         
         # Extract Engagement prompt
-        eng_match = re.search(r'\*\*Engagement prompt:\*\*\s*"(.*?)"', day_content, re.DOTALL)
+        eng_match = re.search(r'\*\*Engagement prompt:\*\*\s*"(.*?)"', metadata_scope, re.DOTALL)
         engagement_prompt = eng_match.group(1).strip() if eng_match else ""
         
         return ScriptOutput(

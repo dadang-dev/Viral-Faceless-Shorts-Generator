@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "metadata": { "title": "Sample", "source": { "url": "https://example.com", "domain": "example.com", "image": null }, "channel": "Sample" },
+  "voice": { "provider": "edge-tts", "voiceId": "test", "speed": 1 },
+  "scenes": [
+    { "id": "hook", "type": "hook", "voiceText": "Hook.", "templateData": { "template": "hook", "headline": "Sample", "kenBurns": "zoom-in" } },
+    { "id": "body", "type": "body", "voiceText": "Body.", "templateData": { "template": "callout", "statement": "Sample body" } },
+    { "id": "outro", "type": "outro", "voiceText": "Outro.", "templateData": { "template": "outro", "ctaTop": "Follow", "channelName": "Sample", "source": "example.com" } }
+  ]
+}

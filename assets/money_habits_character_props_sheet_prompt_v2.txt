@@ -1,0 +1,26 @@
+Use case: stylized-concept
+Asset type: master character-and-props reference sheet for a seven-day US personal-finance psychology short-video series
+
+PRIMARY REQUEST
+Create Money Habits Master Reference Sheet v2 as one polished production design board. If the approved v1 reference sheet is supplied, preserve that exact character identity rather than redesigning him. This board is a reusable identity and prop source for still-image generation and 8–10 second image-to-video clips; it is not a story scene.
+
+LOCKED MAIN CHARACTER
+One approachable American adult man, age 30–35, average build and height, warm medium skin, short neat dark navy-black hair with a simple side part, clean-shaven, small navy eyes, simple brows, minimal nose and mouth, calm intelligent demeanor. Preserve the approved oval head shape, hairstyle silhouette, skin tone, facial spacing, body proportions, outline thickness and outfit in every view. Outfit is always the same: warm cream long-sleeve crew-neck shirt, tailored deep-navy trousers, simple cream sneakers, one narrow muted-amber cuff accent. Adult editorial character, never childish and never photorealistic.
+
+CHARACTER TURNAROUND AND PERFORMANCE LIBRARY
+Top row: exactly four separated full-body views of the identical character—front neutral, three-quarter holding a cream wallet, side view looking at a blank smartphone, seated tired pose holding a takeaway coffee. Second row: exactly six separated waist-up performance poses—concerned shoulders lowered, surprised realization, thoughtful pause, calm open-hand explanation, confident pointing gesture, relieved friendly nod. Keep the face, outfit and proportions identical in all ten views. No overlap and no cropped hands or body parts.
+
+HAND-CONSISTENCY STRIP
+Add one small organized strip of six isolated hands matching the character's skin tone and line style: relaxed open palm, exact one-finger point, exact two-finger count, exact three-finger count, natural smartphone grip and natural wallet grip. Each hand must have anatomically correct fingers, clear separation and no duplicates. These are pose references, not floating story elements.
+
+CORE PROP LIBRARY
+Arrange a clean lower production grid with one fully visible example of each reusable prop family. Money and subscription props: cream wallet, small generic stack of realistic-looking green US dollar bills without copying a banknote, unbranded payment card, blank smartphone, generic glossy subscription tile, recurring-arrow symbol, blank receipt and blank bank statement. Convenience props: cream-and-coral takeout bag, meal container, appetizer plate, dessert plate, condensation-covered takeaway iced coffee and blank payment terminal. Lifestyle props: apartment key, car key, apartment building, compact used car, polished unbranded lease car and restaurant plate. Psychology props: illustrated brain, soft stress cloud, boredom clock, exhausted low-battery symbol, relief ring, question card with no writing, shopping cart, blank checkout button, package box, magnifying glass and finite loop arrow. Saving props: piggy bank, protective shield, checking jar, savings jar, calendar with blank squares, notebook and pen. Recap props: attention spotlight cone, clear lens, simple open path and five visually distinct blank habit tokens. Keep each prop isolated, recognizable at thumbnail size and consistent with the character's materials and line weight.
+
+CURRENT ART DIRECTION
+Colorful polished 2.5D editorial illustration for an adult American finance audience. Deep navy presentation-board background and warm off-white foundation. Controlled accents of dollar green, coral, teal, lavender, sky blue and warm amber; use only two or three accents within each prop family. Clean dark-navy outlines, believable proportions and materials, soft cinematic studio lighting, dimensional contact shadows, subtle paper grain, gentle bevel depth and crisp readable silhouettes. Premium editorial finish with enough depth for image-to-video animation, while preserving illustrated simplicity. Not flat icon art, not isometric, not glossy 3D plastic and not photorealistic.
+
+LAYOUT AND OUTPUT
+One high-resolution 16:9 horizontal reference board. Character views occupy the upper half; performance poses and hand strip sit in a clearly separated middle band; the organized prop grid fills the lower half. Uniform deep-navy background, even margins, generous spacing, consistent scale within each row, no overlaps and no cropped objects. Every element must be easy to crop and reuse as a reference.
+
+STRICT CONSTRAINTS
+No title, captions, labels, alphabetic text, numbers, prices, currency symbols, logos, brands, watermark or UI screenshot. No extra people, alternate outfit, age change, hairstyle change, detailed facial realism, malformed fingers, extra limbs, duplicate character pose, duplicate prop, random decoration, perspective distortion, heavy glow, extreme gradients, photographic texture or cropped body parts. Do not copy an exact US banknote. Preserve character identity above all else.

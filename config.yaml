@@ -1,12 +1,17 @@
 project:
-  script_path: "money-habits-ALL-v4.md"
+  script_path: "money-habits-script-v2.1-verified.md"
+  auxiliary_script_path: "money-habits-ALL.md"
+  video_prompt_path: "video-prompts-8-10s.md"
   output_dir: "output/production"
 
 tts:
   provider: "edge_tts"
   lang: "en"
-  voice: "en-US-ChristopherNeural"
-  rate: "+0%"
+  voice: "en-US-AndrewMultilingualNeural"
+  rate: "-20%"
+  pitch: "+0Hz"
+  volume: "+0%"
+  punctuation_mode: "natural"
 
 media_gen:
   provider: "manual_watch"

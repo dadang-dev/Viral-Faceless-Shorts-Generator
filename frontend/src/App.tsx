@@ -5,6 +5,7 @@ import {
   AudioLines, Captions, Loader2, Play, RefreshCw, Save, SlidersHorizontal, Upload, Video, Wand2, X
 } from 'lucide-react'
 import './App.css'
+import ProductionReview from './ProductionReview'
 
 const API = 'http://127.0.0.1:8000/api'
 const DAY_TITLES: Record<number, string> = {
@@ -22,12 +23,16 @@ type MediaType = 'image' | 'video'
 type ImageProvider = 'gemini' | 'openai'
 type ProviderStatus = Record<ImageProvider, { configured: boolean; model: string }>
 type DayContent = { day: number; script: string; caption: string; engagement_prompt: string }
+type EdgeVoice = { short_name: string; locale: string; gender: string; friendly_name: string; categories: string[]; personalities: string[] }
+type EdgeTTSSettings = { voice: string; rate: number; pitch: number; volume: number; punctuation_mode: 'natural' | 'enhanced' | 'minimal' }
 
 function App() {
+  const [studioMode, setStudioMode] = useState<'production' | 'legacy'>('production')
   const [days, setDays] = useState<number[]>([1])
   const [status, setStatus] = useState<DayStatus[]>([])
   const [busy, setBusy] = useState('')
   const [message, setMessage] = useState('')
+  const [renderProgress, setRenderProgress] = useState<{ day: number; percent: number; stage: string; status: string } | null>(null)
   const [prompts, setPrompts] = useState<ScenePrompt[]>([])
   const [promptDay, setPromptDay] = useState<number | null>(null)
   const [copiedScene, setCopiedScene] = useState<number | null>(null)
@@ -54,6 +59,13 @@ function App() {
   const [timelineScenes, setTimelineScenes] = useState<TimelineScene[]>([])
   const [savingTimeline, setSavingTimeline] = useState(false)
   const [uploadingVoice, setUploadingVoice] = useState(false)
+  const [ttsVoices, setTtsVoices] = useState<EdgeVoice[]>([])
+  const [ttsLocale, setTtsLocale] = useState('en-US')
+  const [ttsSettings, setTtsSettings] = useState<EdgeTTSSettings>({ voice: 'en-US-ChristopherNeural', rate: 0, pitch: 0, volume: 0, punctuation_mode: 'natural' })
+  const [ttsSample, setTtsSample] = useState("You're not bad with money. Pause, notice the pattern... then choose one habit.")
+  const [ttsPreviewUrl, setTtsPreviewUrl] = useState('')
+  const [previewingTts, setPreviewingTts] = useState(false)
+  const [generatingTts, setGeneratingTts] = useState(false)
   const [mediaType, setMediaType] = useState<MediaType>('video')
   const [imageProvider, setImageProvider] = useState<ImageProvider>('gemini')
   const [imageQuality, setImageQuality] = useState<'draft' | 'standard' | 'high'>('standard')
@@ -64,10 +76,13 @@ function App() {
   const [generatingAll, setGeneratingAll] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
   const timelineVideoRef = useRef<HTMLVideoElement>(null)
+  const ttsPreviewUrlRef = useRef('')
   const readyToRender = days.length > 0 && days.every(day => status.find(value => value.day === day)?.ready)
   const combinedPrompts = prompts
     .map(item => `${item.scene}.  ${item.prompt}`)
     .join('\n\n')
+  const ttsLocales = Array.from(new Set(ttsVoices.map(voice => voice.locale))).sort()
+  const visibleTtsVoices = ttsVoices.filter(voice => voice.locale === ttsLocale)
 
   const refresh = async () => {
     try {
@@ -89,6 +104,17 @@ function App() {
     axios.get(`${API}/image-providers`)
       .then(response => setProviders(response.data.providers))
       .catch(() => setProviders(null))
+    axios.get(`${API}/tts/voices`)
+      .then(response => {
+        setTtsVoices(response.data.voices ?? [])
+        if (response.data.settings) {
+          setTtsSettings(response.data.settings)
+          const selected = (response.data.voices ?? []).find((voice: EdgeVoice) => voice.short_name === response.data.settings.voice)
+          if (selected) setTtsLocale(selected.locale)
+        }
+      })
+      .catch(() => setMessage('Could not load the Edge TTS voice catalog.'))
+    return () => { if (ttsPreviewUrlRef.current) URL.revokeObjectURL(ttsPreviewUrlRef.current) }
   }, [])
 
   const selectDay = (day: number) => { setDays([day]); setTimelineOpen(false) }
@@ -110,6 +136,53 @@ function App() {
     } catch (error: any) {
       setMessage(error.response?.data?.detail || error.message)
     } finally { setBusy('') }
+  }
+
+  const renderMotionGraphic = async (dayNumber?: number) => {
+    const targetDay = dayNumber ?? (days.length ? days[0] : 1)
+    setBusy('motion')
+    setMessage('')
+    setRenderProgress({ day: targetDay, percent: 5, stage: `Khởi tạo render Day ${targetDay}...`, status: 'running' })
+
+    try {
+      await axios.post(`${API}/render-motion-graphic/${targetDay}`)
+
+      const pollInterval = setInterval(async () => {
+        try {
+          const res = await axios.get(`${API}/render-motion-graphic-progress/${targetDay}`)
+          const data = res.data
+          if (data && data.status) {
+            setRenderProgress({
+              day: targetDay,
+              percent: data.percent ?? 0,
+              stage: data.stage || `Đang xử lý Day ${targetDay}...`,
+              status: data.status,
+            })
+
+            if (data.status === 'completed') {
+              clearInterval(pollInterval)
+              setBusy('')
+              setMessage(`Day ${targetDay} Motion Graphic rendered successfully!`)
+              setMediaVersion(Date.now())
+              setPreviewFinalDay(targetDay)
+              await refresh()
+              setTimeout(() => setRenderProgress(null), 6000)
+            } else if (data.status === 'error') {
+              clearInterval(pollInterval)
+              setBusy('')
+              setMessage(`Render lỗi: ${data.stage || 'Failed'}`)
+              setTimeout(() => setRenderProgress(null), 6000)
+            }
+          }
+        } catch {
+          // Ignore poll errors
+        }
+      }, 700)
+    } catch (error: any) {
+      setBusy('')
+      setRenderProgress(null)
+      setMessage(error.response?.data?.detail || error.message)
+    }
   }
 
   const loadPrompts = useCallback(async (day: number, scrollToWorkspace = true) => {
@@ -285,6 +358,35 @@ function App() {
     } catch (error: any) { setMessage(error.response?.data?.detail || error.message) }
   }
 
+  const previewEdgeTts = async () => {
+    if (!ttsSample.trim()) return setMessage('Enter preview text first.')
+    setPreviewingTts(true); setMessage('Generating Edge TTS preview...')
+    try {
+      const response = await axios.post(`${API}/tts/preview`, { ...ttsSettings, text: ttsSample.trim() }, { responseType: 'blob' })
+      if (ttsPreviewUrlRef.current) URL.revokeObjectURL(ttsPreviewUrlRef.current)
+      const url = URL.createObjectURL(response.data)
+      ttsPreviewUrlRef.current = url; setTtsPreviewUrl(url)
+      setMessage('Preview ready. Listen below before regenerating the full Day voice.')
+    } catch (error: any) {
+      const detail = error.response?.data instanceof Blob ? await error.response.data.text() : error.response?.data?.detail
+      setMessage(detail || error.message)
+    } finally { setPreviewingTts(false) }
+  }
+
+  const regenerateEdgeTts = async () => {
+    const day = days[0]
+    if (!window.confirm(`Regenerate Day ${day} voice and subtitle with ${ttsSettings.voice}? The current files will be backed up.`)) return
+    setGeneratingTts(true); setMessage(`Generating Day ${day} voice with Edge TTS...`)
+    try {
+      await axios.post(`${API}/prepare`, { days: [day], regenerate_audio: true, media_type: mediaType, tts_settings: ttsSettings })
+      setMediaVersion(Date.now()); await refresh()
+      if (promptDay === day) await loadPrompts(day, false)
+      if (timelineOpen) await openTimeline()
+      setMessage(`Day ${day} voice, word-level subtitle and scene timing regenerated. Previous voice/SRT were backed up.`)
+    } catch (error: any) { setMessage(error.response?.data?.detail || error.message) }
+    finally { setGeneratingTts(false) }
+  }
+
   const updateCue = (index: number, patch: Partial<TimelineCue>) => setTimelineCues(current => current.map((cue, cueIndex) => cueIndex === index ? {...cue, ...patch} : cue))
   const seekCue = (cue: TimelineCue) => { if (audioRef.current) { audioRef.current.currentTime = cue.start; audioRef.current.play() } }
   const mergeNextCue = (index: number) => setTimelineCues(current => index >= current.length - 1 ? current : current.flatMap((cue, cueIndex) => cueIndex === index ? [{...cue, end: current[index + 1].end, text: `${cue.text} ${current[index + 1].text}`}] : cueIndex === index + 1 ? [] : [cue]))
@@ -333,17 +435,40 @@ function App() {
     <div className="app-shell">
       <header className="topbar">
         <div className="brand"><span className="brand-mark"><Play size={13} fill="currentColor"/></span><span>DNDtools</span><span className="brand-divider"/><span className="project-name">Money Habits</span></div>
-        <div className="top-status"><span className="online-dot"/> Core v4 online</div>
+        <div className="top-status">MASTER TEMPLATE v1.1 · Production Review</div>
       </header>
 
       <main className="studio">
         <section className="hero-row">
-          <div><span className="eyebrow">PRODUCTION STUDIO</span><h1>Money Habits</h1><p>Generate consistent scenes, attach footage, and render publish-ready vertical videos.</p></div>
-          <button className="icon-button" onClick={refresh} title="Refresh status"><RefreshCw size={17}/></button>
+          <div><span className="eyebrow">PRODUCTION STUDIO</span><h1>Money Habits</h1><p>Review canonical videos, validation A–H, and frame-level QA.</p></div>
+          <button className="icon-button" onClick={() => { refresh(); setMediaVersion(Date.now()) }} title="Refresh status"><RefreshCw size={17}/></button>
         </section>
 
-        {message && <div className="notice"><CheckCircle2 size={17}/><span>{message}</span></div>}
+        {renderProgress && renderProgress.status === 'running' && (
+          <div className="notice has-progress">
+            <div className="notice-head">
+              <div>
+                <Loader2 className="spinner" size={16} />
+                <span>{renderProgress.stage || `Rendering Day ${renderProgress.day}...`}</span>
+              </div>
+              <span className="notice-pct">{renderProgress.percent}%</span>
+            </div>
+            <div className="notice-bar">
+              <div className="notice-bar-fill" style={{ width: `${Math.max(4, Math.min(100, renderProgress.percent))}%` }} />
+            </div>
+          </div>
+        )}
 
+        {!renderProgress && message && (
+          <div className="notice">
+            <CheckCircle2 size={17} />
+            <span>{message}</span>
+          </div>
+        )}
+
+        <nav className="studio-mode-switch" aria-label="Studio mode"><button aria-pressed={studioMode === 'production'} onClick={() => setStudioMode('production')}>Production Review v1.1</button><button aria-pressed={studioMode === 'legacy'} onClick={() => setStudioMode('legacy')}>Legacy · Footage workspace</button></nav>
+        {studioMode === 'production' && <ProductionReview api={API} refreshKey={mediaVersion}/>}
+        <div hidden={studioMode !== 'legacy'}>
         <section className="panel reference-panel">
           <div className="step-index">01</div>
           <div className="panel-copy"><div className="panel-heading"><Image size={18}/><h2>Character & Props Reference</h2><span className="chip">Create once</span></div><p>Generate one master sheet, approve the character, then attach it as the reference for every scene.</p></div>
@@ -376,9 +501,31 @@ function App() {
                 </div>
               })}
             </div>
-            <div className="action-row"><button className="button primary" disabled={!!busy || !days.length} onClick={() => call('prepare')}>{busy === 'prepare' ? <Loader2 className="spinner" size={17}/> : <Wand2 size={17}/>} Prepare Day {days[0]}</button><button className="button" disabled={!!busy || !readyToRender} onClick={() => call('render')}>{busy === 'render' ? <Loader2 className="spinner" size={17}/> : <Play size={17}/>} Render Day {days[0]}</button></div>
+            <div className="action-row">
+              <button className="button primary" disabled={!!busy || !days.length} onClick={() => call('prepare')}>{busy === 'prepare' ? <Loader2 className="spinner" size={17}/> : <Wand2 size={17}/>} Prepare Day {days[0]}</button>
+              <button className="button" disabled={!!busy || !readyToRender} onClick={() => call('render')}>{busy === 'render' ? <Loader2 className="spinner" size={17}/> : <Play size={17}/>} Render Day {days[0]}</button>
+              <button className="button primary" style={{ background: 'linear-gradient(135deg, #059669, #10b981)', borderColor: '#059669' }} disabled={!!busy || !days.length} onClick={() => renderMotionGraphic(days[0])} title="Tự động 100% render video Motion Graphics 9:16">{busy === 'motion' ? <Loader2 className="spinner" size={17}/> : <Video size={17}/>} Motion Graphic (Auto)</button>
+            </div>
             <div className="media-choice" aria-label="Scene media type"><span>Generate scenes as</span><div><button className={mediaType === 'image' ? 'selected' : ''} onClick={() => setMediaType('image')}><Image size={15}/> Images</button><button className={mediaType === 'video' ? 'selected' : ''} onClick={() => setMediaType('video')}><Video size={15}/> Videos</button></div>{mediaType === 'image' && <div className="generator-settings"><label><span>Provider</span><select value={imageProvider} onChange={event => setImageProvider(event.target.value as ImageProvider)}><option value="gemini">Gemini {providers?.gemini.configured ? '· Ready' : '· No key'}</option><option value="openai">GPT Image {providers?.openai.configured ? '· Ready' : '· No key'}</option></select></label><label><span>Quality</span><select value={imageQuality} onChange={event => setImageQuality(event.target.value as typeof imageQuality)}><option value="draft">Draft</option><option value="standard">Standard</option><option value="high">High</option></select></label>{!providers?.[imageProvider].configured && <div className="api-key-entry"><label><span>{imageProvider === 'gemini' ? 'Gemini' : 'OpenAI'} API key</span><input type="password" autoComplete="off" spellCheck={false} placeholder={imageProvider === 'gemini' ? 'Paste Gemini API key' : 'Paste OpenAI API key'} value={apiKeys[imageProvider]} onChange={event => setApiKeys(current => ({...current, [imageProvider]: event.target.value}))}/></label><button className="button" disabled={savingKey || !apiKeys[imageProvider].trim()} onClick={saveProviderKey}>{savingKey ? <Loader2 className="spinner" size={15}/> : <Save size={15}/>} Save key</button><p>Stored only in the local backend’s .env file. The saved key is never displayed again.</p></div>}<button className="button primary generate-all" disabled={generatingAll || generatingScene !== null || !providers?.[imageProvider].configured || !referenceAttached || prompts.length === 0} onClick={generateAllImages}>{generatingAll ? <Loader2 className="spinner" size={15}/> : <Wand2 size={15}/>} Generate all</button></div>}<small>{mediaType === 'image' ? providers?.[imageProvider].configured ? 'Reference sheet and scene prompt will be sent securely by the backend.' : 'Enter and save a provider key to enable direct generation.' : 'Upload a generated MP4 for each scene.'}</small></div>
             {!readyToRender && <p className="helper">Render unlocks when the selected day has enough attached footage.</p>}
+            <details className="tts-controls" open>
+              <summary><AudioLines size={14}/> Edge TTS Voice Generator <ChevronDown size={14}/></summary>
+              <div className="tts-select-grid">
+                <label><span>Language / locale</span><select value={ttsLocale} onChange={event => { const locale = event.target.value; const first = ttsVoices.find(voice => voice.locale === locale); setTtsLocale(locale); if (first) setTtsSettings(current => ({...current, voice:first.short_name})) }}>{ttsLocales.map(locale => <option value={locale} key={locale}>{locale}</option>)}</select></label>
+                <label><span>Voice</span><select value={ttsSettings.voice} onChange={event => setTtsSettings(current => ({...current, voice:event.target.value}))}>{visibleTtsVoices.map(voice => <option value={voice.short_name} key={voice.short_name}>{voice.friendly_name} · {voice.gender}</option>)}</select></label>
+              </div>
+              <div className="control-grid tts-ranges">
+                <label className="range-control"><span><b>Speed</b><em>{ttsSettings.rate >= 0 ? '+' : ''}{ttsSettings.rate}%</em></span><input type="range" min="-50" max="100" step="5" value={ttsSettings.rate} onChange={event => setTtsSettings(current => ({...current, rate:Number(event.target.value)}))}/></label>
+                <label className="range-control"><span><b>Pitch</b><em>{ttsSettings.pitch >= 0 ? '+' : ''}{ttsSettings.pitch}Hz</em></span><input type="range" min="-50" max="50" step="5" value={ttsSettings.pitch} onChange={event => setTtsSettings(current => ({...current, pitch:Number(event.target.value)}))}/></label>
+                <label className="range-control"><span><b>TTS volume</b><em>{ttsSettings.volume >= 0 ? '+' : ''}{ttsSettings.volume}%</em></span><input type="range" min="-50" max="100" step="5" value={ttsSettings.volume} onChange={event => setTtsSettings(current => ({...current, volume:Number(event.target.value)}))}/></label>
+                <label className="tts-punctuation"><span>Punctuation handling</span><select value={ttsSettings.punctuation_mode} onChange={event => setTtsSettings(current => ({...current, punctuation_mode:event.target.value as EdgeTTSSettings['punctuation_mode']}))}><option value="natural">Natural · auto context</option><option value="enhanced">Stronger pauses</option><option value="minimal">Ignore soft punctuation</option></select></label>
+              </div>
+              <label className="tts-preview-text"><span>Preview text</span><textarea rows={3} maxLength={600} value={ttsSample} onChange={event => setTtsSample(event.target.value)}/></label>
+              <p className="tts-explanation"><b>Natural</b> keeps periods, commas, semicolons, dashes and ellipses. Edge TTS uses them for pauses and intonation—it normally does not speak the punctuation names aloud.</p>
+              <div className="tts-actions"><button className="button" disabled={previewingTts || generatingTts || !ttsVoices.length} onClick={previewEdgeTts}>{previewingTts ? <Loader2 className="spinner" size={15}/> : <Play size={15}/>} Preview voice</button><button className="button primary" disabled={generatingTts || previewingTts || !ttsVoices.length} onClick={regenerateEdgeTts}>{generatingTts ? <Loader2 className="spinner" size={15}/> : <Wand2 size={15}/>} Regenerate Day {days[0]} voice</button></div>
+              {ttsPreviewUrl && <audio className="tts-preview-player" controls autoPlay src={ttsPreviewUrl}/>}
+              <p className="helper">Regeneration backs up the current MP3/SRT, creates word-level timestamps directly from Edge TTS, and retimes scenes to the new voice.</p>
+            </details>
             <details className="render-controls" open>
               <summary><SlidersHorizontal size={14}/> Voice & Subtitle Controls <ChevronDown size={14}/></summary>
               <div className="control-grid">
@@ -420,6 +567,7 @@ function App() {
               })}</div>
             </> : <div className="workspace-empty"><Video size={28}/><strong>Scene Workspace</strong><span>Choose a prepared day and click Scenes to begin.</span></div>}
           </section>
+        </div>
         </div>
       </main>
 
