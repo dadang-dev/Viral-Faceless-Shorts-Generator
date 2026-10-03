@@ -4,15 +4,48 @@ import io
 import hashlib
 import json
 import math
+import os
 import subprocess
 import re
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont, ImageStat
+from PIL import Image, ImageDraw, ImageFont, ImageStat, UnidentifiedImageError
+
+
+FFMPEG_BIN = os.environ.get("MONEYHABITS_FFMPEG", "ffmpeg")
+FFPROBE_BIN = os.environ.get("MONEYHABITS_FFPROBE", "ffprobe")
 
 
 def run(args):
-    return subprocess.run(args, check=True, capture_output=True).stdout
+    command = list(args)
+    if command and command[0] == "ffmpeg":
+        command[0] = FFMPEG_BIN
+    if command and command[0] == "ffprobe":
+        command[0] = FFPROBE_BIN
+    return subprocess.run(command, check=True, capture_output=True).stdout
+
+
+def probe_video(video):
+    """Use ffprobe when available; keep QA deterministic with an ffmpeg fallback."""
+    try:
+        return json.loads(run(["ffprobe", "-v", "error", "-show_format", "-show_streams", "-of", "json", str(video)]))
+    except (FileNotFoundError, PermissionError, subprocess.CalledProcessError, json.JSONDecodeError):
+        command = [FFMPEG_BIN, "-hide_banner", "-i", str(video)]
+        probe = subprocess.run(command, capture_output=True, text=True, check=False)
+        details = probe.stderr
+        duration_match = re.search(r"Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)", details)
+        if not duration_match:
+            raise RuntimeError("MEDIA_PROBE: ffprobe unavailable and ffmpeg duration could not be parsed")
+        hours, minutes, seconds = duration_match.groups()
+        duration = int(hours) * 3600 + int(minutes) * 60 + float(seconds)
+        video_match = re.search(r"Video:\s*([^,\s]+).*?(\d{2,5})x(\d{2,5})", details, re.S)
+        audio_match = re.search(r"Audio:\s*([^,\s]+)", details)
+        streams = []
+        if video_match:
+            streams.append({"codec_type": "video", "codec_name": video_match.group(1), "width": int(video_match.group(2)), "height": int(video_match.group(3)), "duration": str(duration)})
+        if audio_match:
+            streams.append({"codec_type": "audio", "codec_name": audio_match.group(1), "duration": str(duration)})
+        return {"format": {"duration": str(duration)}, "streams": streams, "probeFallback": "ffmpeg-stderr"}
 
 
 def main():
@@ -30,7 +63,7 @@ def main():
     video = base / "video.mp4"
     transcript = json.loads((base / "transcript.json").read_text(encoding="utf-8"))
     report = json.loads((base / "validation-report.json").read_text(encoding="utf-8"))
-    probe = json.loads(run(["ffprobe", "-v", "error", "-show_format", "-show_streams", "-of", "json", str(video)]))
+    probe = probe_video(video)
     picture = next(s for s in probe["streams"] if s["codec_type"] == "video")
     duration = float(picture["duration"])
     (out / "media-probe.json").write_text(json.dumps(probe, indent=2), encoding="utf-8")
@@ -46,10 +79,18 @@ def main():
         def extract(sample):
             timestamp, label = sample
             time = max(0, min(timestamp, duration - 1 / 30))
-            data = run(["ffmpeg", "-v", "error", "-ss", f"{time:.6f}", "-i", str(video), "-frames:v", "1", "-f", "image2pipe", "-vcodec", "png", "-"])
-            frame = Image.open(io.BytesIO(data)).convert("RGB")
+            def decode(at):
+                try:
+                    data = run(["ffmpeg", "-v", "error", "-ss", f"{at:.6f}", "-i", str(video), "-frames:v", "1", "-f", "image2pipe", "-vcodec", "png", "-"])
+                    return Image.open(io.BytesIO(data)).convert("RGB")
+                except (subprocess.CalledProcessError, FileNotFoundError, PermissionError, UnidentifiedImageError):
+                    return None
+            frame = decode(time)
+            if frame is None:
+                raise RuntimeError(f"FRAME_EXTRACT: no decodable frame at {timestamp:.3f}s")
             return time, label, frame
-        with ThreadPoolExecutor(max_workers=3) as pool:
+        workers = 1 if os.environ.get("MONEYHABITS_FFMPEG_SERIAL") == "1" else 3
+        with ThreadPoolExecutor(max_workers=workers) as pool:
             extracted = list(pool.map(extract, samples))
         for index, (time, label, frame) in enumerate(extracted):
             filename = out / f"{name}-{index:02d}.png"
@@ -64,6 +105,19 @@ def main():
         print(f"QA {name}: {len(frames)} frames", flush=True)
 
     scenes = transcript["scenes"]
+    if report.get("day") == 2:
+        # Full-timeline context plus exact-frame review of risky state changes.
+        bridge = next(s for s in scenes if s["id"] == "scene-3")
+        first = math.floor(bridge["startMs"] / 1000 * 30)
+        sheet("day2-dense-caption-bridge", [((first + i) / 30, f"frame {first + i}") for i in range(-2, 17)], columns=5, width=216)
+        for start in range(0, math.ceil(duration), 20):
+            sheet(f"day2-timeline-{start:02d}", [(float(t), "timeline") for t in range(start, min(start + 20, math.ceil(duration)))], columns=5, width=216)
+        if finance:
+            for sequence in finance["sequences"]:
+                for event in sequence["motionEvents"]:
+                    if event["id"] in {"clear-raise-on-broke", "thesis-reveal", "metric-secondary", "metric-pressure", "wanted", "could", "payoff-clear-copy", "months-reveal", "home-stack", "choices-clear", "spending-rise", "spending-faster"}:
+                        onset = math.floor(event["atSec"] * 30)
+                        sheet(f"day2-dense-{event['id']}", [((onset + i) / 30, f"frame {onset + i}") for i in range(-2, 17)], columns=5, width=216)
     sheet("overall", [((s["startMs"] + s["durationMs"] * .5) / 1000, s["id"]) for s in scenes])
     sheet("hook", [(i / 30, f"frame {i}") for i in range(19)], columns=7, width=216)
     # Center on the actual incoming visual start (180ms before its narration).
@@ -147,6 +201,12 @@ def main():
     raw = run(["ffmpeg", "-v", "error", "-i", str(video), "-vf", "scale=160:284", "-pix_fmt", "gray", "-fps_mode", "passthrough", "-f", "rawvideo", "-"])
     frame_size = 160 * 284
     means = [ImageStat.Stat(Image.frombytes("L", (160, 284), raw[i:i + frame_size])).mean[0] for i in range(0, len(raw), frame_size)]
+    if probe.get("probeFallback") == "ffmpeg-stderr" and means:
+        # The restricted probe fallback sees the container's audio-padded
+        # duration; the decoded video frame count is the authoritative visual
+        # duration for benchmark reporting.
+        duration = len(means) / 30
+        manifest["duration"] = duration
     low_detail = []
     for i in range(0, len(raw), frame_size):
         picture = Image.frombytes("L", (160, 284), raw[i:i + frame_size])

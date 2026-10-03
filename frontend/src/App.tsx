@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import './App.css'
 import ProductionReview from './ProductionReview'
+import { PAGE_BRAND } from './brand'
 
 const API = 'http://127.0.0.1:8000/api'
 const DAY_TITLES: Record<number, string> = {
@@ -434,13 +435,13 @@ function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <div className="brand"><span className="brand-mark"><Play size={13} fill="currentColor"/></span><span>DNDtools</span><span className="brand-divider"/><span className="project-name">Money Habits</span></div>
+        <div className="brand"><span className="brand-mark"><Play size={13} fill="currentColor"/></span><span>DNDtools</span><span className="brand-divider"/><span className="project-name">{PAGE_BRAND.displayName}</span></div>
         <div className="top-status">MASTER TEMPLATE v1.1 · Production Review</div>
       </header>
 
       <main className="studio">
         <section className="hero-row">
-          <div><span className="eyebrow">PRODUCTION STUDIO</span><h1>Money Habits</h1><p>Review canonical videos, validation A–H, and frame-level QA.</p></div>
+          <div><span className="eyebrow">PRODUCTION STUDIO</span><h1>{PAGE_BRAND.displayName}</h1><p>Review canonical videos, validation A–H, and frame-level QA.</p></div>
           <button className="icon-button" onClick={() => { refresh(); setMediaVersion(Date.now()) }} title="Refresh status"><RefreshCw size={17}/></button>
         </section>
 
@@ -472,12 +473,12 @@ function App() {
         <section className="panel reference-panel">
           <div className="step-index">01</div>
           <div className="panel-copy"><div className="panel-heading"><Image size={18}/><h2>Character & Props Reference</h2><span className="chip">Create once</span></div><p>Generate one master sheet, approve the character, then attach it as the reference for every scene.</p></div>
-          <button className={`reference-preview ${referenceAttached ? 'has-image' : ''}`} disabled={!referenceAttached} onClick={() => setReferenceExpanded(true)} aria-label="Open reference image preview">{referenceAttached ? <><img key={mediaVersion} src={`${API}/reference-sheet/image?v=${mediaVersion}`} alt="Money Habits character and props reference"/><span className="preview-hint">Click to enlarge</span></> : <div className="reference-empty"><Image size={21}/><strong>No image</strong></div>}</button>
+          <button className={`reference-preview ${referenceAttached ? 'has-image' : ''}`} disabled={!referenceAttached} onClick={() => setReferenceExpanded(true)} aria-label="Open reference image preview">{referenceAttached ? <><img key={mediaVersion} src={`${API}/reference-sheet/image?v=${mediaVersion}`} alt={`${PAGE_BRAND.displayName} character and props reference`}/><span className="preview-hint">Click to enlarge</span></> : <div className="reference-empty"><Image size={21}/><strong>No image</strong></div>}</button>
           <div className="reference-actions"><button className="button compact" disabled={!referencePrompt} onClick={copyReferencePrompt}>{referenceCopied ? <Check size={16}/> : <Copy size={16}/>} {referenceCopied ? 'Copied' : 'Copy master prompt'}</button><label className="button primary compact upload-button">{uploadingReference ? <Loader2 className="spinner" size={16}/> : <Upload size={16}/>} {referenceAttached ? 'Replace image' : 'Attach image'}<input type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" disabled={uploadingReference} onChange={event => { attachReference(event.target.files?.[0]); event.currentTarget.value='' }}/></label></div>
           <details className="prompt-details"><summary>View prompt <ChevronDown size={15}/></summary><pre>{referencePrompt}</pre></details>
         </section>
 
-        {referenceExpanded && referenceAttached && <div className="image-lightbox" role="dialog" aria-modal="true" aria-label="Character and props reference preview" onClick={() => setReferenceExpanded(false)}><button className="lightbox-close" onClick={() => setReferenceExpanded(false)} aria-label="Close preview">×</button><img src={`${API}/reference-sheet/image?v=${mediaVersion}`} alt="Money Habits character and props reference enlarged" onClick={event => event.stopPropagation()}/></div>}
+        {referenceExpanded && referenceAttached && <div className="image-lightbox" role="dialog" aria-modal="true" aria-label="Character and props reference preview" onClick={() => setReferenceExpanded(false)}><button className="lightbox-close" onClick={() => setReferenceExpanded(false)} aria-label="Close preview">×</button><img src={`${API}/reference-sheet/image?v=${mediaVersion}`} alt={`${PAGE_BRAND.displayName} character and props reference enlarged`} onClick={event => event.stopPropagation()}/></div>}
 
         {expandedImageScene !== null && promptDay !== null && <div className="image-lightbox" role="dialog" aria-modal="true" aria-label={`Scene ${expandedImageScene} image preview`} onClick={() => setExpandedImageScene(null)}><button className="lightbox-close" onClick={() => setExpandedImageScene(null)} aria-label="Close scene image preview"><X size={18}/></button><img src={`${API}/generated-images/${promptDay}/${expandedImageScene}?v=${mediaVersion}`} alt={`Scene ${expandedImageScene} enlarged`} onClick={event => event.stopPropagation()}/></div>}
 

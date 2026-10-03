@@ -27,6 +27,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel, field_validator
 
 from pauseflow.pipeline import DAY_SLUGS, PauseFlowPipeline
+from pauseflow.brand import PAGE_NAME
 from pauseflow.production_rules import DAY_TITLE_CARDS, WORKFLOW_RULES
 from pauseflow.quality_control import probe_duration
 from pauseflow.tts.edge_tts_backend import EdgeTTSBackend
@@ -56,7 +57,7 @@ def load_pipeline() -> PauseFlowPipeline:
     return PauseFlowPipeline(config, root=ROOT)
 
 
-app = FastAPI(title="PauseFlow Money Habits API", version="1.0.0")
+app = FastAPI(title=f"PauseFlow {PAGE_NAME} API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -275,7 +276,7 @@ async def edge_tts_preview(req: EdgeTTSPreviewRequest):
 def project():
     pipeline = load_pipeline()
     return {
-        "name": "Money Habits",
+        "name": PAGE_NAME,
         "script": str(pipeline.script_path),
         "voice": pipeline.config["tts"]["voice"],
         "media_workflow": "CapCut Pro / Seedance manual clips",

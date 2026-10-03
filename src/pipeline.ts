@@ -1,5 +1,5 @@
 import { readFile, writeFile, mkdir, copyFile, rm } from "node:fs/promises";
-import { join, dirname, basename } from "node:path";
+import { join, dirname, basename, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import pLimit from "p-limit";
@@ -8,7 +8,7 @@ import { loadConfig } from "./config.js";
 import { createTtsClient } from "./tts/tts-client.js";
 import { fetchImage } from "./assets/image-fetcher.js";
 import { getDurationSec, getVideoDurationSec, trimTrailingSilence, concatWithSilence, mixSfxOntoVoice, type SfxMixSpec } from "./assets/audio-tools.js";
-import { planOutroDwell, assessProductionDuration } from "./contracts/production-duration.js";
+import { planOutroDwell, assessProductionDuration, approvedDurationException } from "./contracts/production-duration.js";
 import { assessEditorial } from "./contracts/editorial-validation.js";
 import { resolveHeroCaptions, editorialKaraokeAss } from "./contracts/hero-captions.js";
 import { resolveVisualCues, assessSceneDynamics } from "./planning/scene-dynamics.js";
@@ -33,6 +33,10 @@ import {
   extractApprovedVoiceOver,
   resolveNumberHighlights,
 } from "./contracts/content-contract.js";
+import { LOCKED_PAGE_BRAND } from "./brand-config.js";
+import { decorateDay8RichStory } from "./day8-rich-story.js";
+import { decorateDay9RichStory } from "./day9-rich-story.js";
+import { decorateDay10to14RichStory } from "./day10-14-rich-story.js";
 
 const TOTAL_STEPS = 8;
 const DURATION_MIN_SEC = 60;
@@ -110,6 +114,20 @@ export async function runPipeline(scriptPath: string): Promise<void> {
   const numberHighlightPath = join(outputDir, "number_highlights.json");
   const numberHighlightFile = NumberHighlightFileSchema.parse(JSON.parse(await readFile(numberHighlightPath, "utf8")));
   if (numberHighlightFile.source !== APPROVED_SCRIPT_FILE) throw new Error("SOURCE_REVISION: canonical render requires current approved number highlights");
+  const durationException = approvedDurationException(numberHighlightFile.day, outputDir, PROJECT_ROOT);
+  const day9RichStory = numberHighlightFile.day === 9 && ["day-9-v12-differentactually", "day-9-v12-short-differentactually"]
+    .some(name => resolve(outputDir) === resolve(PROJECT_ROOT, "output", "benchmarks", name));
+  const day10to14RichStory = numberHighlightFile.day >= 10 && numberHighlightFile.day <= 14
+    && resolve(outputDir) === resolve(PROJECT_ROOT, "output", "benchmarks", `day-${numberHighlightFile.day}-v12-differentactually`);
+  if (process.env.DAY8_COMPOSE_ONLY === "1" && !(numberHighlightFile.day === 8 && durationException)) {
+    throw new Error("DAY8_COMPOSE_ONLY is restricted to the approved isolated Day 8 benchmark");
+  }
+  if (process.env.DAY9_COMPOSE_ONLY === "1" && !day9RichStory) {
+    throw new Error("DAY9_COMPOSE_ONLY is restricted to the isolated Day 9 benchmark");
+  }
+  if (process.env.DAY10_14_COMPOSE_ONLY === "1" && !day10to14RichStory) {
+    throw new Error("DAY10_14_COMPOSE_ONLY is restricted to the isolated Day 10–14 benchmarks");
+  }
   const approvedVoice = extractApprovedVoiceOver(approvedMarkdown, numberHighlightFile.day);
   assertScriptIntegrity(script, approvedVoice);
   const visibleTextAudit = auditVisibleText({
@@ -117,7 +135,7 @@ export async function runPipeline(scriptPath: string): Promise<void> {
     approvedVoice,
     auxiliaryMarkdown,
     numberHighlights: numberHighlightFile,
-    brandConfig: [script.metadata.channel, cfg.tiktok.displayName, cfg.tiktok.handle, cfg.tiktok.followers, "DAILY HABITS", "#MoneyHabits"],
+    brandConfig: [script.metadata.channel, LOCKED_PAGE_BRAND.displayName, LOCKED_PAGE_BRAND.handle, cfg.tiktok.followers, LOCKED_PAGE_BRAND.tagline, "#MoneyHabits"],
   });
   const themeCss = await readFile(join(TPL_DIR, "styles.css"), "utf8");
   assertMoneyHabitsTheme(themeCss, JSON.stringify(script));
@@ -211,7 +229,7 @@ export async function runPipeline(scriptPath: string): Promise<void> {
   const sceneValidation = assertTemplateScenePlan(script, transcript);
   const visualCues = resolveVisualCues(script, transcript);
   let sceneDynamics = assessSceneDynamics(transcript, visualCues);
-  const outroDwell = planOutroDwell(transcript, SCENE_GAP_SEC, OUTRO_HOLD_SEC);
+  const outroDwell = planOutroDwell(transcript, SCENE_GAP_SEC, OUTRO_HOLD_SEC, durationException);
   const resolvedNumberHighlights = resolveNumberHighlights(numberHighlightFile, transcript);
   const numberHighlightGate = numberHighlightFile.items.length === 0
     ? { status: "N/A" as const, reason: "no approved number highlight", resolved: [] }
@@ -273,10 +291,11 @@ export async function runPipeline(scriptPath: string): Promise<void> {
       F_TEMPLATE_SCENE: sceneValidation,
       G_TESTS: testGate,
       H_VISUAL_VARIETY: visualVarietyGate,
-      I_PRODUCTION_DURATION: assessProductionDuration(outroDwell.finalTargetSec, "planned"),
+      I_PRODUCTION_DURATION: assessProductionDuration(outroDwell.finalTargetSec, "planned", durationException),
       ...financeGates,
     },
     approvedVoiceText: approvedVoice,
+    durationException: durationException ?? null,
     outroDwell,
     sceneDynamics,
   };
@@ -371,7 +390,7 @@ export async function runPipeline(scriptPath: string): Promise<void> {
 
   // Canonical Money Habits identity; legacy avatar.png belongs to another palette.
   // Keep old media immutable. Future renders use the palette-safe shared mark.
-  const bundledAvatar = join(PROJECT_ROOT, "assets", "money-habits-avatar.svg");
+  const bundledAvatar = join(PROJECT_ROOT, LOCKED_PAGE_BRAND.avatarAsset);
   const ttAvatarFile = "tiktok-avatar.svg";
   const ttAvatarOut = join(outputDir, ttAvatarFile);
   if (cfg.tiktok.avatarUrl) throw new Error("THEME: Money Habits uses the approved shared avatar; external avatar requires brand review");
@@ -383,7 +402,7 @@ export async function runPipeline(scriptPath: string): Promise<void> {
     lastWordEndSec: Math.max(...scene.words.map((word) => word.endMs)) / 1000,
   }));
 
-  const html = composeHtml({
+  let html = composeHtml({
     script,
     sceneAudio: sceneAudioFromTranscript,
     gapSec: SCENE_GAP_SEC,
@@ -396,6 +415,18 @@ export async function runPipeline(scriptPath: string): Promise<void> {
     visualCues,
     financePlan,
   });
+  if (numberHighlightFile.day === 8 && durationException) {
+    if (!financePlan) throw new Error("DAY8_STORY_REQUIRES_FINANCE_PLAN");
+    html = decorateDay8RichStory(html, financePlan);
+  }
+  if (day9RichStory) {
+    if (!financePlan) throw new Error("DAY9_STORY_REQUIRES_FINANCE_PLAN");
+    html = decorateDay9RichStory(html, financePlan);
+  }
+  if (day10to14RichStory) {
+    if (!financePlan) throw new Error("DAY10_14_STORY_REQUIRES_FINANCE_PLAN");
+    html = decorateDay10to14RichStory(html, financePlan);
+  }
   assertMoneyHabitsTheme(themeCss, `${JSON.stringify(script)}\n${html}`);
 
   // hyperframes expects: index.html (NOT composition.html), hyperframes.json, meta.json in DIR
@@ -415,6 +446,11 @@ export async function runPipeline(scriptPath: string): Promise<void> {
   // only styles.<theme>.css differs (visual look), and always lands as "styles.css".
   await copyFile(join(TPL_DIR, "styles.css"), join(outputDir, "styles.css"));
   await copyFile(join(TPL_DIR, "animations.js"), join(outputDir, "animations.js"));
+
+  if (process.env.DAY8_COMPOSE_ONLY === "1" || process.env.DAY9_COMPOSE_ONLY === "1" || process.env.DAY10_14_COMPOSE_ONLY === "1") {
+    log.info("Episode-scoped compose-only: composition ready for real-browser GSAP preflight; no render performed");
+    return;
+  }
 
   // STEP 7
   log.step(7, TOTAL_STEPS, "Render with hyperframes");
@@ -455,7 +491,7 @@ export async function runPipeline(scriptPath: string): Promise<void> {
   await copyFile(subtitledVideo, videoPath);
   await rm(subtitledVideo, { force: true });
   const finalVideoSec = await getVideoDurationSec(videoPath);
-  validationReport.gates.I_PRODUCTION_DURATION = assessProductionDuration(finalVideoSec, "measured");
+  validationReport.gates.I_PRODUCTION_DURATION = assessProductionDuration(finalVideoSec, "measured", durationException);
   await persistProductionValidation(outputDir, validationReport);
   assertProductionAllowed(validationReport.gates);
 

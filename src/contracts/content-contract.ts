@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { z } from "zod";
 import type { Script } from "../render/script-schema.js";
 import { parseSrt } from "../assets/subtitle-tools.js";
+import { LOCKED_PAGE_BRAND } from "../brand-config.js";
 
 export const APPROVED_SCRIPT_FILE = "money-habits-script-v2.1-verified.md";
 export const HISTORICAL_SCRIPT_FILE = "money-habits-script-v2-optimized.md";
@@ -40,7 +41,7 @@ export function extractApprovedVoiceOver(markdown: string, day: number): string 
 
 export const NumberHighlightFileSchema = z.object({
   version: z.literal("1.0"),
-  day: z.number().int().min(1).max(7),
+  day: z.number().int().min(1).max(14),
   source: ScriptSourceSchema,
   items: z.array(z.object({
     id: z.string().min(1),
@@ -242,7 +243,7 @@ export function auditVisibleText(args: {
     }
   }
   candidates.push(
-    { path: "shell.brandTag", text: "DAILY HABITS" },
+    { path: "shell.brandTag", text: LOCKED_PAGE_BRAND.tagline },
     { path: "platform.follow", text: "Follow" },
     { path: "platform.following", text: "Following" },
   );

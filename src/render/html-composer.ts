@@ -6,6 +6,7 @@ import type { TiktokConfig } from "../config.js";
 import type { ResolvedVisualCue } from "../planning/scene-dynamics.js";
 import type { ResolvedFinancePlan } from "../contracts/finance-motion.js";
 import { renderFinanceSequence } from "./finance-renderer.js";
+import { LOCKED_PAGE_BRAND } from "../brand-config.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TPL_DIR = join(__dirname, "templates");
@@ -19,8 +20,8 @@ const VIGNETTE_HTML = `<div class="vignette"></div>`;
 
 // Default TikTok config (used if not passed)
 const DEFAULT_TIKTOK: TiktokConfig = {
-  displayName: "CườngIT",
-  handle: "@cuongit96",
+  displayName: LOCKED_PAGE_BRAND.displayName,
+  handle: LOCKED_PAGE_BRAND.handle,
   followers: "2k followers",
 };
 
@@ -57,7 +58,14 @@ export interface ComposeArgs {
 
 export function composeHtml(args: ComposeArgs): string {
   const { script, sceneAudio, gapSec, bgImageRelPath, audioRelPath } = args;
-  const tiktok = args.tiktok ?? DEFAULT_TIKTOK;
+  const tiktok = args.tiktok
+    ? { ...args.tiktok, displayName: LOCKED_PAGE_BRAND.displayName, handle: LOCKED_PAGE_BRAND.handle }
+    : DEFAULT_TIKTOK;
+  // Generic callers may omit TikTok config (for example the news fixtures),
+  // so keep their source metadata as the shell title. Any explicit profile is
+  // normalized to the locked page identity so a legacy name cannot leak into
+  // a new render.
+  const brandName = args.tiktok ? LOCKED_PAGE_BRAND.displayName : undefined;
   const tiktokAvatar = args.tiktokAvatarRelPath ?? "tiktok-avatar.jpg";
   const outroHoldSec = args.outroHoldSec ?? 3;
 
@@ -90,11 +98,11 @@ export function composeHtml(args: ComposeArgs): string {
       }
       return main;
     }
-    return renderScene(scene, start, duration, audioOffset, spokenEnd, args.numberHighlights ?? [], bgImageRelPath, tiktok, tiktokAvatar, args.visualCues ?? []);
+    return renderScene(scene, start, duration, audioOffset, spokenEnd, args.numberHighlights ?? [], bgImageRelPath, tiktok, tiktokAvatar, args.visualCues ?? [], brandName);
   }).join("\n");
 
   // Persistent shell — uses tiktok handle in footer
-  const shellHtml = renderShell(script.metadata, tiktok, Boolean(args.financePlan?.editorial));
+  const shellHtml = renderShell(script.metadata, tiktok, Boolean(args.financePlan?.editorial), brandName);
 
   const animJs = readFileSync(join(TPL_DIR, "animations.js"), "utf8")
     + (args.financePlan ? "\n" + readFileSync(join(TPL_DIR, "finance-animations.js"), "utf8") : "");
@@ -111,8 +119,8 @@ export function composeHtml(args: ComposeArgs): string {
 }
 
 // ── PERSISTENT SHELL ───────────────────────────────────────────────────────
-function renderShell(metadata: Script["metadata"], tiktok: TiktokConfig, hidePersistentHandle = false): string {
-  const channel = escapeHtml(metadata.channel);
+function renderShell(metadata: Script["metadata"], tiktok: TiktokConfig, hidePersistentHandle = false, brandName?: string): string {
+  const channel = escapeHtml(brandName ?? metadata.channel);
   const handle = escapeHtml(tiktok.handle);
   return `
 <!-- Shell: persistent brand elements (no data-start → always visible) -->
@@ -122,7 +130,7 @@ function renderShell(metadata: Script["metadata"], tiktok: TiktokConfig, hidePer
   <div class="brand-icon">✦</div>
   <div class="brand-text">
     <div class="brand-name">${channel}</div>
-    <div class="brand-tag">DAILY HABITS</div>
+    <div class="brand-tag">${escapeHtml(LOCKED_PAGE_BRAND.tagline)}</div>
   </div>
 </div>
 
@@ -147,6 +155,7 @@ function renderScene(
   tiktok: TiktokConfig,
   tiktokAvatarRelPath: string,
   visualCues: ResolvedVisualCue[],
+  brandName?: string,
 ): string {
   const td = scene.templateData;
 
@@ -175,7 +184,7 @@ function renderScene(
       layoutName = "callout";
       break;
     case "outro":
-      inner = renderOutroInner(td, tiktok, tiktokAvatarRelPath);
+      inner = renderOutroInner(td, tiktok, tiktokAvatarRelPath, brandName);
       layoutName = "outro";
       break;
     default: {
@@ -353,12 +362,14 @@ function renderOutroInner(
   td: Extract<TemplateDataType, { template: "outro" }>,
   tiktok: TiktokConfig,
   avatarRelPath: string,
+  brandName?: string,
 ): string {
   const ttCard = renderTiktokCard(tiktok, avatarRelPath);
+  const channelName = brandName ?? td.channelName;
   return `
 <div class="layout-outro">
   <div class="out-cta-top">${escapeHtml(td.ctaTop)}</div>
-  <div class="out-channel">${escapeHtml(td.channelName)}</div>
+  <div class="out-channel">${escapeHtml(channelName)}</div>
   <div class="out-underline"></div>
   <div class="out-source">${escapeHtml(td.source)}</div>
 </div>
@@ -366,6 +377,7 @@ ${ttCard}`.trim();
 }
 
 function renderEditorialOutro(td: Extract<TemplateDataType,{template:"outro"}>, tiktok:TiktokConfig, avatar:string):string {
+  if(td.ctaTop!=="COMMENT 1, 2, OR 3") return `<div class="layout-outro editorial-outro"><div class="out-cta-top" data-role="CTA">${escapeHtml(td.ctaTop)}</div></div>${renderTiktokCard(tiktok,avatar)}`;
   const icons=[
     '<rect x="18" y="18" width="64" height="64" rx="12"/><path d="M40 35l25 15-25 15z"/>',
     '<path d="M23 40h54l-6 44H29zM36 40V28a14 14 0 0 1 28 0v12"/>',

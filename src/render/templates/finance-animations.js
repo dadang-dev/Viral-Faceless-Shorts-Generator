@@ -12,8 +12,13 @@
         const el = find(id);
         if (!el) throw new Error("MODEL_NOT_COMMUNICATED: " + id);
         if (["reveal", "stack", "grow", "draw"].includes(event.action)) {
-          const x = event.transition === "push-stack" ? 48 : event.transition === "split-expand" ? 40 : 0;
-          const y = event.transition === "directional-progression" ? -24 : 16;
+          const requestedX = event.transition === "push-stack" ? 48 : event.transition === "split-expand" ? 40 : 0;
+          const requestedY = event.transition === "directional-progression" ? -24 : 16;
+          // Shared safe-frame clamp: the entrance transform itself must not
+          // clip a card whose final CSS box is already valid.
+          const left = el.offsetLeft, top = el.offsetTop, width = el.offsetWidth, height = el.offsetHeight;
+          const x = Math.max(70 - left, Math.min(1010 - left - width, requestedX));
+          const y = Math.max(240 - top, Math.min(1340 - top - height, requestedY));
           timeline.fromTo(el, { opacity:0, x:x, y:y }, { opacity:event.revealOpacity ?? 1, x:0, y:0, duration:.36 }, at);
           if (event.transition === "stat-punch") {
             timeline.fromTo(el,{scale:.96},{scale:1.06,duration:.18},at);
@@ -38,8 +43,12 @@
             if(b && event.pose.route === "horizontal-first") {
               timeline.to(el,{left:b.x,width:b.w,height:b.h,duration:.18},at);
               timeline.to(el,{top:b.y,duration:.24},at+.18);
+              if(event.pose.opacity !== undefined) timeline.to(el,{opacity:event.pose.opacity,duration:.24},at+.18);
             } else timeline.to(el,{...(b ? {left:b.x,top:b.y,width:b.w,height:b.h} : {}), ...(event.pose.opacity !== undefined ? {opacity:event.pose.opacity} : {}),duration:.42},at);
-            if(event.pose.fontSize) timeline.to(el.querySelector(".fm-copy"),{fontSize:event.pose.fontSize,duration:.42},at);
+            if(event.pose.fontSize) {
+              const type = el.querySelector(".fm-copy, .fm-number");
+              if (type) timeline.to(type,{fontSize:event.pose.fontSize,duration:event.pose.route === "horizontal-first" ? .18 : .42},at);
+            }
           }
           const dimming = event.pose && event.pose.opacity !== undefined && event.pose.opacity < 1;
           nodes.forEach(n => { const ring = n.querySelector(".fm-focus-ring"); if (ring) timeline.to(ring,{opacity:!dimming && n === el ? 1 : 0,duration:.18},at); });

@@ -1,6 +1,6 @@
 # v1.2 editorial/data-integrity patch
 
-Architecture remains approved; corrected Day 1 benchmark must stop at READY FOR VISUAL REVIEW. No Day 4–7 render, no v1.3, no engine redesign, no changes to protected production Day 1–3 MP4s. Use `output/benchmarks/day-1-v12-editorial/`, distinct from the historical benchmark.
+Architecture remains approved. This document records technical rules from the editorial revision; current authorization and output destination come from `docs/migration-status.md`. New renders await human review independently of the already-approved Day 1 R2. Preserve protected artifacts, v1.2 architecture and the requested Day scope.
 
 ## Source and financial logic
 

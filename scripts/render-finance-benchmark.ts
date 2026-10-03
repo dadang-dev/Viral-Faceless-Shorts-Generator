@@ -13,6 +13,7 @@ import { renderWithHyperframes } from "../src/render/hyperframes-runner.js";
 import { burnSubtitles } from "../src/assets/subtitle-tools.js";
 import { getVideoDurationSec } from "../src/assets/audio-tools.js";
 import { assertBenchmarkDestination } from "../src/contracts/benchmark-isolation.js";
+import { LOCKED_PAGE_BRAND } from "../src/brand-config.js";
 
 const json = async(path:string) => JSON.parse(await readFile(path,"utf8"));
 const hash = async(path:string) => createHash("sha256").update(await readFile(path)).digest("hex");
@@ -48,8 +49,8 @@ export async function runBenchmark(render:boolean) {
   // supplies value provenance, not a replacement manually-timed highlight list.
   assertFinanceHighlights(finance,resolvedNumbers);
   const baselineHtml=await readFile(join(baseline,"index.html"),"utf8");
-  const tiktok={displayName:"Money Habits",handle:"@moneyhabits",followers:baselineHtml.match(/class="tt-followers">([^<]*)/)![1]};
-  const visible=auditVisibleText({script,approvedVoice:approved,auxiliaryMarkdown:await readFile(AUXILIARY_SCRIPT_FILE,"utf8"),numberHighlights:numbers,brandConfig:[...Object.values(tiktok),"Money Habits","DAILY HABITS"]});
+  const tiktok={displayName:LOCKED_PAGE_BRAND.displayName,handle:LOCKED_PAGE_BRAND.handle,followers:baselineHtml.match(/class="tt-followers">([^<]*)/)![1]};
+  const visible=auditVisibleText({script,approvedVoice:approved,auxiliaryMarkdown:await readFile(AUXILIARY_SCRIPT_FILE,"utf8"),numberHighlights:numbers,brandConfig:[script.metadata.channel,...Object.values(tiktok),LOCKED_PAGE_BRAND.tagline]});
   const legacyVisible=visible.filter(v=>!finance.sequences.some(s=>s.sceneIds.some(id=>v.path.startsWith(`${id}.`))));
   const financeVisible=finance.sequences.flatMap(s=>s.elements.flatMap(e=>e.copy?[{path:`${s.id}.${e.id}`,text:e.copy.text,source:"approved_voice",sourceSpan:e.copy.sourceSpan,sceneId:e.copy.sceneId}]:[]));
   const duration=await getVideoDurationSec(join(baseline,"video.mp4"));
@@ -81,7 +82,7 @@ export async function runBenchmark(render:boolean) {
   await writeFile(join(out,"index.html"),html);
   await writeFile(join(out,"meta.json"),JSON.stringify({id:"day-1-v12",name:script.metadata.title},null,2));
   await copyFile("src/render/templates/styles.css",join(out,"styles.css"));
-  await copyFile("assets/money-habits-avatar.svg",join(out,"tiktok-avatar.svg"));
+  await copyFile(LOCKED_PAGE_BRAND.avatarAsset,join(out,"tiktok-avatar.svg"));
   if(render){
     // The locked runner invokes npx through a shell; keep its existing behavior
     // and pass workspace-relative paths so Windows spaces cannot split arguments.

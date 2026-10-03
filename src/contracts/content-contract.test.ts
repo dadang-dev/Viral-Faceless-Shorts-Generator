@@ -12,6 +12,7 @@ import {
   resolveNumberHighlights,
   type WordBoundaryTranscript,
 } from "./content-contract.js";
+import { LOCKED_PAGE_BRAND } from "../brand-config.js";
 
 const approvedMarkdown = readFileSync("money-habits-script-v2-optimized.md", "utf8");
 const auxiliaryMarkdown = readFileSync("money-habits-ALL.md", "utf8");
@@ -35,7 +36,7 @@ describe("Money Habits source contract", () => {
       approvedVoice: extractApprovedVoiceOver(approvedMarkdown, 1),
       auxiliaryMarkdown,
       numberHighlights: highlights,
-      brandConfig: ["Money Habits", "@moneyhabits", "US TikTok", "DAILY HABITS", "#MoneyHabits"],
+      brandConfig: [script.metadata.channel, LOCKED_PAGE_BRAND.displayName, LOCKED_PAGE_BRAND.handle, "US TikTok", LOCKED_PAGE_BRAND.tagline, "#MoneyHabits"],
     });
     expect(audit.length).toBeGreaterThan(20);
   });
@@ -48,7 +49,7 @@ describe("Money Habits source contract", () => {
       approvedVoice: extractApprovedVoiceOver(approvedMarkdown, 1),
       auxiliaryMarkdown,
       numberHighlights: highlights,
-      brandConfig: ["Money Habits", "@moneyhabits", "US TikTok", "DAILY HABITS", "#MoneyHabits"],
+      brandConfig: [script.metadata.channel, LOCKED_PAGE_BRAND.displayName, LOCKED_PAGE_BRAND.handle, "US TikTok", LOCKED_PAGE_BRAND.tagline, "#MoneyHabits"],
     })).toThrow(/NO_UNAPPROVED_COPY/);
   });
 
@@ -60,6 +61,19 @@ describe("Money Habits source contract", () => {
 });
 
 describe("number highlight contract", () => {
+  it("recognizes the newly approved Day 8–14 source without changing prior days", () => {
+    const canonical = readFileSync("money-habits-script-v2.1-verified.md", "utf8");
+    for (let day = 8; day <= 14; day += 1) {
+      expect(extractApprovedVoiceOver(canonical, day).length).toBeGreaterThan(100);
+      expect(NumberHighlightFileSchema.parse({
+        version: "1.0", day, source: "money-habits-script-v2.1-verified.md", items: [],
+      }).day).toBe(day);
+    }
+    expect(() => NumberHighlightFileSchema.parse({
+      version: "1.0", day: 15, source: "money-habits-script-v2.1-verified.md", items: [],
+    })).toThrow();
+  });
+
   it("accepts an empty approved list for a Day with no numeric highlight", () => {
     expect(NumberHighlightFileSchema.parse({
       version: "1.0", day: 4, source: "money-habits-script-v2-optimized.md", items: [],

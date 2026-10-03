@@ -1,4 +1,5 @@
 import json
+import os
 import shutil
 import subprocess
 import tempfile
@@ -21,7 +22,10 @@ class CorePipelineTests(unittest.TestCase):
     def test_locked_audio_is_longer_than_sixty_seconds(self):
         path = ROOT / "output" / "day-1" / "voice.mp3"
         self.assertTrue(path.is_file(), "Run Day 1 validation/TTS before the acceptance suite")
-        ffprobe = shutil.which("ffprobe")
+        # Prefer the same explicit runtime binary used by frame-level QA. The
+        # Windows App Execution Alias can resolve `ffprobe` while denying
+        # child-process execution, so an injected path is the portable escape.
+        ffprobe = os.environ.get("MONEYHABITS_FFPROBE") or shutil.which("ffprobe")
         self.assertIsNotNone(ffprobe)
         result = subprocess.run(
             [ffprobe, "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(path)],

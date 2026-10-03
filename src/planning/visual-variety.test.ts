@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { extractApprovedVoiceOver, NumberHighlightFileSchema, type WordBoundaryTranscript } from "../contracts/content-contract.js";
 import { ScriptSchema } from "../render/script-schema.js";
+import { LOCKED_PAGE_BRAND } from "../brand-config.js";
 import {
   VISUAL_ARCHETYPES,
   VisualPlanSchema,
@@ -26,7 +27,7 @@ const contractArgs = {
   approvedVoice: extractApprovedVoiceOver(approvedMarkdown, 1),
   auxiliaryMarkdown: readFileSync("money-habits-ALL.md", "utf8"),
   numberHighlights: NumberHighlightFileSchema.parse(JSON.parse(readFileSync("output/day-1/number_highlights.json", "utf8"))),
-  brandConfig: ["Money Habits", "@moneyhabits", "US TikTok", "DAILY HABITS", "#MoneyHabits"],
+  brandConfig: [day1.metadata.channel, LOCKED_PAGE_BRAND.displayName, LOCKED_PAGE_BRAND.handle, "US TikTok", LOCKED_PAGE_BRAND.tagline, "#MoneyHabits"],
   history: { version: "1.1", entries: [] },
 };
 

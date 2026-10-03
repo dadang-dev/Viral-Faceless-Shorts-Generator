@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { loadConfig } from "./config.js";
+import { LOCKED_PAGE_BRAND } from "./brand-config.js";
 
 const ENV_KEYS = [
   "TTS_PROVIDER",
@@ -25,6 +26,8 @@ const ENV_KEYS = [
   "VBEE_POLL_TIMEOUT_MS",
   "TTS_CONCURRENCY",
   "VIDEO_THEME",
+  "TIKTOK_DISPLAY_NAME",
+  "TIKTOK_HANDLE",
 ];
 
 describe("loadConfig", () => {
@@ -71,6 +74,22 @@ describe("loadConfig", () => {
       process.env.TTS_PROVIDER = "edgetts";
       const cfg = loadConfig();
       expect(cfg.ttsProvider).toBe("edge-tts");
+    });
+  });
+
+  describe("locked page identity", () => {
+    it("uses DifferentActually for every new render", () => {
+      const cfg = loadConfig();
+      expect(cfg.tiktok.displayName).toBe(LOCKED_PAGE_BRAND.displayName);
+      expect(cfg.tiktok.handle).toBe(LOCKED_PAGE_BRAND.handle);
+    });
+
+    it("ignores legacy TikTok identity overrides", () => {
+      process.env.TIKTOK_DISPLAY_NAME = "Money Habits";
+      process.env.TIKTOK_HANDLE = "@moneyhabits";
+      const cfg = loadConfig();
+      expect(cfg.tiktok.displayName).toBe(LOCKED_PAGE_BRAND.displayName);
+      expect(cfg.tiktok.handle).toBe(LOCKED_PAGE_BRAND.handle);
     });
   });
 

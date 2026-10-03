@@ -16,6 +16,7 @@ import { renderWithHyperframes } from "../src/render/hyperframes-runner.js";
 import { burnSubtitles } from "../src/assets/subtitle-tools.js";
 import { getVideoDurationSec } from "../src/assets/audio-tools.js";
 import { assertBenchmarkDestination } from "../src/contracts/benchmark-isolation.js";
+import { LOCKED_PAGE_BRAND } from "../src/brand-config.js";
 
 const out=resolve("output/benchmarks/day-1-v12-editorial");assertBenchmarkDestination(out);
 const json=async(p:string)=>JSON.parse(await readFile(p,"utf8"));
@@ -31,8 +32,8 @@ const captions=resolveHeroCaptions(await json(join(out,"hero-captions.json")),fi
 const editorial=assessEditorial(finance,transcript,captions,script),numeric=validateNumericRelationships(input.data,input.relationships);
 const numbers=NumberHighlightFileSchema.parse(await json(join(out,"number_highlights.json"))),highlights=resolveNumberHighlights(numbers,transcript);assertFinanceHighlights(finance,highlights);
 const baselineHtml=await readFile("output/day-1/index.html","utf8");
-const tiktok={displayName:"Money Habits",handle:"@moneyhabits",followers:baselineHtml.match(/class="tt-followers">([^<]*)/)![1]};
-const visible=auditVisibleText({script,approvedVoice:approved,auxiliaryMarkdown:await readFile(AUXILIARY_SCRIPT_FILE,"utf8"),numberHighlights:numbers,brandConfig:[...Object.values(tiktok),"DAILY HABITS"]});
+const tiktok={displayName:LOCKED_PAGE_BRAND.displayName,handle:LOCKED_PAGE_BRAND.handle,followers:baselineHtml.match(/class="tt-followers">([^<]*)/)![1]};
+const visible=auditVisibleText({script,approvedVoice:approved,auxiliaryMarkdown:await readFile(AUXILIARY_SCRIPT_FILE,"utf8"),numberHighlights:numbers,brandConfig:[script.metadata.channel,...Object.values(tiktok),LOCKED_PAGE_BRAND.tagline]});
 const dwell=planOutroDwell(transcript,.2,3);
 const html=composeHtml({script,financePlan:finance,sceneAudio:transcript.scenes.map((s:any)=>({id:s.id,durationSec:s.durationMs/1000,lastWordEndSec:s.words.at(-1).endMs/1000})),gapSec:.2,bgImageRelPath:null,audioRelPath:"voice.mp3",tiktok,tiktokAvatarRelPath:"tiktok-avatar.svg",outroHoldSec:dwell.outroHoldSec,numberHighlights:highlights});
 const css=await readFile("src/render/templates/styles.css","utf8");assertMoneyHabitsTheme(css,html);
@@ -52,7 +53,7 @@ const tests=await json(".runtime-logs/editorial-vitest.json");if(!tests.success|
 report.gates.G_TESTS={status:"PASS",node:tests.numPassedTests,python:Number(py.match(/TEST_COUNT=(\d+)/)?.[1])};
 await writeFile(join(out,"test-results.json"),JSON.stringify({...report.gates.G_TESTS,typecheck:"PASS",frontendBuild:"PASS",frontendLint:"PASS",skillValidator:"PASS",failed:0},null,2));
 await persistProductionValidation(out,report);assertProductionAllowed(report.gates);
-await writeFile(join(out,"index.html"),html);await copyFile("src/render/templates/styles.css",join(out,"styles.css"));await copyFile("assets/money-habits-avatar.svg",join(out,"tiktok-avatar.svg"));
+await writeFile(join(out,"index.html"),html);await copyFile("src/render/templates/styles.css",join(out,"styles.css"));await copyFile(LOCKED_PAGE_BRAND.avatarAsset,join(out,"tiktok-avatar.svg"));
 await writeFile(join(out,"meta.json"),JSON.stringify({id:"day-1-v12-editorial",name:script.metadata.title},null,2));
 await writeFile(join(out,"subtitles.ass"),editorialKaraokeAss(transcript,captions,script));
 if(process.argv.includes("--render")){

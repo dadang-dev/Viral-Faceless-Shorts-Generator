@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { LOCKED_PAGE_BRAND } from "./brand-config.js";
 
 export type TtsProvider = "edge-tts" | "lucylab" | "elevenlabs" | "vbee";
 export type VideoTheme = "money-habits";
@@ -152,8 +153,11 @@ export function loadConfig(): Config {
     vbeePollIntervalMs: intDefault("VBEE_POLL_INTERVAL_MS", 2000),
     vbeePollTimeoutMs: intDefault("VBEE_POLL_TIMEOUT_MS", 60000),
     tiktok: {
-      displayName: process.env.TIKTOK_DISPLAY_NAME ?? "Money Habits",
-      handle: process.env.TIKTOK_HANDLE ?? "@moneyhabits",
+      // Public identity is locked centrally. Legacy TIKTOK_* environment
+      // overrides are intentionally ignored so old values cannot leak into a
+      // new render after the page rename.
+      displayName: LOCKED_PAGE_BRAND.displayName,
+      handle: LOCKED_PAGE_BRAND.handle,
       followers: process.env.TIKTOK_FOLLOWERS ?? "1.2M followers",
       avatarUrl: process.env.TIKTOK_AVATAR_URL || undefined,
     },

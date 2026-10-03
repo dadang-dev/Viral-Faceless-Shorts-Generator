@@ -2,12 +2,13 @@ import { z } from "zod";
 import { ScriptSourceSchema, REQUIRED_EDGE_VOICE, normalizeContractText as norm, assertScriptIntegrity, type WordBoundaryTranscript } from "./content-contract.js";
 import type { Script } from "../render/script-schema.js";
 import { NumericRelationshipSchema, validateNumericRelationships } from "./numeric-relationships.js";
+import { validateFinanceGeometry } from "./visual-collision.js";
 
 const Id = z.string().regex(/^[a-zA-Z][a-zA-Z0-9_-]*$/);
 export const SourceSpanSchema = z.object({ sceneId: Id, sourceSpan: z.string().min(1), source: ScriptSourceSchema }).strict();
 export type SourceSpan = z.infer<typeof SourceSpanSchema>;
 const Copy = SourceSpanSchema.extend({ text: z.string().min(1).max(90) }).strict();
-const Units = z.enum(["USD", "USD/month", "apps", "nights/week", "times/week", "count"]);
+const Units = z.enum(["USD", "USD/month", "apps", "nights/week", "times/week", "months", "count"]);
 const commonDatum = { id: Id, display: z.string().min(1), value: z.number().finite().nonnegative(), unit: Units,
   qualifier: z.enum(["exact", "almost", "about", "over", "approx"]).default("exact"), unitSource: SourceSpanSchema.optional() };
 export const DatumSchema = z.discriminatedUnion("sourceType", [
@@ -23,10 +24,12 @@ export const ModelSchema = z.enum(["typography", "data-bar", "stacked-cost", "ba
 const Box = z.object({ x: z.number().min(70), y: z.number().min(240), w: z.number().min(60), h: z.number().min(30) }).strict();
 export const ElementSchema = z.object({
   id: Id, kind: z.enum(["text", "bar", "stack-item", "markers", "node", "metric"]), box: Box,
-  copy: Copy.optional(), datumId: Id.optional(), icon: z.enum(["stream", "fitness", "cloud", "app", "coffee", "order", "voice", "habit"]).optional(),
+  copy: Copy.optional(), datumId: Id.optional(), icon: z.enum(["stream", "fitness", "cloud", "app", "coffee", "order", "voice", "habit", "home", "car", "meal", "wallet", "calendar", "question", "desire"]).optional(),
   size: z.enum(["heading", "body", "small"]).default("body"), initial: z.boolean().default(false),
   orientation: z.enum(["horizontal", "vertical"]).default("horizontal"), scaleGroup: Id.optional(),
   connectsTo: Id.optional(), loop: z.boolean().optional(),
+  /** Explicitly declared semantic overlap (e.g. an icon nested in its own node). */
+  overlapSafeWith: z.array(Id).optional(),
   role: z.enum(["HERO", "SECTION_MARKER", "DATA_LABEL", "STRUCTURAL_LABEL", "CTA"]).optional(),
   fontSize: z.number().min(40).max(180).optional(),
   numericTypography: z.boolean().optional(),
@@ -55,7 +58,7 @@ export const SequenceSchema = z.object({ id: Id, sceneIds: z.array(Id).min(1), v
   entryRelation: z.literal("new-topic"), entryTransition: z.literal("crossfade"),
   elements: z.array(ElementSchema).min(1).max(12), motionEvents: z.array(MotionEventSchema).min(1),
 }).strict();
-export const FinancePlanSchema = z.object({ version: z.literal("1.2"), day: z.number().int().min(1).max(7),
+export const FinancePlanSchema = z.object({ version: z.literal("1.2"), day: z.number().int().min(1).max(14),
   source: ScriptSourceSchema, referencePolicy: z.literal("VISUAL_REFERENCE_ONLY"),
   data: z.array(DatumSchema), sequences: z.array(SequenceSchema).min(1),
   relationships: z.array(NumericRelationshipSchema).optional(),
@@ -135,7 +138,7 @@ export function literalNumbers(text: string): number[] {
 export function datumDisplay(d: Pick<Datum, "value" | "unit" | "qualifier">): string {
   const prefix = ({exact:"", almost:"ALMOST ", about:"ABOUT ", over:"OVER ", approx:"~"})[d.qualifier];
   const value = String(d.value);
-  return prefix + ({ USD: `$${value}`, "USD/month": `$${value} / MONTH`, apps: `${value} APPS`, "nights/week": `${value} NIGHTS A WEEK`, "times/week": `${value} TIMES A WEEK`, count: value }[d.unit]);
+  return prefix + ({ USD: `$${value}`, "USD/month": `$${value} / MONTH`, apps: `${value} APPS`, "nights/week": `${value} NIGHTS A WEEK`, "times/week": `${value} TIMES A WEEK`, months: `${value} MONTHS`, count: value }[d.unit]);
 }
 
 function checkSpan(ref: SourceSpan, script: Script): void {
@@ -154,7 +157,7 @@ function checkDatum(d: Datum, all: Datum[], script: Script, approvals: DataAppro
     if (d.unitSource) checkSpan(d.unitSource, script);
     const context = norm(`${d.sourceSpan} ${d.unitSource?.sourceSpan ?? ""}`);
     const unitOk = { USD: /dollar|bucks/.test(context), "USD/month": /dollar/.test(context) && /month/.test(context),
-      apps: /apps/.test(context), "nights/week": /nights a week/.test(context), "times/week": /times a week/.test(context), count: true }[d.unit];
+      apps: /apps/.test(context), "nights/week": /nights a week/.test(context), "times/week": /times a week/.test(context), months: /month/.test(context), count: true }[d.unit];
     if (!unitOk) throw new Error(`DATA_PROVENANCE: unsupported unit ${d.id}`);
   } else {
     const a = approvals.find(a => a.id === d.approval.id && a.datumId === d.id);
@@ -280,8 +283,14 @@ export function compileFinancePlan(input: unknown, script: Script, transcript: W
     for (const e of s.elements) if (!e.initial && !motionEvents.some(m => m.targets.includes(e.id) && ["reveal", "grow", "stack", "draw"].includes(m.action))) throw new Error(`MODEL_NOT_COMMUNICATED: never revealed ${e.id}`);
     return { ...s, startSec, endSec, motionEvents };
   });
-  return { version: "1.2", day: plan.day, data: plan.data, sequences, ...(plan.editorial ? {editorial:true as const} : {}),
+  const resolved: ResolvedFinancePlan = { version: "1.2", day: plan.day, data: plan.data, sequences, ...(plan.editorial ? {editorial:true as const} : {}),
     provenance: plan.data.map(d => ({ ...d, transcriptTiming: d.sourceType === "script-literal" ? resolvePhrase(d, transcript) : "approved-derived: reveal event timing" })) };
+  const geometry = validateFinanceGeometry(resolved);
+  if (geometry.status === "FAIL") {
+    const first = geometry.failures[0];
+    throw new Error(`VISUAL_COLLISION: ${geometry.failures.length} temporal failures; ${geometry.failures.slice(0, 10).map(f => `${f.code} ${f.sequenceId} @${f.timeSec.toFixed(3)}s (${f.elements.join(",")}) — ${f.detail}`).join(" | ")}`);
+  }
+  return resolved;
 }
 
 export function assessFinanceDataViz(input: unknown, script: Script, transcript: WordBoundaryTranscript, approved: string, approvals: DataApproval[] = []): Gate {

@@ -58,6 +58,21 @@ beforeEach(async () => {
 afterEach(async () => { vi.unstubAllEnvs(); await rm(directory, { recursive: true, force: true }); });
 
 describe("canonical runPipeline cannot bypass H", () => {
+  it("keeps composition-only preflight confined to the approved Day 8 destination", async () => {
+    vi.stubEnv("DAY8_COMPOSE_ONLY", "1");
+    await expect(runPipeline(join(directory, "script.json"))).rejects.toThrow(/DAY8_COMPOSE_ONLY/);
+    expect(renderWithHyperframes).not.toHaveBeenCalled();
+  });
+  it("keeps composition-only preflight confined to the isolated Day 9 destination", async () => {
+    vi.stubEnv("DAY9_COMPOSE_ONLY", "1");
+    await expect(runPipeline(join(directory, "script.json"))).rejects.toThrow(/DAY9_COMPOSE_ONLY/);
+    expect(renderWithHyperframes).not.toHaveBeenCalled();
+  });
+  it("keeps Day 10–14 composition-only preflight confined to their isolated destinations", async () => {
+    vi.stubEnv("DAY10_14_COMPOSE_ONLY", "1");
+    await expect(runPipeline(join(directory, "script.json"))).rejects.toThrow(/DAY10_14_COMPOSE_ONLY/);
+    expect(renderWithHyperframes).not.toHaveBeenCalled();
+  });
   it.each([59.4, 60.8])("persists measured video duration %s and blocks unsafe final output", async seconds => {
     vi.mocked(evaluateProductionVisualVariety).mockResolvedValue(hFixture("WARNING"));
     vi.mocked(getVideoDurationSec).mockResolvedValue(seconds);

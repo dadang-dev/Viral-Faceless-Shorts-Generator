@@ -3,14 +3,21 @@ import { APPROVED_SCRIPT_FILE as source, extractApprovedVoiceOver, assertScriptI
 import { FinancePlanSchema, compileFinancePlan, transitionFor } from "../src/contracts/finance-motion.js";
 import { resolveHeroCaptions, editorialKaraokeAss, editorialCaptionWords } from "../src/contracts/hero-captions.js";
 import { ScriptSchema } from "../src/render/script-schema.js";
+import { assertBenchmarkDestination } from "../src/contracts/benchmark-isolation.js";
+import { resolve } from "node:path";
 
-const out="output/benchmarks/day-1-v12-editorial-r2";
+const out=process.env.DAY1_OUTPUT_DIR ?? "output/benchmarks/day-1-v12-toolkit-refresh";
+assertBenchmarkDestination(out);
+if(resolve(out)===resolve("output/benchmarks/day-1-v12-editorial-r2"))throw new Error("IMMUTABLE_BASELINE: use a new Day 1 benchmark");
 const read=async(f:string)=>JSON.parse(await readFile(`${out}/${f}`,"utf8"));
 const script=ScriptSchema.parse(await read("script.json")), transcript=await read("transcript.json");
 const approved=extractApprovedVoiceOver(await readFile(source,"utf8"),1);
 assertScriptIntegrity(script,approved);
 const ref=(n:number,sourceSpan:string)=>({source,sceneId:`scene-${n}`,sourceSpan});
 const box=(x:number,y:number,w:number,h:number)=>({x,y,w,h});
+// Day 1 refresh reserves Anton's actual ink height (not just line-height):
+// 164px hook needs 216px; 160px metrics need 208px; count tracks need 250px.
+// Frequency/result lanes retain scale headroom below the shared 1340px limit.
 const copy=(n:number,text:string)=>({...ref(n,text),text:text.toUpperCase()});
 const el=(id:string,kind:string,b:ReturnType<typeof box>,extra:object={})=>({id,kind,box:b,...extra});
 const text=(id:string,n:number,label:string,b:ReturnType<typeof box>,role:string,fontSize:number,initial=true)=>el(id,"text",b,{copy:copy(n,label),role,fontSize,size:"heading",initial});
@@ -43,7 +50,7 @@ const plan=FinancePlanSchema.parse({version:"1.2",day:1,source,referencePolicy:"
     ],[ev("emphasize",1,"not bad","focus",["hero"],"same-object","Keep complete hero readable, no competing bottom caption.")],"Intentional short reassurance hero, not a chart or process."),
     seq("hook",[2],"typography","Three habits is the dominant payload; all remaining exact words are subordinate, without decorative loop icons.",[
       text("lead",2,"You just have",box(110,470,860,90),"HERO",48),
-      {...text("payload",2,"three habits",box(110,650,860,210),"HERO",164),numericTypography:true},
+      {...text("payload",2,"three habits",box(110,650,860,230),"HERO",164),numericTypography:true},
       text("support",2,"working against you without you noticing",box(130,960,820,210),"HERO",52),
     ],[ev("payload-focus",2,"three habits","focus",["payload"],"same-object","Focus is on the actual hook, not decorative icons.")],"Complete source phrase stays readable and carries its own caption; hierarchy supplies emphasis."),
     seq("subscriptions",[3,4,5],"stacked-cost","The original three priced app objects are retained and two anonymous app objects join, yielding five total, never eight.",[
@@ -53,7 +60,7 @@ const plan=FinancePlanSchema.parse({version:"1.2",day:1,source,referencePolicy:"
       el("fitness","stack-item",box(110,690,860,130),{datumId:"fitness",copy:copy(4,"fitness app"),icon:"fitness",role:"DATA_LABEL",entityGroup:"apps"}),
       el("cloud","stack-item",box(110,850,860,130),{datumId:"cloud",copy:copy(5,"cloud storage"),icon:"cloud",role:"DATA_LABEL",entityGroup:"apps"}),
       el("app-four","node",box(110,1010,180,145),{icon:"app",entityGroup:"apps"}),el("app-five","node",box(320,1010,180,145),{icon:"app",entityGroup:"apps"}),
-      el("total","metric",box(540,1030,430,200),{datumId:"apps",role:"DATA_LABEL"}),
+      el("total","metric",box(540,1030,430,220),{datumId:"apps",role:"DATA_LABEL"}),
     ],[
       ...settle(3,"subscription creep"),ev("clear-object",4,"fourteen dollars","hide",["object"],"same-object","The generic opening object yields to the first named app; it is not a sixth subscription."),
       ev("streaming",4,"fourteen dollars","stack",["streaming"],"accumulation","First subscription becomes slot one of the retained total."),
@@ -67,28 +74,29 @@ const plan=FinancePlanSchema.parse({version:"1.2",day:1,source,referencePolicy:"
     ]),
     seq("convenience",[6,7,8],"accumulation-timeline","A single order price becomes four marked positions in a seven-position week and the approved approximate monthly consequence.",[
       ...chapter(6,"Number two","convenience spending"),
-      el("order-action","node",box(230,555,210,170),{icon:"app",connectsTo:"object"}),
-      el("object","node",box(640,555,210,170),{icon:"order"}),
-      el("price","metric",box(310,735,460,180),{datumId:"order",role:"DATA_LABEL"}),
-      el("week","markers",box(110,940,860,240),{datumId:"nights",icon:"order",weekSlots:7,frequencyMode:"count-only",retainedMarkerId:"object",role:"DATA_LABEL"}),
-      el("monthly","metric",box(110,1200,860,140),{datumId:"order-month",role:"DATA_LABEL"}),
+      el("order-action","node",box(230,530,210,160),{icon:"app",connectsTo:"object"}),
+      el("object","node",box(640,530,210,160),{icon:"order"}),
+      el("price","metric",box(310,715,460,210),{datumId:"order",role:"DATA_LABEL"}),
+      el("week","markers",box(110,950,860,250),{datumId:"nights",icon:"order",weekSlots:7,frequencyMode:"count-only",retainedMarkerId:"object",role:"DATA_LABEL"}),
+      el("monthly","metric",box(110,1200,860,130),{datumId:"order-month",role:"DATA_LABEL"}),
     ],[
       ...settle(6,"convenience spending","order-action"),
       ev("ordering",7,"I'll just order it","reveal",["object"],"progression","The phone/order action resolves into a takeout bag before the price is spoken; the linking path encodes checkout progression."),
       ev("order-confirm",7,"I'm tired","focus",["object"],"same-object","The order state activates while the quote stays in subtitles; no invented text or early price."),
       ev("price",7,"ten dollars","reveal",["price"],"major-metric","The first literal order cost appears at its WordBoundary."),
       ev("repeat",8,"ten dollars","punch",["price"],"major-metric","The repeated literal price is emphasized without moving into the order object."),
+      ev("checkout-complete",8,"ten dollars","hide",["order-action"],"same-object","Clear the completed checkout object and its attached connector before the retained order moves into the weekly track."),
       ev("order-place",8,"four nights a week","focus",["object"],"same-object","The same order moves horizontally clear of the price before descending to its first weekly slot.",{pose:{box:box(122,960,113,100),route:"horizontal-first"}}),
       ev("frequency",8,"four nights a week","reveal",["week"],"accumulation","Seven fixed day positions, precisely four highlighted order events."),
       ev("monthly",8,"about a hundred and seventy dollars a month","reveal",["monthly"],"major-metric","Show approved approximate monthly result; no intermediate totals."),
     ]),
     seq("rounding",[9,10,11],"accumulation-timeline","The actual coffee price remains anchored while a separate approximate mental overlay appears; the purchase object then joins three count-only weekly events and the approved monthly impact.",[
       ...chapter(9,"Number three","rounding it off in your head"),
-      el("object","node",box(420,530,240,180),{icon:"coffee"}),
-      el("price","metric",box(330,735,300,180),{datumId:"coffee",role:"DATA_LABEL",semanticState:"actual"}),
+      el("object","node",box(420,530,240,160),{icon:"coffee"}),
+      el("price","metric",box(330,715,300,210),{datumId:"coffee",role:"DATA_LABEL",semanticState:"actual"}),
       el("mental","metric",box(660,715,260,200),{datumId:"mental",role:"DATA_LABEL",semanticState:"mental"}),
-      el("week","markers",box(110,940,860,240),{datumId:"frequency",icon:"coffee",weekSlots:7,frequencyMode:"count-only",retainedMarkerId:"object",role:"DATA_LABEL"}),
-      el("monthly","metric",box(110,1200,860,140),{datumId:"coffee-month",role:"DATA_LABEL"}),
+      el("week","markers",box(110,950,860,250),{datumId:"frequency",icon:"coffee",weekSlots:7,frequencyMode:"count-only",retainedMarkerId:"object",role:"DATA_LABEL"}),
+      el("monthly","metric",box(110,1200,860,130),{datumId:"coffee-month",role:"DATA_LABEL"}),
     ],[
       ...settle(9,"rounding it off"),
       ev("actual-anchor",10,"You think of an","focus",["object"],"same-object","The purchase object establishes the actual transaction state before either number is shown."),
@@ -104,7 +112,11 @@ const plan=FinancePlanSchema.parse({version:"1.2",day:1,source,referencePolicy:"
       text("hero",12,"None of these make you careless.",box(110,560,860,440),"HERO",105),
     ],[ev("careless",12,"careless","focus",["hero"],"same-object","The complete reframe remains clearly readable as its own caption.")],"Intentional emotional reframe; typography is semantically sufficient."),
     seq("awareness",[13,14,15],"metric-reveal","Three established habit categories become dim background entities; a generic attention object moves into foreground without selecting a habit for the viewer.",[
-      el("subscription","node",box(160,560,200,190),{icon:"app",initial:true}),el("order","node",box(440,560,200,190),{icon:"order",initial:true}),el("coffee","node",box(720,560,200,190),{icon:"coffee",initial:true}),
+      // Keep the retained habit row above the outgoing reframe hero during
+      // the locked 180ms crossfade.  The previous y=560 lane overlapped the
+      // reframe hero (y=560..1000), producing a readable ghost headline
+      // behind the incoming icons at the scene-12 -> awareness handoff.
+      el("subscription","node",box(160,300,200,190),{icon:"app",initial:true}),el("order","node",box(440,300,200,190),{icon:"order",initial:true}),el("coffee","node",box(720,300,200,190),{icon:"coffee",initial:true}),
       el("notice","node",box(440,795,200,190),{icon:"voice"}),
     ],[
       ev("background",13,"quietly in the background","focus",["subscription","order","coffee"],"same-object","Established habits recede; they are real entities, not sentence boxes.",{pose:{opacity:.25}}),

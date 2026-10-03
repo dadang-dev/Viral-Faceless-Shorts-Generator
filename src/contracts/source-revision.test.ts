@@ -6,13 +6,16 @@ import { validateNumericRelationships } from "./numeric-relationships.js";
 
 describe("verified Day 1 source revision", () => {
   const old = readFileSync(HISTORICAL_SCRIPT_FILE), revised = readFileSync(APPROVED_SCRIPT_FILE);
-  it("preserves Day 2–7 byte for byte", () => expect(revised.subarray(revised.indexOf("## Day 2"))).toEqual(old.subarray(old.indexOf("## Day 2"))));
-  it("applies exactly three Day 1 corrections and nothing else", () => {
+  const day8Boundary = revised.indexOf("\n## Day 8");
+  const approvedFirstSevenDays = revised.subarray(0, day8Boundary);
+  it("appends new days after the protected Day 1–7 source", () => expect(day8Boundary).toBeGreaterThan(0));
+  it("preserves Day 2–7 byte for byte", () => expect(approvedFirstSevenDays.subarray(approvedFirstSevenDays.indexOf("## Day 2"))).toEqual(old.subarray(old.indexOf("## Day 2"))));
+  it("applies exactly three Day 1 corrections within the first seven days", () => {
     const expected = old.toString("utf8")
       .replace("is more than most people's entire grocery budget.", "is about a hundred and seventy dollars a month.")
       .replace("Number three: rounding down in your head.", "Number three: rounding it off in your head.")
       .replace("spent almost three hundred dollars a month", "spent over two hundred dollars a month");
-    expect(revised.toString("utf8")).toBe(expected);
+    expect(approvedFirstSevenDays.toString("utf8")).toBe(expected);
     expect(extractApprovedVoiceOver(expected, 1)).not.toMatch(/grocery budget|rounding down|three hundred/);
   });
   it("parses approved a hundred and seventy as one value", () => expect(literalNumbers("about a hundred and seventy dollars a month")).toEqual([170]));

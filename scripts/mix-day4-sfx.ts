@@ -1,0 +1,28 @@
+import {readFile,writeFile,rename,access} from "node:fs/promises";
+import {createHash} from "node:crypto";
+import {spawn} from "node:child_process";
+import {cuePlan,synthesizeCues,waveBuffer} from "./day4-sfx.js";
+import {TRANSITIONS_OUT,day4Transitions} from './day4-transitions.js';
+const transitions=process.argv.includes('--transitions');
+const illustrated=process.argv.includes('--illustrated')||transitions;
+const out=transitions?TRANSITIONS_OUT:illustrated?"output/benchmarks/day-4-v12-illustrated":process.argv.includes("--six-scene")?"output/benchmarks/day-4-v12-six-scene":"output/benchmarks/day-4-v12-texture-sfx",ffmpeg=process.env.MONEYHABITS_FFMPEG;
+if(!ffmpeg)throw new Error("Explicit FFmpeg required");
+const exists=async(p:string)=>{try{await access(p);return true;}catch(e:any){if(e.code!=="ENOENT")throw e;return false;}};
+const saved=await exists(`${out}/video-without-sfx.mp4`);
+if(saved&&await exists(`${out}/video.mp4`))throw new Error("ALREADY_MIXED");
+const input=saved?"video-without-sfx.mp4":"video.mp4";
+const plan=JSON.parse(await readFile(`${out}/resolved-finance-plan.json`,"utf8")),report=JSON.parse(await readFile(`${out}/validation-report.json`,"utf8"));
+const cues=illustrated?plan.sequences.flatMap((s:any)=>s.motionEvents.filter((e:any)=>['wiring-connects','buy','order','coffee','bill','pause','question','pass','honest'].includes(e.id)).map((e:any)=>({atSec:e.atSec,kind:e.id==='bill'?'cash':e.id==='pass'?'whoosh':e.id==='honest'?'pop':'click',sequence:s.id,target:e.targets[0],timingSource:'transcript.json:'+e.trigger.sourceSpan}))):cuePlan(plan);
+if(transitions)cues.push(...day4Transitions(plan).map(c=>({atSec:c.startSec,kind:'whoosh',sequence:c.sequence,target:'transition',timingSource:'resolved transcript sequence boundary'})));
+cues.sort((a:any,b:any)=>a.atSec-b.atSec);
+const samples=synthesizeCues(cues,report.outroDwell.finalTargetSec);
+await writeFile(`${out}/sfx.wav`,waveBuffer(samples));
+const run=(args:string[])=>new Promise<string>((done,fail)=>{const p=spawn(ffmpeg,args,{stdio:["ignore","pipe","pipe"]});let log="";p.stderr.on("data",d=>log+=d);p.on("error",fail);p.on("close",c=>c===0?done(log):fail(new Error(log)));});
+// Narration remains unshifted; 1dB headroom and sparse quiet cues. Video is copied.
+await run(["-y","-i",`${out}/${input}`,"-i",`${out}/sfx.wav`,"-filter_complex","[0:a]volume=0.89[voice];[voice][1:a]amix=inputs=2:duration=first:normalize=0[a]","-map","0:v:0","-map","[a]","-c:v","copy","-c:a","aac","-b:a","192k","-movflags","+faststart",`${out}/video-sfx-staging.mp4`]);
+const stats=await run(["-i",`${out}/video-sfx-staging.mp4`,"-vn","-af","volumedetect","-f","null","-"]);
+const peak=Number(stats.match(/max_volume: ([\d.-]+) dB/)?.[1]);if(!Number.isFinite(peak)||peak>-.5)throw new Error("AUDIO_HEADROOM: "+peak);
+if(!saved)await rename(`${out}/video.mp4`,`${out}/video-without-sfx.mp4`);
+await rename(`${out}/video-sfx-staging.mp4`,`${out}/video.mp4`);
+await writeFile(`${out}/sfx-report.json`,JSON.stringify({status:"PASS",source:"Locally synthesized deterministic effects; no external audio assets",cues,voiceOffsetSec:0,voiceGain:.89,sfxPeak: samples.reduce((a,b)=>Math.max(a,Math.abs(b)),0),finalPeakDb:peak,videoSha256:createHash("sha256").update(await readFile(`${out}/video.mp4`)).digest("hex"),listeningReview:"Not performed; objective timing and level checks do not replace human listening."},null,2));
+console.log("SFX mixed",cues.length,"cues; peak",peak);

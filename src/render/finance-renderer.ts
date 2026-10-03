@@ -10,6 +10,13 @@ const paths = {
   order: '<path d="M23 40h54l-6 44H29zM36 40V28a14 14 0 0 1 28 0v12"/>',
   voice: '<rect x="40" y="12" width="20" height="48" rx="10"/><path d="M28 46v5a22 22 0 0 0 44 0v-5M50 74v14M37 88h26"/>',
   habit: '<path d="M23 36a30 30 0 0 1 54 0M77 36V19M77 36H60M77 64a30 30 0 0 1-54 0M23 64v17M23 64h17"/>',
+  home: '<path d="M14 48L50 18l36 30M24 42v42h52V42M42 84V60h16v24"/>',
+  car: '<path d="M18 62l8-25h48l8 25v17H18zM30 79v7M70 79v7M29 62h42M34 48h32"/><circle cx="31" cy="70" r="5"/><circle cx="69" cy="70" r="5"/>',
+  meal: '<path d="M20 20v32M14 20v20q0 12 12 12V20M72 20v66M72 20q16 8 12 30H72M36 64h28M42 78h16"/>',
+  wallet: '<rect x="15" y="28" width="70" height="52" rx="9"/><path d="M15 40h70M62 52h23v16H62zM66 60h3"/>',
+  calendar: '<rect x="18" y="22" width="64" height="62" rx="8"/><path d="M30 14v18M70 14v18M18 40h64M31 53h8M47 53h8M63 53h8M31 68h8M47 68h8M63 68h8"/>',
+  question: '<path d="M34 34a17 17 0 1 1 28 13c-8 6-12 9-12 19M50 82v2"/>',
+  desire: '<path d="M50 82S18 63 18 39a18 18 0 0 1 32-11 18 18 0 0 1 32 11c0 24-32 43-32 43z"/>',
 };
 function icon(key: FinanceElement["icon"] = "app") { return `<svg class="fm-icon" viewBox="0 0 100 100" aria-hidden="true">${paths[key]}</svg>`; }
 function renderElement(e: FinanceElement, s: ResolvedSequence, plan: ResolvedFinancePlan): string {
@@ -43,7 +50,7 @@ function renderElement(e: FinanceElement, s: ResolvedSequence, plan: ResolvedFin
     inner = `${e.icon ? icon(e.icon) : ""}${variants.map((v, i) => `<div class="fm-metric-step" data-step="${v.id}" style="opacity:${i === 0 ? 1 : 0}">${display(v)}</div>`).join("")}${label}`;
   } else inner = label;
   const b = e.box;
-  return `<div class="fm-element fm-${e.kind} fm-${e.size} fm-${e.orientation}${e.semanticState ? ` fm-state-${e.semanticState}` : ""}" id="fm-${s.id}-${e.id}" data-role="${e.role ?? ""}" data-semantic-state="${e.semanticState ?? ""}" data-element-id="${e.id}" data-initial="${e.initial}" data-ratio="${scale}" style="left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px;opacity:${e.initial ? 1 : 0}">${inner}</div>`;
+  return `<div class="fm-element fm-${e.kind} fm-${e.size} fm-${e.orientation}${e.semanticState ? ` fm-state-${e.semanticState}` : ""}" id="fm-${s.id}-${e.id}" data-role="${e.role ?? ""}" data-kind="${e.kind}" data-entity-group="${e.entityGroup ?? ""}" data-semantic-state="${e.semanticState ?? ""}" data-element-id="${e.id}" data-initial="${e.initial}" data-ratio="${scale}" style="left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px;opacity:${e.initial ? 1 : 0}">${inner}</div>`;
 }
 
 export function renderFinanceSequence(s: ResolvedSequence, plan: ResolvedFinancePlan): string {

@@ -15,6 +15,13 @@ const compile=(p:unknown=fresh(), approvals:DataApproval[]=[])=>compileFinancePl
 const fail=(mutate:(p:FinancePlan)=>void,pattern:RegExp)=>{const p=fresh();mutate(p);expect(()=>compile(p)).toThrow(pattern);};
 
 describe("v1.2 finance provenance and reference firewall",()=>{
+  it("allows an approved Day 8 plan while keeping the current Day 14 boundary",()=>{
+    const p:any=fresh();
+    p.day=8;
+    expect(FinancePlanSchema.safeParse(p).success).toBe(true);
+    p.day=15;
+    expect(FinancePlanSchema.safeParse(p).success).toBe(false);
+  });
   it("compiles approved Day 1 and traces every datum",()=>{const p=compile();expect(p.provenance).toHaveLength(11);expect(assessFinanceDataViz(fresh(),script,transcript,approved).status).toBe("PASS");});
   it.each(["Debug_Your_Money.pdf","How_Background_Habits_Drain_Your_Budget.mp4","money-habits-ALL-v4.md"])("rejects reference/content-source substitution %s",source=>{const p:any=fresh();p.data[0].source=source;expect(()=>compile(p)).toThrow();});
   it("does not accept reference amounts attributed to an approved span",()=>fail(p=>{p.data[5].value=170;p.data[5].display="$170";},/invented/));

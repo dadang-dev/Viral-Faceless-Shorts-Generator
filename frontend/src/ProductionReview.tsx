@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, ArrowUpRight, FileJson, Film, Loader2, RefreshCw } from 'lucide-react'
 import './ProductionReview.css'
+import { PAGE_BRAND } from './brand'
 
 type Gate = { status?: string; warnings?: string[]; error?: string; total?: { passed: number; failed: number }; resolved?: { id: string; displayText: string; globalStartSec: number; globalEndSec: number }[]; similarity?: { day: number; score: number; templateSequenceSimilarity: number; sceneCountSimilarity: number; layoutSimilarity: number; statPlacementSimilarity: number; iconCompositionSimilarity: number }[] }
 type Review = {
@@ -54,7 +55,7 @@ export default function ProductionReview({ api, refreshKey }: { api: string; ref
   const testGate = data?.validation?.gates.G_TESTS
   const durationGate = data?.validation?.gates.I_PRODUCTION_DURATION as (Gate & { phase: string; seconds: number; minimumSec: number }) | undefined
   const seek = (time: number | null) => { if (video.current && time !== null) { video.current.currentTime = time; video.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) } }
-  return <section className="production-review" aria-label="Money Habits Production Review">
+  return <section className="production-review" aria-label={`${PAGE_BRAND.displayName} Production Review`}>
     <header className="review-heading"><div><span className="review-eyebrow">MASTER TEMPLATE v1.1</span><h2>Production Review</h2><p>Approved source → WordBoundary → A–H → HyperFrames</p></div><button className="review-button" onClick={() => setRevision(v => v + 1)}><RefreshCw size={15}/> Làm mới report</button></header>
     <nav className="review-days" aria-label="Chọn ngày review">{(catalog?.days ?? []).map(item => <button key={item.day} aria-pressed={day === item.day} onClick={() => setDay(item.day)} title={item.title}><span>Day {item.day}</span><small>{item.hStatus === 'NOT_RUN' ? 'Chưa có H' : `${item.hStatus}${item.hSource === 'preflight' ? ' · preflight' : ''}`}</small></button>)}</nav>
     {error && <div className="review-alert" role="alert">{error}</div>}

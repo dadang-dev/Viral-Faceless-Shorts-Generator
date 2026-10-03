@@ -2,8 +2,24 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { composeHtml } from "./html-composer.js";
 import type { Script } from "./script-schema.js";
+import { LOCKED_PAGE_BRAND } from "../brand-config.js";
 
 describe("composeHtml", () => {
+  it("uses the locked DifferentActually identity when a production brand is supplied", () => {
+    const script = JSON.parse(readFileSync("tests/fixtures/sample-script-with-image.json", "utf8")) as Script;
+    const html = composeHtml({
+      script,
+      sceneAudio: script.scenes.map((scene) => ({ id: scene.id, durationSec: 1 })),
+      gapSec: 0.3,
+      bgImageRelPath: null,
+      audioRelPath: "voice.mp3",
+      tiktok: { displayName: "Money Habits", handle: "@moneyhabits", followers: "2k followers" },
+    });
+    expect(html).toContain(`class="brand-name">${LOCKED_PAGE_BRAND.displayName}`);
+    expect(html).toContain(`class="tt-handle">${LOCKED_PAGE_BRAND.handle}`);
+    expect(html).toContain(`class="out-channel">${LOCKED_PAGE_BRAND.displayName}`);
+  });
+
   it("produces deterministic HTML for sample script with image", () => {
     const script = JSON.parse(readFileSync("tests/fixtures/sample-script-with-image.json", "utf8")) as Script;
     const sceneAudio = [

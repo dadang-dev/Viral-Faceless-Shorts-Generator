@@ -7,9 +7,17 @@ description: Tạo hoặc render video Money Habits 9:16 cho Day 1–7 hay chủ
 
 Tạo video motion graphics tiếng Anh cho TikTok, Reels hoặc Shorts. Xem shared runtime hiện tại là implementation đã được chứng minh; không đổi baseline đã khóa chỉ để “polish” một Day mới.
 
+## Repository instruction hierarchy
+
+Follow root `AGENTS.md` → root `workflow.md` → this implementation playbook → detailed specs/docs → validators/tests. Paths outside `references/` are repository-root-relative. Read `docs/migration-status.md`, `docs/master-template-v1.2-rule-lock-audit.md` and the requested Day’s canonical narration as directed by workflow STEP 0. Current approval and migration gates live only in migration status; historical reference status lines do not supersede it. Visual hard-gate failures cannot be bypassed by planner decisions or silent fallbacks. Automated checks never grant human visual approval.
+
+## Locked page identity
+
+New UI and production renders use `DifferentActually` (`@differentactually`) with the existing `DAILY HABITS` tagline. Import `src/brand-config.ts`; do not hard-code a legacy page name or honor old TikTok identity environment overrides. This lock changes presentation only: canonical narration, source filenames, hashtags, historical reports and protected MP4s remain unchanged.
+
 ## v1.2 — Finance Motion / Data Visualization
 
-v1.1 remains the locked baseline. v1.2 architecture remains approved, but its Day 1 benchmark failed deeper editorial/data-integrity review. Production batch Day 4–7 is STOPPED until corrected benchmark review and a separate batch instruction. Do not create v1.3 or redesign the render engine. For an authorized v1.2 task, read [references/finance-motion-v12.md](references/finance-motion-v12.md) and [references/editorial-data-integrity.md](references/editorial-data-integrity.md) completely. The v1.2 vocabulary supersedes the v1.1 “no new primitive” restriction only in that opt-in mode; legacy outputs remain unchanged.
+v1.1 remains the locked baseline; v1.2 is the approved opt-in architecture. Consult `docs/migration-status.md` for approved reference artifacts, the requested Day’s review state and authorization to advance. Do not create v1.3 or redesign the render engine. For an authorized v1.2 task, read [references/finance-motion-v12.md](references/finance-motion-v12.md) and [references/editorial-data-integrity.md](references/editorial-data-integrity.md) completely. The v1.2 vocabulary supersedes the v1.1 “no new primitive” restriction only in that opt-in mode; legacy outputs remain unchanged.
 
 # MONEY HABITS — MASTER TEMPLATE v1.1 — VISUAL VARIETY SYSTEM
 
@@ -47,7 +55,7 @@ Archetype là orchestration strategy, không đồng nghĩa với một HTML tem
 
 Giữ khoảng 60–70% consistent brand/system và 30–40% content-specific variation.
 
-Locked: colors, typography family, subtitle, brand identity, crossfade, card language, motion quality, stat treatment và premium/editorial tone.
+Locked: colors, typography family, subtitle, brand identity, shared 180 ms crossfade default, card language, motion quality, stat treatment và premium/editorial tone. A more visible transition is only an explicitly requested, episode-local exception.
 
 Variable: scene composition, card/icon arrangement, number presentation, comparison direction, timeline structure, repetition pattern, visual metaphor và scene density. Không randomize locked properties để tạo fake variety.
 
@@ -58,6 +66,16 @@ Có thể dùng underline, circle highlight, strike-through, checkmark, x mark, 
 Đây là vocabulary định hướng, không phải danh sách renderer đã implement. Lượt v1.1 reuse template/icon hiện có, progressive reveal và metric scale bump; không thêm calendar/progress-bar/counter/shake component hoặc tự truyền unsupported layout field. Timeline/frequency hiện biểu đạt bằng thứ tự semantic beats, exact-source text và icon sẵn có. Muốn primitive/layout mới phải báo nhu cầu kỹ thuật trước; không đổi locked renderer ngầm.
 
 ## Repetition control and history
+
+### Story-bearing visuals versus presentation effects
+
+For every major sequence, name the content-bearing visual that carries its spoken beat: a source-linked object/action, a supported relationship, or a meaningful state change. Captions provide accessibility and hierarchy; they are not a substitute for the visual story. A short exact-source hook or reframe may rely on typography, but do not let a long run of caption-led scenes become the whole video.
+
+An isolated generic icon, background texture/grid, decorative motion, caption animation, SFX cue, or scene transition is not by itself a content-bearing visual and does not satisfy visual-variety review. Use an icon as an anchor, then show a source-supported action, state, comparison, repetition, consequence, or decision around it. Keep future elements hidden until their transcript-linked beat.
+
+A midpoint pattern interrupt is optional and must come from the content: use comparison, progression, or a process view only when the narration supports that relationship. A number-jump, bar, total, or chart requires an explicitly supported value; never fabricate data to create visual excitement. Do not add a stronger transition merely to disguise an otherwise static or subtitle-dominated sequence.
+
+Before handoff, review the actual MP4 with audio muted. For each major sequence, check whether a viewer can identify its main object/action/relationship from the imagery and state progression, without needing to read every subtitle. If the captions or transition are doing all the storytelling, revise the visual plan using supported content and existing primitives. This is an editorial QA check, not a new automated gate.
 
 ### Intra-scene dynamics and adjacent examples
 
@@ -99,7 +117,7 @@ Gate H không làm yếu mandatory A–G và tuyệt đối không cho phép đ�
 - Render 1080×1920, 30 fps, vertical 9:16.
 - Dùng HyperFrames với HTML/CSS/GSAP và Chrome headless.
 - Dùng shared templates trong `src/render/templates/`.
-- Giữ scene crossfade ở 180 ms.
+- Giữ shared scene crossfade ở 180 ms mặc định; ngoại lệ transition rõ hơn chỉ được opt-in theo Day khi user yêu cầu.
 - Không đổi baseline theo từng Day nếu không có technical reason đã được báo rõ.
 
 ## Locked TTS and timing baseline
@@ -149,8 +167,10 @@ Mọi visible semantic string phải trace được tới approved Day script ho
 
 ## Semantic scene planning
 
+For object continuity, color emphasis, timed connectors or scene regrouping, read [references/visual-continuity.md](references/visual-continuity.md). It separates reusable Day 2 lessons from episode-specific choices.
+
 - Quyết định scene count theo semantic beats; không có editorial fixed count như 12–19.
-- Tuân thủ giới hạn kỹ thuật hiện tại của `ScriptSchema` là 3–30 scene. Day 2 có 11 scene và là output hợp lệ.
+- Tuân thủ giới hạn kỹ thuật hiện tại của `ScriptSchema` là 3–30 scene. Scene count theo yêu cầu hiện tại và semantic beats; trạng thái từng Day ở migration status.
 - Không chia máy móc một scene cho mỗi câu.
 - Ưu tiên hook, concept introduction, example, contrast, numerical reveal, consequence, reframing và CTA.
 - Xem templates là vocabulary, không phải fixed sequence; không copy order Day 1 sang Day khác.
@@ -179,11 +199,45 @@ accentAmber: #F2C14E
 - Giữ thin gold borders, controlled radius và premium/editorial feel.
 - Giữ gold glow restrained ở mức hiện tại; không tăng tùy Day hoặc tạo gaming/cyberpunk neon.
 
+## Shared v1.2 geometry rule-lock
+
+Các template Money Habits phải dùng cùng semantic guardrails, không tự giải quyết bằng tọa độ riêng của một Day:
+
+- **HERO SAFE ZONE:** dominant hero tránh foreground object với gap tối thiểu 28px.
+- **OBJECT GAP:** retained objects/metrics cùng entity group giữ gap semantic tối thiểu 24px; hàng xóm trong cùng group tối thiểu 18px.
+- **TEXT CONTAINMENT:** text phải nằm trong parent sau khi tính padding, icon reserve và font đã load; overflow-wrap là bắt buộc với copy dài.
+- **ANIMATION-SWEPT BOUNDS / SAFE FRAME:** sample entrance, early hold, midpoint, late hold, exit và mọi event boundary; kiểm tra box sau scale/translate, không chỉ box tĩnh. Safe frame dùng x=70..1010, y=240..1340.
+- **RETAINED-STATE COMPRESSION:** state giữ lại phải có entity group và lane riêng khi metric/financial tag cùng tồn tại.
+- **TRANSFORM-AWARE MEASUREMENT:** pre-render compiler gate dùng conservative font-aware estimate; browser QA đo `getBoundingClientRect()` trên DOM thực tế sau `document.fonts.ready`. Intentional parent/child overlap phải khai báo semantic metadata. Pair filtering không chứng minh text/text handoff sạch: readable ghost text vẫn FAIL và cần frame review.
+
+Visual collision validator phải FAIL trước render khi gặp hero/foreground overlap, text/container overflow, retained metric overlap, caption/foreground overlap, transformed clipping hoặc intermediate geometry collision. Không silent fallback sang LLM rewrite.
+
+## Semantic data-viz selection
+
+Một numeric value không tự động yêu cầu chart. Chọn visual theo quan hệ dữ liệu:
+
+- single fact → stat/number reveal;
+- comparison/gap → bar/comparison;
+- accumulation → stack/progression;
+- frequency → timeline/repetition;
+- state change → balance/gauge/stateful model;
+- process → decision flow/process loop.
+
+Không invent hoặc derive financial data chỉ để làm chart phong phú hơn; mọi datum phải trace về approved script hoặc approval config.
+
 ## Shared visual rules
 
 ### Crossfade
 
 Dùng shared 180 ms crossfade. Không tạo black/white flash, blank hero area, CSS reset frame hoặc two-scene ghosting kéo dài.
+
+### Explicitly requested visible scene transitions
+
+- Crossfade 180 ms vẫn là mặc định chung. Chỉ thêm wipe/shutter hoặc treatment nổi bật hơn khi user yêu cầu rõ; đây là lựa chọn sáng tạo giới hạn trong Day/benchmark được yêu cầu, không phải style mặc định cho mọi video.
+- Bám vào ranh giới visual-sequence thật, lấy từ plan và phrase/transcript-resolved timing; không hard-code giây, không dùng audio-slice boundary thay cho scene boundary và không retime voice/WordBoundary/caption.
+- Giữ transition trong safe viewport, không che brand/caption lane; kiểm tra entrance, travel/midpoint, full cover, exit và backward seek. QA browser/GSAP phải đi cùng frame review trên MP4 sau render; không coi transition-qa PASS là human visual approval.
+- SFX vẫn optional và tách biệt với yêu cầu chuyển cảnh. Giữ voice/audio integrity; chỉ thêm hoặc trộn SFX khi scope đã yêu cầu/cho phép.
+- Các CLI branch vẫn được cô lập theo Day: xem [Day 4 transition branch](references/finance-motion-v12.md#day-4-transition-branch) và [Day 5 transition branch](references/finance-motion-v12.md#day-5-transition-branch). Không dùng destination hoặc cờ của Day này cho Day khác; cả hai đều không đổi shared default.
 
 ### Subtitle
 
@@ -241,17 +295,9 @@ Nếu phrase không resolve chính xác một lần trong scene đã khai báo, 
 
 Nếu mandatory gate FAIL, STOP; không silently continue.
 
-## Workflow
+## Execution workflow
 
-1. Đọc và report exact approved Day voice-over trước planning.
-2. Đọc toàn bộ script, chọn content-driven primary archetype và tối đa một secondary; ghi `visual-plan.json` với rationale.
-3. Chia theo semantic beats; tạo `output/day-<N>/script.json` không đổi narration.
-4. Tạo `output/day-<N>/number_highlights.json` từ approved metrics.
-5. Refresh history của các plan đã review và chạy validation H; nếu FAIL thì dừng planning, nếu WARNING phải review rationale/composition, thử phương án hợp content hơn. Không đổi narration để né warning.
-6. Chạy validation-only để tạo TTS/transcript và kiểm tra A–F.
-7. Chạy relevant tests, ghi PASS cho G rồi validation lại; chạy lại H với transcript mới, review warning, sau đó mới ghi plan đã review vào history.
-8. Chỉ khi A–H chấp nhận được, render đúng Day được yêu cầu bằng `npm run pipeline -- output/day-<N>/script.json`.
-9. Không batch Day kế tiếp khi đang chờ review.
+Use root `workflow.md` STEPS 0–11 for execution order, applicability, learning and handoff. This skill supplies implementation details; it does not create a separate approval path. Select the runner for the authorized isolated benchmark and consult migration status before any production destination or visual-history update.
 
 ## Post-render QA
 

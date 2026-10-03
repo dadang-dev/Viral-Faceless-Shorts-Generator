@@ -1,6 +1,6 @@
 # Finance Motion / Data Visualization v1.2
 
-Status: architecture approved, editorial/data-integrity benchmark revision pending visual review. The later review supersedes the earlier production-lock status. Follow `editorial-data-integrity.md`; Day 1–3 approved production MP4s are immutable and Day 4–7 remain stopped.
+Architecture: approved v1.2. Current episode approvals and authorizations are in `docs/migration-status.md`; historical benchmark instructions below do not override them. Follow `editorial-data-integrity.md` for technical requirements and `visual-continuity.md` for later continuity/reveal lessons.
 
 ## Semantic data-viz selection
 
@@ -35,9 +35,42 @@ Events reference approved scene/spoken spans; resolve timing from existing `tran
 
 Keep `number_highlights.json` as the emphasis authority; provenance does not replace it. Benchmark validation verifies that highlight timing matches actual plotted events. No hard-coded event timestamps, Whisper, new TTS or silent rewrite.
 
-Transitions derive from meaning: new topic → 180ms crossfade; same object → state update/focus; accumulation → push/stack; comparison → split/expand; validated major metric → restrained punch; process/timeline → directional progression. No random selection, decorative pulse quota or invented counter values.
+Transitions derive from meaning: new topic → shared 180ms crossfade; same object → state update/focus; accumulation → push/stack; comparison → split/expand; validated major metric → restrained punch; process/timeline → directional progression. The crossfade stays the default. A visibly stronger scene-to-scene treatment is an episode-local exception only on explicit user request; bind it to plan/transcript-resolved visual-sequence boundaries, preserve all narration timing, and validate the full transition envelope and rendered frames. No random selection, decorative pulse quota or invented counter values. SFX remain optional and separately scoped.
+
+### Day 4 transition branch
+
+The implemented `--day4-transitions` branch is an opt-in Day 4 illustration variant, not a general transition setting. It is destination-guarded by the runner and writes only to `output/benchmarks/day-4-v12-transitions/`. Day 5 uses a separate guarded branch; neither branch is reusable by changing only the day number.
+
+```bash
+npx tsx scripts/prepare-day4-illustrated.ts --transitions
+npx tsx scripts/render-days4-7-v12.ts 4 --day4-transitions --output=output/benchmarks/day-4-v12-transitions --render
+npx tsx scripts/mix-day4-sfx.ts --transitions
+npx tsx scripts/qa-day4-illustrated.ts --transitions
+npx tsx scripts/validate-day4-sensory.ts --transitions
+npx tsx scripts/qa-days4-7-dense.ts 4 --output=output/benchmarks/day-4-v12-transitions --transitions
+```
+
+Set `MONEYHABITS_FFMPEG` to the approved full FFmpeg build before SFX mixing. These branch-specific checks supplement, not replace, workflow STEPS 7–9: complete applicable source/media/temporal/frame gates and inspect the final MP4. The current implementation evidence is in `docs/day-4-transitions-revision.md`; its result is not human approval.
 
 During dense narration, consider meaningful events about every 1.5–3s when semantics justify them, not by timer. Subtitle changes, shimmer and idle floating do not count. Preserve v1.1 archetypes/history/H thresholds and adjacent-composition rules. Finance events feed the existing long-hold heuristic via `financeVisualCues`; also review full visual sequences so audio-slice boundaries are not mistaken for visual resets.
+
+### Day 5 transition branch
+
+The `--day5-transitions` branch is a separately authorized Day 5 derivative. It writes only to `output/benchmarks/day-5-v12-transitions/`, preserves the existing Day 5 benchmark, and adds four visual-only vertical statement-scan shutters at the plan-resolved sequence boundaries (7.875s, 24.071s, 38.093s and 50.104s). Each envelope is 0.64s and clipped to `VISUAL_SAFE_FRAME`; narration, WordBoundary, captions and audio are reused without change. No SFX are added by this branch.
+
+```powershell
+npx tsx scripts/prepare-day5-transitions.ts
+$env:MONEYHABITS_FFMPEG = '<absolute path to approved FFmpeg>'
+$env:MONEYHABITS_FFPROBE = '<absolute path to matching ffprobe>'
+npx tsx scripts/render-days4-7-v12.ts 5 --day5-transitions --output=output/benchmarks/day-5-v12-transitions --render
+npx tsx scripts/qa-day5-transitions.ts
+npx tsx scripts/qa-temporal-collision.ts output/benchmarks/day-5-v12-transitions --label=final
+npx tsx scripts/qa-days4-7-dense.ts 5 --output=output/benchmarks/day-5-v12-transitions --transitions --all-events
+python -X utf8 scripts/qa-money-video.py output/benchmarks/day-5-v12-transitions --label=final-gsap
+npx tsx scripts/report-days4-7-v12.ts 5 --output=output/benchmarks/day-5-v12-transitions --tests=.runtime-logs/day5-v12-vitest.json
+```
+
+Use the host's installed Python executable when `python` is unavailable; do not install a second runtime just for this command. Branch QA checks transition runtime, phase/boundary seeks in both directions, safe viewport geometry, final decoded MP4 strips, both media streams, and protected hashes. The current result/evidence is in [Day 5 transitions revision](../../../../docs/day-5-transitions-revision.md). Its 13 coarse low-detail frame flags and the existing `charge-attention` motion-density warning remain visible for human review. Automated/agent review is not human approval.
 
 ## Validation and review
 
